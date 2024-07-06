@@ -1,0 +1,3 @@
+[submodule "os-selector"]
+	path = os-selector
+	url = https://github.com/TunayAdaKaracan/os-selector.git
