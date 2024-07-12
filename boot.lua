@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-07-12 20:06:39",modified="2024-07-12 20:07:58",revision=1]]
+--[[pod_format="raw",created="2024-07-12 20:06:39",modified="2024-07-12 21:07:11",revision=3]]
 --[[
 	Arc Loader by Kutup Tilkisi
 ]]
@@ -78,11 +78,10 @@ local function run_system()
 	local sysboot_src = fetch("/system/sysboot.lua")
 	
 	local booter, err = load(sysboot_src)
-	if not booter then
-		if selected_os != "picotron" then
-			-- fallback
-			run_system("picotron")
-		end
+	if not booter or err and selected_os != "picotron" then
+		-- fallback
+		selected_os = "picotron"
+		run_system()
 	end
 
 	-- Will never return. No problem

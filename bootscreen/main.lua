@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-07-12 16:10:18",modified="2024-07-12 16:26:38",revision=91]]
+--[[pod_format="raw",created="2024-07-12 16:10:18",modified="2024-07-12 20:39:00",revision=93]]
 all_os = ls("/systems")
 selected_i = 1
 timer = fetch_metadata("/systems").timer or 5

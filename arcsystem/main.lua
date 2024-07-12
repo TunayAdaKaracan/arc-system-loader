@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-06-26 12:33:32",modified="2024-07-12 20:05:23",revision=1149]]
+--[[pod_format="raw",created="2024-06-26 12:33:32",modified="2024-07-12 20:55:00",revision=1154]]
 include("utils/json.lua")
 include("utils/basexx.lua")
 include("utils/textwrap.lua")
@@ -14,6 +14,20 @@ function get_bootfile_remote()
 end
 
 local function install_bootos()
+	local console_run = env().corun_program ~= nil
+	local fullpath
+	if not console_run then
+		fullpath = env().prog_name .. "/"
+	else
+		local split_path = split("/", env().corun_program)
+		fullpath = ""
+		for i, val in ipairs(split_path) do
+			if i ~= #split_path then
+				fullpath = fullpath .. val .. "/"
+			end
+		end
+	end
+	cp(fullpath.."resource/bootos", "/systems/.bootos")
 end
 
 local function install_arcsystem()
