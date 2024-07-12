@@ -1,0 +1,84 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: .info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTA0LTMwIDE5OjA5OjMzIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCIsc3RvcmVkPSIyMDI0LTUyLTAyIDIwOjUyOjI3Iix3b3Jrc3BhY2VzPXt7
+bG9jYXRpb249Im1haW4ubHVhIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJnZngvMC5n
+ZngiLHdvcmtzcGFjZV9pbmRleD0yfSx7bG9jYXRpb249Im1hcC9tYXAwLm1hcCIsd29ya3NwYWNl
+X2luZGV4PTN9LHtsb2NhdGlvbj0ic2Z4L3NmeDAuc2Z4Iix3b3Jrc3BhY2VfaW5kZXg9NH19XV1s
+ejQABAAAAAMAAAAwbmls
+:: gfx/
+:: gfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTEwLTAyIDIwOjM1OjIxIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCIsc3RvcmVkPSIyMDI0LTM1LTAyIDIwOjM1OjIxIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: gfx/0.gfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTM1LTAyIDIwOjM1OjIxIixtb2RpZmllZD0iMjAyNC01
+Mi0wMiAyMDo1MjoyNyIscmV2aXNpb249MTE1XV1sejQAcQAAAAUzAADzFHtbMF09e2JtcD1weHUA
+QyAQEATw8CxmbGFncz0wLHBhbl94CADveT0wLHNjYWxlPTEyfSwzAP----------------------
+--------------------------------------------51A9MTJ9fQ==
+:: map/
+:: map/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTEwLTAyIDIwOjM1OjIxIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCIsc3RvcmVkPSIyMDI0LTM1LTAyIDIwOjM1OjIxIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: map/map0.map
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTM1LTAyIDIwOjM1OjIxIixtb2RpZmllZD0iMjAyNC01
+Mi0wMiAyMDo1MjoyNyIscmV2aXNpb249MTE0XV1sejQAaQAAAKMIAADwE3tsYXllcj17WzBdPXti
+bXA9dXNlcmRhdGEoImkxNiIsMTYDAC8iMAEA----76EiKSxwYW5feD0wCADyBnk9MCxzY2FsZT0x
+LHRpbGVfaD0xNgoAb3c9MTZ9LEsE-----zhQMTZ9fX0=
+:: sfx/
+:: sfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTEwLTAyIDIwOjM1OjIxIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCIsc3RvcmVkPSIyMDI0LTM1LTAyIDIwOjM1OjIxIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: sfx/sfx0.sfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTM1LTAyIDIwOjM1OjIyIixtb2RpZmllZD0iMjAyNC01
+Mi0wMiAyMDo1MjoyNyIscmV2aXNpb249MTEzXV1sejQAEAEAAFEHAADwJ3B4dQADKAAAAwAED0AQ
+Ag4AAaABIAKgDgAPEAAN8MoBAgMEBQYHAQ--kAgJCgsPDA8NDw4PDxAA8AANDxEPEg8TDxQPFQ8W
+DxcTAPEBDxgPGQ8aDxsPHA8dDx4PHxQA8QAgDyEPIg8jDyQPJQ8mDycUAPEAKA8pDyoPKw8sDy0P
+Lg8vFADxADAPMQ8yDzMPNA81DzYPNxQA-wU4DzkPOg87DzwPPQ8_Dz8BD--w-wEA6-8nWgEQBg8g
+EAEgASAB8AACEAIMEAEgDyEgATAPQPDDDygP--DGD-gKD-8PgA-3Dw0B8AkBEAYMMAD-OR--AQDc
+v-gPQAANQP--sPBwCgD--2Qf-wEAl1D-----Hw==
+:: main.lua
+--[[pod_format="raw",created="2024-35-02 20:35:21",modified="2024-52-02 20:52:27",revision=191]]
+
+local tt=0
+
+
+function _draw()
+	cls()
+	local rr= 30
+	
+	for i=0,8,2 do tt+=0.01
+	
+	mx = 240+cos(tt/17)*120
+	my = 135+sin(tt/12)*80 + sin(tt/17)*50
+	
+	
+	for x=0,23 do
+		for y=22,45 do	
+			local sx =  x*6*3 + (y%2)*9
+			local sy =  y*4
+			local dx,dy = mx-sx, my-sy
+			dx/=8 dy/=8
+			local aa = atan2(dx, dy)
+			local q = sqrt(dx*dx,dy*dy)
+			
+			sx -= cos(aa)*45
+			sy -= sin(aa)*45
+			pset(sx,sy,12+i)
+		end
+		local aa=x/24-tt/8
+		
+		pset(mx+cos(aa)*rr,my+sin(aa)*rr,8+((x+aa*12)%9))
+	end
+
+	end
+	
+	--print(stat(1),400,2,7)
+	--circ(mx,my,rr/2,7)
+end
+
+:: [eoc]

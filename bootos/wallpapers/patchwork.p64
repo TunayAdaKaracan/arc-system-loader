@@ -1,0 +1,129 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: .info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTA0LTMwIDE5OjA5OjMzIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCIsc3RvcmVkPSIyMDIzLTM0LTA2IDIyOjM0OjUwIix3b3Jrc3BhY2VzPXt7
+bG9jYXRpb249Im1haW4ubHVhIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJnZngvMC5n
+ZngiLHdvcmtzcGFjZV9pbmRleD0yfSx7bG9jYXRpb249Im1hcC8wLm1hcCIsd29ya3NwYWNlX2lu
+ZGV4PTN9LHtsb2NhdGlvbj0ic2Z4LzAuc2Z4Iix3b3Jrc3BhY2VfaW5kZXg9NH19XV1sejQABAAA
+AAMAAAAwbmls
+:: gfx/
+:: gfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEyLTA2IDAxOjEyOjM2Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCIsc3RvcmVkPSIyMDIzLTEyLTA2IDAxOjEyOjM2Il1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: gfx/0.gfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTE2LTA2IDAxOjE2OjIwIixtb2RpZmllZD0iMjAyMy0z
+NC0wNiAyMjozNDo1MCIscmV2aXNpb249MTgxXV1sejQAcQAAAAUzAADzFHtbMF09e2JtcD1weHUA
+QyAQEATw8CxmbGFncz0wLHBhbl94CADveT0wLHNjYWxlPTEyfSwzAP----------------------
+--------------------------------------------51A9MTJ9fQ==
+:: map/
+:: map/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEyLTA2IDAxOjEyOjM2Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCIsc3RvcmVkPSIyMDIzLTEyLTA2IDAxOjEyOjM2Il1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: map/0.map
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTE2LTA2IDAxOjE2OjIwIixtb2RpZmllZD0iMjAyMy0z
+NC0wNiAyMjozNDo1MCIscmV2aXNpb249MTgxXV1sejQAXQAAAFgEAADwE3tsYXllcj17WzBdPXti
+bXA9dXNlcmRhdGEoImkxNiIsMTYDAC8iMAEA----76EiKSxwYW5feD0wCADyBnk9MCxzY2FsZT0x
+LHRpbGVfaD0xNgoAcHc9MTZ9fX0=
+:: sfx/
+:: sfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEyLTA2IDAxOjEyOjM2Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCIsc3RvcmVkPSIyMDIzLTEyLTA2IDAxOjEyOjM2Il1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: sfx/0.sfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTE2LTA2IDAxOjE2OjIwIixtb2RpZmllZD0iMjAyMy0z
+NC0wNiAyMjozNDo0OSIscmV2aXNpb249MTczXV1sejQAbwAAAO0GAADfcHh1AAMoAAADAATw-wEA
+7P8n8QEQBg8gEAEgASAB8AACEAIOEAEgDyEgATAPQPDDDygP--DGD-gKD-8PgA-3Dw0B8AkBEAYO
+MAD-OR--AQDcz-gPQAAPEED--7DwcAsA--_jH-8BAJdQ-----x8=
+:: main.lua
+--[[pod_format="raw",created="2023-16-06 01:16:20",modified="2023-34-06 22:34:50",revision=235]]
+
+p = {
+23130,20767,32125,-18403,-1633,20927,-19009,-20193,-24352,
+25793,1,-20033,2561,-20129,6943,-2625,31455,3855,21845
+}
+
+function draw_back()
+	back = userdata("u8", 480, 270)
+	set_draw_target(back)
+	cls(theme"desktop0")
+	for i=0, 12 do
+		local x = -240 + i * 80 + rnd(50)
+		local dx = 1+rnd(1.5)
+		
+		color(theme"desktop0" + theme"desktop1"*256)
+		
+		fillp(rnd(p))
+		for y=0,269 do
+			line(x,y,480,y)
+			x += dx
+		end
+		
+		local x = -240 + i * 80 + rnd(50)
+		local dx = 1+rnd(1.5)
+		
+		fillp(rnd(p))
+		for y=269,0,-1 do
+			line(x,y,480,y)
+			x += dx
+		end
+		
+	end
+	
+end
+function _init()
+	draw_back()
+
+end
+
+function _draw()
+
+	hash_pod = pod{
+		theme"desktop0",
+		theme"desktop1",
+		theme"desktop_pattern",		
+		theme"desktop_pattern_spacing"
+	}
+	
+	-- regenerate when settings change
+	if (hash_pod ~= last_hash_pod) then
+		draw_back()
+	end
+	
+	last_hash_pod = hash_pod
+	
+
+	blit(back)
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:: [eoc]

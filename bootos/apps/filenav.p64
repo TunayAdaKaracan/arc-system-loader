@@ -1,0 +1,2393 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: .info.pod
+b64$LS1bW3BvZCxhdXRob3I9InplcCIsY3JlYXRlZD0iMjAyMy0xMS0xNSAwNzoxMTozMCIsaWNv
+bj11c2VyZGF0YSgidTgiLDE2LDE2LCIwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAx
+MGQwZDA3MDcwNzA3MDcwNzA3MDcwNzA3MGQwZDAxMDEwZDBkMDcwMTA3MDcwNzA3MDcwNzAxMDcw
+ZDBkMDEwMTBkMGQwNzAxMDcwNzA3MDcwNzA3MDEwNzBkMGQwMTAxMGQwZDA3MDcwNzA3MDcwNzA3
+MDcwNzA3MGQwZDAxMDEwZDBkMDcwNzBkMDcwNzA3MDcwZDA3MDcwZDBkMDEwMTBkMGQwNzA3MDcw
+ZDBkMGQwZDA3MDcwNzBkMGQwMTAxMGQwZDA3MDcwNzA3MDcwNzA3MDcwNzA3MGQwZDAxMDEwZDBk
+MGQwZDBkMGQwZDBkMGQwZDBkMGQwZDBkMDEwMTBkMGQwZDBkMGQwZDBkMGQwZDBkMGQwZDBkMGQw
+MTAxMGQwZDBkMGQwZDBkMGQwZDBkMGQwZDBkMGQwZDAxMDEwZDBkMDEwMTAxMDEwMTAxMDEwMTAx
+MDEwZDBkMDEwMTBkMGQwMTAxMDEwMTA3MDcwNzA3MDcwMTBkMGQwMTAxMGQwZDAxMDEwMTAxMDcw
+NzA3MDcwNzAxMGQwZDAxMDEwZDBkMDEwMTAxMDEwNzA3MDcwNzA3MDEwZDAxMDAwMTAxMDEwMTAx
+MDEwMTAxMDEwMTAxMDEwMTAxMDAwMCIpLG1vZGlmaWVkPSIyMDI0LTA3LTEyIDE5OjQzOjQzIixu
+b3Rlcz0iKGMpIExleGFsb2ZmbGUgR2FtZXMgTExQIixydW50aW1lPTUsc3RvcmVkPSIyMDI0LTAz
+LTI0IDE1OjM1OjU2Iix0aXRsZT0iUGljb3Ryb24gRmlsZSBOYXZpZ2F0b3IiLHZlcnNpb249IjAu
+MWYiLHdvcmtzcGFjZXM9e3tsb2NhdGlvbj0ibWFpbi5sdWEjMSIsd29ya3NwYWNlX2luZGV4PTF9
+LHtsb2NhdGlvbj0ib3Blbi5sdWEjOCIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iaW50
+ZXJmLmx1YSMxIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJpbnRlbnRpb24ubHVhIzEi
+LHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImRlc2t0b3AubHVhIzIzOCIsd29ya3NwYWNl
+X2luZGV4PTF9LHtsb2NhdGlvbj0iZmluZm8ubHVhIzEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9j
+YXRpb249ImdyaWQubHVhIzEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249Imxpc3QubHVh
+IzEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImdmeC8wLmdmeCIsd29ya3NwYWNlX2lu
+ZGV4PTJ9LHtsb2NhdGlvbj0iZ2Z4LzEuZ2Z4Iix3b3Jrc3BhY2VfaW5kZXg9Mn19XV1sejQABAAA
+AAMAAAAwbmls
+:: gfx/
+:: gfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTExLTE1IDA3OjExOjMwIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTExLTE1IDA3OjExOjMwIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: gfx/delme/
+:: gfx/delme/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEwLTExIDA3OjU0OjA2Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTU0LTExIDA3OjU0OjA2Il1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: gfx/delme2/
+:: gfx/delme2/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTAyLTExIDA4OjAyOjIwIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTAyLTExIDA4OjAyOjIwIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: gfx/ha/
+:: gfx/ha/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTA5LTExIDA4OjA5OjQ0Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTA5LTExIDA4OjA5OjQ0Il1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: gfx/zxc/
+:: gfx/zxc/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEwLTExIDA3OjQxOjQxIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTQxLTExIDA3OjQxOjQxIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: gfx/0.gfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEwLTIwIDA2OjM4OjU2Iixtb2RpZmllZD0iMjAyNC0w
+NC0xMSAyMjoyNjoxMyIscmV2aXNpb249MjI4MyxzdG9yZWQ9IjIwMjMtMzQtMDkgMTk6MzQ6NTMi
+XV1sejQAdwQAAI06AADzFHtbMF09e2JtcD1weHUAQyAQEATw8CxmbGFncz0wLHBhbl94CADKeT0w
+LHpvb209OH0sMQDzCgCRUAF3BgFAAXcWATABdyYBIAF3NgEQAbcEADQXJmcKAC1GRwoAAwQAL9EA
+dgAc7-AJUYABLSYBAGEtNhHWAgABTwEA0QDLADggJz2zADU3LUcMAEEXLQcNCAAgHXcGACBdNxoA
+I003MAAP1QAhb-EBFpcWEQQABQLYAIMmgRYRJgE3MQYAQQEAARYIAC8Q0W0AHJAQoTABrQEQAQcG
+ABARCgCfvQEAAQcBHVEtEAAK-wOdERCxBwEQEZcNASABnQFAkSB5ABzyBfAKQZAxHQEAoS0R3REt
+dy0RHZcdBABXFx0nHQcIACGXHSAA-wBNRz0RTQcNBw0HPRHdAQAsAiKAMS0BAJE9Ed1zAIFXTREt
+Zz0RbVEAsS0nDSc9ES0HDQd9FgAhPVcmAA8_AiH6AqFAAXcGETABdxYRIAF3JhEQCQMA1AARNzAC
+PycdJwgACAQoAA5GAg_IADNfFx0XHTcIAAEBwgJmFw0HHQcNEAAOhgAPFwQ0Ey0OAQUIAAAnBCFH
+LQwAKR0HCAAPhABBIDdNbAFPNw0nDQgAAzIHLSeeACUtJ54AD4gAQRJn-AEabQoCSQcNBx0SACVt
+J2oED4YAQRG3XgA0Bx1HDAADlgEet4YBD3wAFA9WBixgEIFQAXcNrQAQHa0AEC2tABY9gQBFAVcW
+NwYAAmIGWAcWFwZXCAAnRld_Bj8gsRCzAB2fAdEAAdcRB70HBAAC-wfXEReGJxEXhhcGEbcGAQAB
+tgEgsfADZAAdjwDxAdYRBr0GBAAC-wXWERaHJhEWhxYNEbYNAQABvQEQwWMAH38IcWARLSaBJwcF
+L-EBGAEgWBG3IdcRAgAhBrevAJ8dliG2EQDR8AH5BidTBw1XDQcMADMXXRcKAA--Bj8v8PAxAH8P
+DgIMEtYMASGHFm8CDgwCD5IAQBEHPQKcEQBRLUYhxhHWAgAB7gEfAIYATg8xAB1iELEgEZcRKQQE
+BAAP3gQVUAaXBgEQXwE_EZYRNQQPegAdMycdF8gFPzcdFwgACAQoAA_GAAQPegJUL7EGBAACldYR
+BhcGXQYXBggAPzZdJoQCJw8xAK8vAJGdBgsABABFFxYHFnACRiYHFjcYAC4mN8YHD3wAQl8HFicW
+NwgACAekAA-SB08AZAJf3RENsQ0EAAYAnQtzDacdEQ2XHe4GHyAdAaYPMQD-Eg_uAXUPiAARXwcW
+FxZHCAABEVYGAFYGBxYHBhAAD4YARhMmDgEFCAAAEQwhNyYMACkWBwgAD4QAQSAnRmwBTycGJwYI
+AAMC2wQkByYIAB93iABEAvgLKgdmCgIAhgEJEgADIAAfh4YARBq3eAIP5wULD34DfgCQBQ-fDBQC
+1QsfAsMAf2ACsSABtwGnDQ_NDAIElw0PugAfDzEA------------------------------------
+-------------4FQbT04fX0=
+:: gfx/1.gfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEwLTExIDAzOjEzOjAxIixtb2RpZmllZD0iMjAyNC0w
+NC0xMSAyMjoyNjoxMyIscmV2aXNpb249NDU2XV1sejQAmgAAADMxAADzFHtbMF09e2JtcD1weHUA
+QyAQEATw8CxmbGFncz0wLHBhbl94CADPeT0wLHpvb209OH0sMQAp9QEICAQ3MAcQFyAHECcQBzAH
+BAAvV5BHAC6PV5AHAAcAByBJAA4O8gAPMQD-----------------------------------------
+----------------------9CUG09OH19
+:: map/
+:: map/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTAzLTA3IDEwOjExOjU2Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDI0LTAzLTA3IDEwOjExOjU2Il1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: map/map0.map
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTAzLTA3IDEwOjExOjU2Iixtb2RpZmllZD0iMjAyNC0w
+My0wNyAxMDoxMjowMSIscmV2aXNpb249MV1dbHo0AGkAAACjCAAA8BN7bGF5ZXI9e1swXT17Ym1w
+PXVzZXJkYXRhKCJpMTYiLDE2AwAvIjABAP---__hIikscGFuX3g9MAgA8gZ5PTAsc2NhbGU9MSx0
+aWxlX2g9MTYKAG93PTE2fSxLBP----84UDE2fX19
+:: sfx/
+:: sfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTAzLTA3IDEwOjExOjU2Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDI0LTAzLTA3IDEwOjExOjU2Il1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: sfx/sfx0.sfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTAzLTA3IDEwOjExOjU2Iixtb2RpZmllZD0iMjAyNC0w
+My0wNyAxMDoxMjowMSIscmV2aXNpb249MV1dbHo0ABABAABRBwAA8CdweHUAAygAAAMABA9AEAIO
+AAGgASACoA4ADxAADfDKAQIDBAUGBwEP-5AICQoLDwwPDQ8ODw8QAPAADQ8RDxIPEw8UDxUPFg8X
+EwDxAQ8YDxkPGg8bDxwPHQ8eDx8UAPEAIA8hDyIPIw8kDyUPJg8nFADxACgPKQ8qDysPLA8tDy4P
+LxQA8QAwDzEPMg8zDzQPNQ82DzcUAP8FOA85DzoPOw88Dz0PPg8-AQ--8P8BAOv-J1oBEAYPIBAB
+IAEgAfAAAhACDBABIA8hIAEwD0Dwww8oD--wxg-4Cg--D4AP9w8NAfAJARAGDDAA-zkf-wEA3L-4
+D0AADUD--7DwcAoA--9kH-8BAJdQ-----x8=
+:: desktop.lua
+--[[pod_format="raw",created="2023-10-04 15:13:41",modified="2024-04-11 22:26:13",revision=2093,stored="2023-21-29 09:21:19"]]
+-- mode: desktop
+local desktop_items = nil
+local desktop_content = nil
+local sel
+function set_desktop_item_position(filename, x, y)
+	if (not desktop_items[filename]) desktop_items[filename] = {}
+
+	if (not x or not y) then
+
+		-- find an unused spot
+
+		local used = userdata("u8",48,27)
+		
+		for k,item in pairs(desktop_items) do
+			if (item.x and item.y) then
+				local xx = item.x \ 10
+				local yy = item.y \ 10
+				used:set(xx,yy,1)
+			end
+		end
+		
+		for xx = 5, 47 do
+				for yy = 2, 22 do			
+				if used:get(xx,yy) == 0 then
+
+					local empty = true
+					for dx=-3,3 do
+						for dy=-3,3 do
+							if (used:get(xx+dx,yy+dy) > 0) empty = false
+						end
+					end
+
+					if empty then
+						x = xx*10 y =yy*10
+						goto found_slot
+					end
+				end
+			end
+		end
+
+		x = 40 + rnd(200)
+		if (not y) y = 40 + rnd(200)
+
+	end
+
+	::found_slot::
+
+	desktop_items[filename].x = x
+	desktop_items[filename].y = y
+end
+function fetch_desktop_items()
+	local meta = fetch_metadata(desktop_path)
+	desktop_items = meta and meta.file_item or {}
+	--printh("fetched desktop items: "..pod(desktop_items))
+end
+function store_desktop_items()
+	--printh("@@ store_desktop_items: "..pwd())
+	
+	-- security: only store items that have a matching file.
+	-- (when delete a file, don't expect the filename to be kicking around here)
+	for k,v in pairs(desktop_items) do
+		if (not fstat(k)) desktop_items[k] = nil
+		
+		-- also: store as ints
+		v.x \= 1  v.y \= 1
+		
+	end
+	
+	store_metadata(desktop_path, {file_item = desktop_items})
+	
+end
+function shift_selected_desktop_items(dx, dy)
+
+	for i=1,#fi do
+		local el2 = fi[i]
+		if (el2.finfo.selected) then
+			local w2 = el2.width/2
+			local h2 = el2.height/2
+			el2.x = mid(-w2, el2.x + dx, w2 + 480 - el2.width)
+			el2.y = mid(-h2, el2.y + dy, h2 + 270 - el2.height)
+
+			-- create / update desktop item too
+
+			desktop_items[el2.filename] = desktop_items[el2.filename] or {} -- create new
+			local di = desktop_items[el2.filename]	
+			di.x = el2.x
+			di.y = el2.y
+		
+		end
+	end
+	
+	store_desktop_items()
+end
+
+local function create_file_item(parent, ff, x, y)
+	if (not ff or not ff.filename) return
+	local filename = ff.filename
+	
+	desktop_items[filename] = desktop_items[filename] or {}
+	
+	local el = {
+		x=x,y=y,
+		width=128, height=42, -- desktop items can be quite wide
+		finfo    = ff,
+		filename = ff.filename,
+		-- cursor = 5 -- needs to be consistent with grid view
+	}
+	
+	function el:update(msg)
+		
+		local mx,my = mouse()
+		
+		local dx,dy = mx - (self.sx+self.width/2), my - (self.sy+self.height/2)
+
+		-- reset auto-open mechanism
+		if (not dragging_files) then
+			self.opened_while_dragging_files = false
+			self.hover_counter = 0
+			return
+		end
+		
+		-- auto-open when not selected and dragging files overhead
+		if not self.finfo.selected and 
+			dx*dx+dy*dy<256 and 
+			not self.opened_while_dragging_files
+		then
+			self.hover_counter += 1
+			if self.finfo.attrib == "folder" and self.hover_counter > 30
+			then
+				self.opened_while_dragging_files = true
+				create_process("/system/apps/filenav.p64",
+				{
+					argv = {el.finfo.fullpath}, 
+					window_attribs={
+						give_focus = true,
+						x = max(-2, mx - 80), -- position window under cursor
+						y = max(-2, my - 40)  -- ready to catch file
+					}
+				})
+			end
+		else
+			self.hover_counter = 0
+		end
+	end
+	
+	function el:drag(msg)
+		drag_selected_files(msg)
+	end
+	
+	function el:release(msg)
+		dragging_files = nil
+	end
+	
+	function el:test_point(x, y)
+		
+		local ll = el.last_label_area
+		if (not ll) return true
+		
+		-- sprite pixel is set, or inside filename label
+		return get(self.finfo.icon, x - ll[5], y - ll[6]) > 0
+			or (x >= ll[1] and y >= ll[2] and x <= ll[3] and y <= ll[4])
+	end
+	
+	
+	function el:draw(msg)
+		clip() -- allow desktop items to be drawn any size (e.g. super long filenames)
+
+		--rect(0,0,self.width-1,self.height-1,2) -- debug: show width
+		pal()
+		local sprx, spry = self.width/2 - 8, 6
+		local sprx0, spry0 = sprx, spry
+		
+		--local dx,dy = msg.mx - (self.sx+self.width/2), msg.my - (self.sy+self.height/2)
+		--if (dx*dx+dy*dy<256) circfill(self.width/2,self.height/2,16,13)
+	
+		if (self.finfo.selected) then
+		
+			-- shadow colour
+			local shadow_col = theme"desktop_shadow"
+			pal(7,shadow_col) pal(6,shadow_col) pal(13,shadow_col) pal(1,shadow_col) 
+			--fillp(0xf0f0)
+			spr(self.finfo.icon,sprx,spry)
+			pal()fillp()
+			sprx += 2
+			spry -= 2
+			
+			-- invert
+			-- pal(7,1) pal(1,7)
+			--rectfill(0,0,self.width-1,self.height-1,10)
+		end
+		
+		if (not dragging_files or not self.finfo.selected) then
+			pal(7, theme"icon0")
+			pal(6,theme"icon1")
+			pal(13, theme"icon2")
+			pal(1, theme"icon3")
+			spr(self.finfo.icon,sprx,spry)
+		end
+		
+		pal()
+		
+		--local str = "\014"..self.filename
+		poke(0x5f36, 0x80) -- turn on wrap to clip_right
+		
+		local str = self.filename
+		
+		local ww,hh = print(str, 0, -1000000)
+		hh += 1000000
+
+--		ww = min(ww, self.width-8) -- don't clip left text, only right
+		
+		local w2 = self.width / 2
+		local yy = 30
+		
+		color(self.finfo.selected and 1 or 7)
+		rectfill(w2-ww/2-5,yy-4,w2+ww/2+3,yy+hh-1) 
+		rectfill(w2-ww/2-6,yy-3,w2+ww/2+4,yy+hh-2)
+		
+		
+		print(str, w2 - ww / 2, yy, self.finfo.selected and 7 or 13)
+		
+		-- for test_point
+		el.last_label_area = {w2-ww/2-5,yy-4,w2+ww/2+3,yy+hh-1,sprx0,spry0}
+		
+		-- for dragging file icons
+		self.finfo.x = sprx + self.sx
+		self.finfo.y = spry + self.sy 
+		
+	end
+	
+	function el:click()
+		
+		el:bring_to_front()
+		
+		if (key("ctrl")) then
+			self.finfo.selected = not self.finfo.selected
+		else
+			-- if wasn't already selected, deselect everything else
+			if (not self.finfo.selected) deselect_all()  sel = nil
+			-- .. but either way, this one is going to be selected
+			self.finfo.selected = true
+		end	
+		return true
+	end
+	
+	function el:doubleclick()
+		click_on_file(self.filename)
+	end
+	
+	return el
+end
+
+
+function generate_fels_desktop()
+	fi = {}
+	
+	-- load item info on first generate
+	if (not desktop_items) then
+		fetch_desktop_items()
+	end
+	-- attach to content incase want to have scrollable desktop files later (?)
+	-- start at 12 to make space for titlebar
+
+	local put_x = -20
+	local put_y = 20
+
+	for i=1,#filenames do
+	
+		-- start at random position
+		if (desktop_items[filenames[i]] == nil) then
+
+			set_desktop_item_position(filenames[i], nil, nil)
+			
+			-- temporary hack for default desktop items
+			local fn = filenames[i]
+			if (fn:basename() == "drive.loc" or fn:basename() == "readme.txt") 
+			then
+				desktop_items[filenames[i]].x = put_x
+				desktop_items[filenames[i]].y = put_y		
+				put_y += 50
+				if (put_y > 230) put_y = 20 put_x += 64
+			end
+		end
+		
+		local desktop_item = desktop_items[filenames[i]]
+		fi[i] = create_file_item(gui, finfo[filenames[i]], 
+			desktop_item.x,
+			desktop_item.y)
+	end
+	
+	desktop_content.child = {}
+	for i=1,#fi do
+		fi[i].cursor = "pointer"
+		desktop_content:attach(fi[i])
+	end
+	
+end
+-- only called once on startup -- don't need to be adaptive
+function generate_interface_desktop(y0, add_height)
+	
+	local item_w = 68
+	local item_h = 42
+	local items_x = get_display():width() \ item_w
+		
+	local container = gui:attach{
+		x=0, y=y0,
+		width_rel  = 1.0,
+		height_rel = 1.0,
+		height_add = -y0 + add_height
+	}
+	-- add to gui; use regular unoptimised gui scheme
+	-- (could add buckets later or backpage caching, but probably unnecessary)
+	local content = container:attach{
+		x=0,y=0,width_rel=1.0,height_rel=1.0,
+		clip_to_parent = true
+	}
+	
+	desktop_content = content
+	
+	local function fi_for_xy(x, y)
+		-- early reject by reading drawn state
+		if (pget(x,y) == 0) return
+		local el = gui:el_at_xy(x,y)
+		if (el and el.test_point) return el -- .test_point means is a file el
+	end
+	
+	function content:click(msg)
+		if (not key"ctrl") deselect_all()
+		sel = {msg.mx, msg.my}
+	end
+	
+	-- copy pasted from grid.lua
+	-- fudged step size because test_point is slow (via gui:el_at_xy)
+	-- to do: more sensible collision calculation
+	function content:drag(msg)
+		if (sel) then
+			if (abs(msg.mx-sel[1]) > 4 or abs(msg.my-sel[2]) > 4) then
+				sel[3],sel[4] = msg.mx, msg.my -- relative to gui element
+				-- update selection
+				if (not key"ctrl") deselect_all()
+				local xx0 = min(sel[1],sel[3])
+				local xx1 = max(sel[1],sel[3])
+				local yy0 = min(sel[2],sel[4])
+				local yy1 = max(sel[2],sel[4])
+
+				for i=1, #fi do
+					local item = fi[i]
+
+					local uu0 = mid(xx0, item.x, xx1)
+					local vv0 = mid(yy0, item.y, yy1)
+					local uu1 = mid(xx0, uu0 + item.width, xx1)
+					local vv1 = mid(yy0, vv0 + item.height, yy1)
+					
+					for y = vv0, vv1, 4 do
+						for x = uu0, uu1, 4 do
+							if (item:test_point(x - item.x, y - item.y)) item.finfo.selected = true
+						end
+					end
+
+				end
+
+			else
+				sel[3],sel[4] = nil,nil
+			end
+			
+		end
+	end
+	
+	function content:release()
+		sel = nil
+	end
+	
+	-- drawn first -- maybe need separate layer in container
+	-- to draw selection
+	
+	function content:draw()
+		cls() 
+		poke(0x547d,0xff) -- wm draw mask; interact mask is still 0
+	end
+	
+--[[
+	function content:draw2()
+		if (sel and #sel == 4) then
+				rect(sel[1],sel[2],sel[3],sel[4], 7)
+				rect(sel[1]+1,sel[2]+1,sel[3]-1,sel[4]-1, 1)
+			end
+	end
+]]
+	-- draw selection on top
+	container:attach{
+		x=0,y=0,width_rel=1.0,height_rel=1.0,
+		ghost = true,
+		draw = function()
+			--clip()
+			if (sel and #sel == 4) then
+				rect(sel[1],sel[2],sel[3],sel[4], 7)
+				rect(sel[1]+1,sel[2]+1,sel[3]-1,sel[4]-1, 1)
+			end
+		end
+	}
+	update_file_info(true)
+end
+
+
+:: drop.lua
+--[[pod_format="raw",created="2023-19-11 09:19:20",revision=107,stored="2023-21-29 09:21:19"]]
+
+
+on_event("drop_items",function(msg)
+
+	--printh("@@ dropped items from proc_id:"..msg.from_proc_id.." // mode:"..mode)
+	
+	-- drop into self
+	if (msg.from_proc_id == pid()) then
+		if (mode == "desktop") then
+			shift_selected_desktop_items(msg.dx, msg.dy)
+		end
+		return
+	end
+	
+	-- drop from somewhere else
+	
+	--printh("@@ drop from a different process:"..pod(msg))
+	
+	for i=1,#msg.items do
+		local item = msg.items[i]
+		if (item.pod_type == "file_reference") then
+
+			-- MOVE
+			--printh(pod(item))
+			-- printh("@@ moving "..tostring(item.fullpath).." to "..pwd())
+			
+			-- to do: define which attributes are requied for a well formed file_reference item
+			-- shouldn't ever need .filename
+			-- avoid introducing optional attributes / hints -- easy for another author to expect to exist on receiving end
+
+			-- allowed to overwrite existing files in this case
+			local res = mv(item.fullpath, pwd().."/"..item.fullpath:basename())
+			
+			if res then
+				notify("error: "..tostring(res))
+			elseif (mode == "desktop") then	
+				set_desktop_item_position(item.fullpath:basename(), msg.mx, msg.my)
+			end
+
+		end
+	end
+	
+end)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:: finfo.lua
+--[[pod_format="raw",created="2023-10-08 09:24:50",modified="2024-04-11 22:26:13",revision=2105,stored="2023-21-29 09:21:19"]]
+--[[
+	finfo.lua
+	
+	collection of file info tables, independent of gui
+	indexed by filename; fel (file gui elements) can point at this
+]]
+-- global
+finfo = {}
+function deselect_all()
+	for k,v in pairs(finfo) do
+		v.selected = false
+	end
+	update_file_info_menu_item()
+end
+
+-- means "start dragging"
+function drag_selected_files(msg)
+	
+	update_file_info_menu_item()
+	
+	-- skip if already dragging files or haven't moved far
+	-- enough from initial point
+	if (dragging_files) return
+	if (abs(msg.mx - msg.mx0) < 3 and abs(msg.my - msg.my0) < 3) return
+		
+	
+	dragging_files = {}
+--	printh("dragging selected files")
+
+	for k,v in pairs(finfo) do
+		if (v.selected) then
+			v.fullpath = fullpath(v.filename)
+			local mx,my = mouse()
+			-- 0.1.0c: set offsets here (wm handles this, but mouse moved by the time message arrives)
+			v.xo = v.x - mx
+			v.yo = v.y - my
+			add(dragging_files, v)
+			--printh("added "..v.fullpath..string.format(" %d %d",v.x,v.y))
+		end
+	end
+	
+	-- sort by distance to mouse cursor
+	local mx, my = mouse()
+	--local v = dragging_files[1]
+	--printh("mx, my: "..mx.." "..my)
+	--printh("fx, fy: "..v.x.." "..v.y)
+	
+	for i=1,#dragging_files do
+		local v = dragging_files[i]
+		v.dist = (v.x - mx)^2 + (v.y - my)^2
+	end
+
+--[[
+	-- maybe can't support sort with current cpu model (crosses c boundary)
+	table.sort(dragging_files, function(m0, m1)
+		if (m0.dist == m1.dist) return m0.filename < m1.filename
+		return m0.dist < m1.dist
+	end)
+]]
+
+	local tbl = dragging_files
+	for pass=1,#tbl do
+		for i=1,#tbl-1 do
+			if (tbl[i].dist == tbl[i+1].dist and tbl[i].filename > tbl[i+1].filename) or
+				tbl[i].dist > tbl[i+1].dist
+			then
+				tbl[i],tbl[i+1] = tbl[i+1],tbl[i]
+			end
+		end
+	end
+	
+	if (#dragging_files > 0) then
+		-- send a message to window manager
+		send_message(3,{
+			event = "drag_items",
+			items	 = dragging_files
+		})
+	else
+		dragging_files = nil -- cancel; nothing to drag
+	end
+		
+end
+
+
+
+function update_file_info(clear)
+
+--	printh("update_file_info..")
+
+	-- for debugging; clear when interface is regenerated
+	-- update: used to update icons via filenav_refresh broadcasted message
+	if (clear) then
+		finfo = {}
+		last_files_pod = nil
+	end
+	
+	update_file_info_menu_item()
+	
+	-- fetch current list
+	local files = ls(pwd())
+	
+	-- no change; no need to update
+	if (pod{mode,pwd(),files} == last_files_pod) then
+		return
+	end
+	
+	last_files_pod = pod{mode,pwd(),files}
+	
+	filenames = {}
+
+	-- search for added /changed files
+	local found = {}
+	for i=1,#files do
+	
+		local filename = files[i]
+		found[filename] = true
+		if (not finfo[filename]) finfo[filename] = {}
+		local f = finfo[filename]
+		
+		local attrib, size, mount_desc = fstat(filename)
+		
+		-- update / create info
+		f.pod_type = "file_reference" -- used by dragging_items
+		f.filename = filename
+		f.fullpath = fullpath(filename)
+		f.selected = f.selected or false
+		f.attrib   = f.attrib or attrib
+		f.size     = f.size or size
+		f.icon     = get_file_icon(filename)
+
+		add(filenames, f.filename)
+	end
+	
+--[[
+	-- clear out missing items
+	for k,v in pairs(finfo) do
+		if (not found[k]) finfo[k] = nil
+	end
+]]
+
+--[[
+	-- store as sorted list (files)
+	filenames = {}
+	for k,v in pairs(finfo) do
+		add(filenames, k)
+	end
+]]
+
+	--table.sort(filenames) -- commented; maybe can't support table.sort with current cpu model (crosses c boundary)
+
+	-- update: sort by list order
+--[[
+	local tbl = filenames
+	for pass=1,#tbl do
+		for i=1,#tbl-1 do
+			if tbl[i] > tbl[i+1] then
+				tbl[i],tbl[i+1] = tbl[i+1],tbl[i]
+			end
+		end
+	end
+]]
+
+	-- update gui elements
+	if (mode == "grid") generate_fels_grid()
+	if (mode == "list") generate_fels_list()
+	if (mode == "desktop") generate_fels_desktop()
+	
+	--printh("========= updated_file_info =========")
+	--printh(pod(finfo))
+
+end
+
+function open_selected_file_info()
+	for k,v in pairs(finfo) do
+		if (v.selected) then
+			create_process("/system/apps/about.p64", 
+			{
+				argv={v.fullpath},
+				window_attribs = {workspace = "current", autoclose=true}
+			})
+		end
+	end
+end
+
+function update_file_info_menu_item()
+	-- update menu item
+	local which = nil
+	for k,v in pairs(finfo) do
+		if (v.selected) which = v.fullpath
+	end
+	
+	if (which) then
+		
+		menuitem{
+			id="file_info",	
+			label = "\^:1c367f7777361c00 File Info",
+			shortcut = "Ctrl-I",
+			action = function()
+				create_process("/system/apps/about.p64", 
+					{argv={which}, window_attribs={workspace = "current", show_in_workspace=true, autoclose=true}})				
+			end
+		}
+
+		menuitem{
+			id="delete_file",	
+			label = "\^:3e7f5d5d773e2a00 Delete File",
+			action = function()
+				mkdir("/ram/compost")
+				local res = mv(which, "/ram/compost/"..which:basename())
+				if (res) then
+					notify("error: "..tostring(res))
+				else
+					notify("moved to ".."/ram/compost/"..which:basename())
+				end
+			end
+		}
+		
+		-- rename 
+		if (mode ~= "desktop") then
+			menuitem{
+				id="rename",
+				label = "\^:0f193921213f0015 Rename "..(fstat(which) == "folder" and "Folder" or "File"),
+				action = function()
+					intention_filename = which -- the filename that caused menu item to be added
+					push_intention("rename")
+				end
+			}
+		end
+
+		-- open in host
+		local kind, size, origin = fstat(which)
+
+		if (not origin or origin:sub(1,5) == "host:") then
+			menuitem{
+				id="open_host_path",	
+--				label = "\^:00304f4141417f00 View in Host OS",
+				label = "\^:0b1b3b033f3f3f00 View in Host OS",
+
+				action = function()
+					send_message(2, {event="open_host_path", path = which, _delay = 0.25}) -- delay so that mouse isn't held while new window is opening
+				end
+			}
+		else
+			-- remove
+			menuitem{id="open_host_path"}
+		end
+
+	else
+		-- no item selected
+
+		-- clear entries
+		menuitem{id="file_info"}
+		menuitem{id="delete_file"}
+		menuitem{id="rename"}
+
+		-- open host folder
+
+		local kind, size, origin = fstat(pwd())
+
+		if (not origin) then -- or origin:sub(1,5) ~= "/ram/") then
+			menuitem{
+				id="open_host_path",	
+				label = "\^:00304f4141417f00 Open Host OS Folder",
+				action = function()
+					send_message(2, {event="open_host_path", path = pwd(), _delay = 0.25})
+				end
+			}
+		else
+			-- remove
+			menuitem{id="open_host_path"}
+		end
+
+	end
+
+
+	
+
+
+	
+end
+
+
+
+
+
+
+:: grid.lua
+--[[pod_format="raw",created="2023-10-20 06:27:59",modified="2024-04-11 22:26:13",revision=2240,stored="2023-21-29 09:21:19"]]
+-- mode: icons on a grid (default folder view; is cutest for < ~100 files)
+local sel = nil
+local function create_file_item(parent, ff, x, y)
+	if (not ff or not ff.filename) return
+	local el = {
+		x = x, y = y,
+		width=64, height=46,
+		finfo    =  ff,
+		filename = ff.filename,
+		parent = parent,
+	}
+	function el:drag(msg)
+		drag_selected_files(msg)
+	end
+	function el:release(msg)
+		dragging_files = nil
+	end
+	
+	
+	-- need to test in custom click event below
+	function el:test_point(x, y)
+		
+		local ll = el.last_label_area
+		if (not ll) return true
+		
+		-- sprite pixel is set, or inside filename label
+		return get(self.finfo.icon, x - ll[5], y - ll[6]) > 0
+			or ll and x >= ll[1] and y >= ll[2] and x <= ll[3] and y <= ll[4]	
+	end
+	
+	-- draw icon on grid
+	function el:draw()
+
+		clip()
+		
+		local sprx, spry = self.width/2 - 8, 6
+		local sprx0, spry0 = sprx, spry
+		
+		-- shadow; helps with white outline on white (when inverted)
+		pal(1,6) pal(13,6) pal(7,6)
+		if (self.finfo.selected) then
+			 -- pop up and show shadow. that works!
+			 spr(self.finfo.icon,sprx,spry)
+			 sprx += 2
+			 spry -= 1
+		end
+		pal()
+		
+		-- none of these solve the white-on-white problem well;
+		-- use pop-up for now. kinda cute and suggests mobility
+		--[[
+		if (self.finfo.selected) then
+			-- invert only col0, col2. needs shadows when on white (folder)
+			--pal(7,1) pal(1,7)
+			
+			-- rotate? nah
+			--pal(1,13) pal(13,7) pal(7,1)
+			
+			-- rectangle: too much, but kinda interesting
+			--rectfill(0,2,self.width-1,self.height-3,6)
+		end
+		]]
+		
+		if (not dragging_files or not self.finfo.selected) then
+			pal(7, theme"icon0")
+			pal(6,theme"icon1")
+			pal(13, theme"icon2")
+			pal(1, theme"icon3")
+			
+			spr(self.finfo.icon,sprx,spry)
+		end
+		
+		pal()
+		
+		--local str = "\014"..self.filename
+		poke(0x5f36, 0x80) -- turn on wrap to clip_right
+		
+		local str = self.filename
+		
+		local ww,hh = print(str, 0, -1000000)
+		hh += 1000000
+		
+		--ww = min(ww, self.width) -- don't clip left text, only right
+
+		local dx = min(ww, self.width) / 2
+
+
+		local w2 = self.width/2
+		local yy = 28
+		
+		color(self.finfo.selected and 1 or 7)
+		rectfill(w2-dx-5,yy-4,w2-dx+ww+3,yy+hh-1) 
+		rectfill(w2-dx-6,yy-3,w2-dx+ww+4,yy+hh-2)
+		
+		print(str, w2 - dx, yy, self.finfo.selected and 7 or 13)
+		
+		-- for test_point
+		self.last_label_area = {w2-dx-5,yy-4,w2-dx+ww+3,yy+hh-1,sprx0,spry0}
+		
+		-- for dragging file icons; self.sx,sy isn't set
+		self.finfo.x = sprx + self.x + self.parent.sx
+		self.finfo.y = spry + self.y + self.parent.sy
+			
+		
+	end
+	
+	function el:click()
+		if (key("ctrl")) then
+			self.finfo.selected = not self.finfo.selected
+		else
+			-- if wasn't already selected, deselect everything else
+			if (not self.finfo.selected) then 
+				deselect_all()  sel = nil
+				-- set file navigator text
+				navtext:set_text{fullpath(el.filename)}
+			end
+			-- .. but either way, this one is going to be selected
+			self.finfo.selected = true
+			
+		end	
+		
+		if intention == "save_file_as" then
+			-- set text
+			intention_text:set_text({el.filename})
+			navtext:set_text{""}
+		end
+	end
+	
+	function el:doubleclick()
+		click_on_file(self.filename)
+	end
+	
+	return el
+end
+function generate_fels_grid()
+	-- handle file items layer of gui manually so can optimise
+	-- (e.g. only draw / update visible items)
+		
+	local xx,yy = 0,0
+	local item_w = 68
+	local item_h = 46
+	-- to do: should be parent
+	local items_x = get_display():width() \ item_w
+	
+	fi = {}
+	
+	for i=1,#filenames do
+		-- to do: auto-stagger for long file names? + (xx&1)*16
+		--add(fi, create_file_item(content, finfo[filenames[i]], 2 + xx*item_w, 2 + yy*item_h + (xx&1)*16))
+		add(fi, create_file_item(content, finfo[filenames[i]], 2 + xx*item_w, 2 + yy*item_h))
+		xx+=1
+		if (xx >= items_x) xx=0 yy+=1
+	end
+end
+
+
+function generate_interface_grid(y0, add_height)
+	update_file_info()
+--	printh("@@ generating grid interface")
+	local pointer_el = nil
+	local item_w = 68
+	local item_h = 46
+	local items_x = 3
+	local last_items_x
+	
+	-- attribute headers
+	-- click for sorting by that attribute
+	
+	-- location is in window title!
+	local container = gui:attach{
+		x=0,y=y0,
+		width_rel = 1.0,
+		height_rel = 1.0,
+		height_add = -y0 + add_height,
+		
+		update = function(self)
+			--  re-calculate item positions on change
+			items_x = self.width \ item_w
+			if (items_x ~= last_items_x) then
+				generate_fels_grid(finfo)
+				last_items_x = items_x
+			end
+		end,
+		
+		-- needs to exist for clipping ._.
+		draw = function(self)
+		end
+	}
+	content = container:attach{
+		x=0,y=0,
+		width_rel=1.0,
+		height=((#filenames + items_x - 1) \ items_x) * item_h,
+		clip_to_parent = true
+	}
+	
+	function content:clamp_scrolling()
+		local max_y = max(0, content.height - container.height)
+		content.y = mid(0, content.y, -max_y)
+		content.x = min(0, content.x)
+	end
+	
+	local function fi_for_xy(x, y)
+		local item_x = x \ item_w
+		local item_y = y \ item_h
+		local index = 1 + item_x + item_y * items_x
+		return fi[flr(index)]
+	end
+	function content:update()
+		content:clamp_scrolling()
+		
+		-- update pointer element
+		local mx,my,mb = mouse()
+		
+		if (self.sx) pointer_el = fi_for_xy(mx - self.sx, my - self.sy)
+		
+		-- test point
+		if (pointer_el and pointer_el.parent) then
+		
+			pointer_el.sx = pointer_el.x + pointer_el.parent.sx
+			pointer_el.sy = pointer_el.y + pointer_el.parent.sy
+			
+			
+			pointer_el = pointer_el:test_point(mx - pointer_el.sx, my - pointer_el.sy)
+				and pointer_el or nil
+		end
+
+		-- to do: better way to handle this?
+		if (pointer_el) then
+			window{cursor = "pointer"}
+		else
+			window{cursor = 1}
+		end
+		
+		self.height=((#filenames + items_x - 1) \ items_x) * item_h
+		self.height=max(self.height, self.parent.height) -- allow select from dead space
+	end
+	-- 
+		
+	function content:draw()
+	
+		if (#fi == 0) return
+	
+		--local mini = mid(1, (-content.y                   ) \ item_h + 1, #fi)
+		--local maxi = mid(1, (-content.y + container.height) \ item_h + 1, #fi)
+		
+		-- to do: calculate
+		local mini = 1
+		local maxi = #fi
+		
+		for i=mini,maxi do
+			
+			local ff = fi[i]
+			local sx = ff.x + content.x \ 1 + container.x 
+			local sy = ff.y + content.y \ 1 + container.y 
+		
+			camera(-sx, -sy)
+			
+			-- clipping hack: don't draw over toolbar at top
+			--clip(sx, max(sy, container.y), ff.width, ff.height)
+			ff:draw()
+		end
+		
+		--clip()
+		
+		-- draw selection
+		camera(-self.sx, -self.sy)
+		
+		if (sel and #sel == 4) then
+			rect(sel[1],sel[2],sel[3],sel[4], 7)
+			rect(sel[1]+1,sel[2]+1,sel[3]-1,sel[4]-1, 1)
+		end
+		
+	end
+	
+	-- forward messages
+	-- to do: allow subscribe_to_events at gui element level?
+	
+	function content:click(msg)
+		if (pointer_el) then
+			pointer_el:click(msg)
+		else
+			if (not key"ctrl") deselect_all()
+			sel = {msg.mx, msg.my} -- relative to gui element
+		end
+	end
+
+	function content:drag(msg)
+	
+		-- dragging a file
+		if (pointer_el and pointer_el.finfo and pointer_el.drag and
+			not sel) then
+			pointer_el:drag(msg)
+		end
+		
+		if (sel) then
+			if (abs(msg.mx-sel[1]) > 2 or abs(msg.my-sel[2]) > 2) then
+				sel[3],sel[4] = msg.mx, msg.my -- relative to gui element
+				-- update selection
+				if (not key"ctrl") deselect_all()
+				local xx0 = min(sel[1],sel[3])
+				local xx1 = max(sel[1],sel[3])
+				local yy0 = min(sel[2],sel[4])
+				local yy1 = max(sel[2],sel[4])
+
+				-- to do: only need to test the visible ones
+				for i=1, #fi do
+					local item = fi[i]
+
+					local uu0 = mid(xx0, item.x, xx1)
+					local vv0 = mid(yy0, item.y, yy1)
+					local uu1 = mid(xx0, uu0 + item.width, xx1)
+					local vv1 = mid(yy0, vv0 + item.height, yy1)
+					
+					for y = vv0, vv1-1, 4 do
+						for x = uu0, uu1-1, 4 do
+							if (item:test_point(x - item.x, y - item.y)) item.finfo.selected = true
+						end
+					end
+				end
+
+			else
+				sel[3],sel[4] = nil,nil
+			end
+			
+		end
+	end
+	
+	function content:release()
+		sel = nil
+		dragging_files = nil -- to do: drop
+	end
+	
+	
+	function content:doubleclick(...)
+		if (pointer_el) pointer_el:doubleclick(...)
+	end
+	
+	
+	
+	update_file_info(true)
+	container:attach_scrollbars{autohide=true}
+	
+end
+
+
+
+:: icon.lua
+--[[pod_format="raw",created="2023-40-05 07:40:42",modified="2023-01-11 10:01:03",revision=612,stored="2023-59-07 07:59:44"]]
+--[[
+	icon.lua
+	
+	get an icon for a file by type / metadata
+	get_file_icon(filename)
+]]
+local index_for_type = {
+	lua = 8,
+	gfx = 9,
+	map = 10,
+	sfx = 11,
+	pos = 12,
+	txt = 13,
+	p64 = 16,
+	["p64.png"] = 16,
+	["p64.rom"] = 16,
+	loc = 3,
+	pod = 12
+	
+}
+
+
+function get_file_icon(filename)
+
+	-- look for icon in metadata
+	local md = fetch_metadata(filename)
+	if (md and md.icon and md.icon:width() == 16) then
+		return md.icon
+	end
+	
+	local ext = filename:ext()
+	
+	-- folder sprite if a folder (but .p64 doesn't count)
+
+	local kind,size,origin = fstat(filename)
+	if (ext ~= "p64" and ext ~= "p64.rom" and ext ~= "p64.png" and kind == "folder")
+	then
+		if (origin and origin:sub(1,5) == "host:") return get_spr(4)
+		return get_spr(2)
+	end
+	
+	return get_spr(index_for_type[ext] or 1)
+	
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:: intention.lua
+--[[pod_format="raw",created="2023-10-05 21:49:51",modified="2024-04-11 22:26:13",revision=608]]
+--[[
+
+	intention.lua
+	
+	open filenav with intention to perform some operation
+	-> changes semantics of double click, and adds intention panel at bottom
+		e.g.: Save As ..   [Save]
+	
+	update: reuse for tasks that never leave filenav (new folder)
+]]
+
+--intention = "open" -- debugging
+
+local intention_stack = {}
+
+function push_intention(p0,p1)
+	--printh("pushing intention:"..pod{p0,p1})
+	add(intention_stack,
+		{
+			intention,
+			intention_requester_proc_id
+		}
+	)
+	init_intention(p0, p1)
+	refresh_gui = true
+end
+
+function pop_intention()
+	local item=deli(intention_stack) or {}
+	init_intention(item[1], item[2])
+	refresh_gui = true
+	
+	return item -- never used
+end
+
+
+function init_intention(p0, p1)
+
+	-- can be nill (e.g. pop last intention off stack to remove intention panel)
+	intention = p0
+	intention_requester_proc_id = p1
+	
+	intention_dat = {
+		save_file_as = {"Save As", "Save"}, -- "Save File As" doesn't fit
+		open_file    = {"Open File", "Open"},
+		new_file     = {"New File", "Create"},
+		new_folder   = {"New Folder", "mkdir"},
+		new_tab      = {"New File", "Create", "New Tab"}, -- can either open a file, or create a file  -->  window title is "New Tab"
+		rename       = {"Rename", "Rename"} -- could be file or folder
+	}
+
+	if intention and intention_dat[intention] then
+		intention_title  = intention_dat[intention][1] -- window title
+		intention_action = intention_dat[intention][2] -- button on right
+		intention_window_title = intention_dat[intention][3] or intention_title
+	end
+end
+
+function generate_intention_panel()
+
+	local panel = gui:attach{
+		x = 0, y = 0, vjustify = "bottom",
+		width_rel = 1.0,
+		height = 19,
+	}
+
+	function panel:draw()
+		rectfill(0,0,self.width-1,self.height-1,6)
+		print(intention_title..":",6,6,13)
+	end
+	
+	local wwa = 80
+	local xx = -6
+	
+	if (#intention_stack > 1) then
+ 		local el = panel:attach_button{
+			x = xx, justify = "right", y = 3,
+			label = "Cancel",
+			bgcol = 0x0707,
+			fgcol = 0x0e01,
+			tap = function()
+				pop_intention()
+			end
+		}
+		xx -= el.width
+		xx -= 4
+		wwa += el.width+4
+	end
+	
+	local btn1 = panel:attach_button{
+		x = xx, justify = "right", y = 3,
+		label = intention_action,
+		bgcol = 0x0707,
+		fgcol = 0x0e01,
+		tap = process_intention
+	}
+	
+	wwa += btn1.width
+	
+	intention_text = panel:attach_text_editor{
+		x=64,y=4,
+		width=100,
+		width_rel = 1.0,
+		width_add = - wwa,
+		height=12,
+		max_lines = 1,	
+		key_callback = { 
+			enter = process_intention -- same as clicking on the button next to it
+		}
+	}
+	
+	intention_text:set_keyboard_focus(true)
+
+	--intention_text:set_text{path}
+	--intention_text:click({mx=1000,my=2})
+	
+end
+
+
+function process_intention()
+
+	if (not intention_text) return
+
+	local filename = fullpath(intention_text:get_text()[1])
+
+	if (not filename) then
+		notify("could not resolve; filenames must contain only a..z,0..9,_-.")
+		return
+	end
+	
+	-- printh("process intention: "..pod{intention,filename})
+	
+	-- safety: can't operate on a folder
+	--[[
+	if (fstat(filename) == "folder") then
+		notify("could not process: "..intention)
+		return
+	end
+	]]
+	
+	-- new_file is processed by open.lua
+	-- ** never processed by requester **
+	if (intention == "new_file" or intention == "new_tab") then
+		if (not filename:ext() and env().use_ext) filename..="."..env().use_ext
+		create_process(env().open_with and env().open_with or "/system/util/open.lua",
+			{ argv = {filename} })
+		pop_intention()
+		return
+	end
+	
+	-- new_folder always internal
+	if (intention == "new_folder") then
+		mkdir(filename)
+		pop_intention()
+		return
+	end
+	
+	if (intention == "rename") then
+		-- printh("rename: "..intention_filename.." to: "..filename)
+		if (fstat(filename)) then
+			notify("can not rename to an existing file")
+		else
+			local res = mv(intention_filename, filename)
+			if (res) notify("error: "..res)
+		end
+
+		pop_intention()
+		return
+	end
+	
+	-- intention came from external requester
+	-- e.g. save, save as
+	if (intention_requester_proc_id) then
+		-- printh("sending intention to: "..intention_requester_proc_id)
+		send_message(intention_requester_proc_id, -- env().parent_pid, 
+			{event=intention, filename=filename})
+		exit()
+		return
+	end	
+
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:: interf.lua
+--[[pod_format="raw",created="2023-11-20 08:11:39",modified="2024-04-11 22:26:13",revision=2915,stored="2023-21-29 09:21:19"]]
+-- interface
+
+-- shortcut
+-- don't need desktop (just use desktop!) or favourites (too many concepts)
+shortcuts =
+{
+	-- "favs" to avoid deciding which spelling to use
+	{"/ram/cart",userdata"[gfx]08087777777770000007700000077000000777777777700000777777777000000000[/gfx]"},
+	--{"/desktop", userdata"[gfx]08087777777700000000777777777077777777777777707777777777777700000000[/gfx]"},
+	--{"/appdata/filenav/favs",userdata"[gfx]08080000000007707700777777707777777007777700007770000007000000000000[/gfx]"},
+	{"/",userdata"[gfx]08080000000000000770000077000007700000770000077000007700000000000000[/gfx]"},
+}
+button_gfx =
+{
+	updir = userdata"[gfx]08080000000000770000077770007777770000770000007700000077770000000000[/gfx]",
+	list  = userdata"[gfx]08087777077000000000777707700000000077770770000000007777077000000000[/gfx]",
+	grid  = userdata"[gfx]08087770777077707770777077700000000077707770777077707770777000000000[/gfx]",
+}
+function generate_toolbar()
+	local shortcut_w = 16
+	local shortcuts_w = shortcut_w * #shortcuts + 8
+	
+	toolbar = gui:attach{
+		x = 0, y = 0,
+		width_rel = 1.0,
+		height = 16
+	}
+	
+	function toolbar:draw()
+		rectfill(0,0,1000,self.height,6)
+	end
+	
+	-- navbar
+	-- to do: put up_folder button on left? maybe not!
+	navtext = toolbar:attach_text_editor{
+		x=34,y=2,
+		width=100,
+		width_rel = 1.0,
+		width_add = -shortcuts_w - 34,
+		height=12,
+		max_lines = 1,	
+		key_callback = { 
+		
+			enter = function () 
+				
+				local path = navtext:get_text()[1]
+				local attribs = fstat(path)
+
+				-- printh("pressed enter "..pod{navtext:get_text()[1], path, attribs})
+				
+				if attribs == "folder" then
+					cd(path)
+				elseif intention then
+					process_intention()
+				elseif (attribs == "file") then
+					-- open it; same as double clicking on it
+					click_on_file(path)
+				else
+					-- create file?
+					--> to do: switch to New File intention
+						-- (used can cancel if it was a typo)
+				end
+					
+				refresh_gui = true
+				
+			end,
+			
+			tab = function ()
+				local path = navtext:get_text()[1]
+				path = tab_complete_filename(path)
+				
+				navtext:set_text{path}
+				-- hacky way to put the mouse cursor at the end
+				navtext:click({mx=1000,my=2})
+				
+			end
+		
+		}
+	}
+	
+	
+	local path = pwd()
+	if (string.sub(path,-1) != "/") path = path.."/"
+	navtext:set_text{path}
+	navtext:set_keyboard_focus(true)
+	-- hacky way to put the mouse cursor at the end
+	navtext:click({mx=1000,my=2})
+	
+	-- shortcut buttons
+	
+	for i=1,#shortcuts do
+		toolbar:attach{
+			cursor = "pointer",
+			--x = get_display():width()-shortcuts_w + 5 + (i-1) * shortcut_w,
+			x = -shortcuts_w + 5 + i * shortcut_w,
+			justify = "right",
+			y = 3,
+			width=shortcut_w,
+			height=10,
+			location=shortcuts[i][1],
+			icon=shortcuts[i][2],
+			draw = function(self)
+				--rectfill(0,0,self.width-1,self.height-1,7)
+				pal(7,self.location==pwd() and 7 or 13)
+				spr(self.icon,self.width/2-self.icon:width()/2,1)
+				pal(7,7)
+			end,
+			tap = function(self)
+				cd(self.location)
+				refresh_gui = true
+			end
+		}
+	end
+	
+	-- updir button
+	
+	toolbar:attach{
+			cursor = "pointer",
+			x = 16,y = 3,width=shortcut_w,height=10,
+			icon=button_gfx.updir,
+			draw = function(self)
+				pal(7,13) --pwd() == "/" and 6 or 13)
+				spr(self.icon,self.width/2-self.icon:width()/2,1)
+				pal(7,7)
+			end,
+			tap = function(self)
+				cd("..")
+				refresh_gui = true
+			end
+		}
+		
+	-- toggle view mode
+	
+	toolbar:attach{
+			cursor = "pointer",
+			x = 2,y = 3,width=shortcut_w,height=10,
+			draw = function(self)
+				local icon = mode == "list" and button_gfx.list or button_gfx.grid
+				pal(7,13)
+				spr(icon,self.width/2-icon:width()/2,1)
+				pal(7,7)
+			end,
+			tap = function(self)
+				mode = (mode == "grid") and "list" or "grid"
+				refresh_gui = true
+			end
+		}
+	
+	
+end
+
+
+function generate_interface()
+
+	local scroll_y = content and content.y
+	local text0 = navtext and navtext:get_text()
+	
+	gui_w, gui_h = get_display():width(), get_display():height()
+	
+	-- show path when not in intention mode
+	if (not intention) then
+		window{title = pwd()}
+	end
+	
+	gui = create_gui()
+	
+	-- to do: sort files	
+	local files = ls(pwd())
+	
+	-- printh("generate_interface()")
+	
+	local add_height = intention and -19 or 0
+
+	-- to do: generate interface based on mode
+	if (mode == "list")    generate_interface_list(16, add_height)
+	if (mode == "grid")    generate_interface_grid(16, add_height)
+	if (mode == "desktop") generate_interface_desktop(0, add_height)
+	
+	if (mode != "desktop") then
+		generate_toolbar()
+	end
+	
+	if (intention) generate_intention_panel()
+	
+	-- restore some state
+	if (content and scroll_y) content.y = scroll_y
+	if (content and text)     navtext:set_text(text0)
+	
+	
+end
+
+
+
+
+
+:: list.lua
+--[[pod_format="raw",created="2023-10-20 06:27:42",modified="2024-04-11 22:26:13",revision=2566,stored="2023-21-29 09:21:19"]]
+-- mode: list
+local item_h = 12
+local function create_file_item(parent, ff, x, y)
+	if (not ff or not ff.filename) return
+	local el = {
+		x = x, y = y,width=480,
+		width_rel = 1.0, height=12,
+		finfo    =  ff,
+		filename = ff.filename,
+	}
+	
+	function el:draw()
+		if (self.finfo.selected) then
+			rectfill(0,0,self.width-1,self.height-1,10)
+		end
+		
+		line(0,self.height-1,self.width-1,self.height-1,6)
+		
+		print(self.filename,4,2,1)
+		--print(self.attrib,120,2,1)
+		print(self.finfo.size,140,2,1)
+		print("2023-07-19",200,2,1)
+		
+	end
+	
+	function el:tap()
+		if (key("ctrl")) then
+			self.finfo.selected = not self.finfo.selected
+		else
+			deselect_all()
+			self.finfo.selected = true
+			-- set
+			navtext:set_text{fullpath(el.filename)}
+		end	
+		if intention == "save_file_as" then
+			-- set text
+			intention_text:set_text({el.filename})
+			navtext:set_text{""}
+		end
+	end
+	
+	function el:doubleclick()
+		click_on_file(self.filename)
+	end
+	
+	return el
+end
+function generate_fels_list()
+	-- handle file items layer of gui manually so can optimise
+	-- (e.g. only draw / update visible items)
+		
+	local xx,yy = 0,0
+	local item_w = 68
+	-- to do: should be parent
+	local items_x = get_display():width() \ item_w
+	
+	fi = {}
+	
+	for i=1,#filenames do
+		add(fi, create_file_item(content, finfo[filenames[i]], 0, (i-1)*item_h))
+	end
+end
+function generate_interface_list(y0, add_height)
+	update_file_info()
+	
+	local pointer_el = nil
+	
+	-- attribute headers
+	-- click for sorting by that attribute
+	
+	gui:attach{
+		x=0,y=y0,width_rel=1.0,height=12,
+		draw=function(self)
+			rectfill(0,0,self.width-1,self.height-1, 6)
+			print("filename", 4, 2, 13)
+			print("size", 140,2,13)
+			print("modified",200,2,13)
+		end
+	}
+	
+	-- location is in window title!
+	local container = gui:attach{
+		x=0,y=y0+12,
+		width_rel = 1.0,
+		height_rel = 1.0,
+		height_add = -(y0+12) + add_height,
+	}
+	local content = container:attach{
+		x=0,y=0,
+		width_rel=1.0,
+		height=#filenames * item_h,
+		clip_to_parent = true
+	}
+	
+	function content:clamp_scrolling()
+		local max_y = max(0, content.height - container.height)
+		content.y = mid(0, content.y, -max_y)
+		content.x = min(0, content.x)
+	end
+	function content:update()
+		content:clamp_scrolling()
+		
+		-- update pointer element
+		local mx,my,mb = mouse()
+		local index = 1 + (my - self.sy) \ item_h
+		index = mid(1, index, #fi)
+		pointer_el = fi[flr(index)]
+		
+		self.height = #filenames * item_h
+		
+	end
+	-- 
+			
+	function content:draw()
+	
+		if (#fi == 0) return
+	
+		local mini = mid(1, (-content.y                   ) \ item_h + 1, #fi)
+		local maxi = mid(1, (-content.y + container.height) \ item_h + 1, #fi)
+		for i=mini,maxi do
+			
+			local ff = fi[i]
+			local sx = ff.x + content.x \ 1 + container.x 
+			local sy = ff.y + content.y \ 1 + container.y 
+		
+			camera(-sx, -sy)
+			
+			-- clipping hack: don't draw over toolbar at top
+			clip(sx, max(sy, container.y), ff.width, ff.height)
+			ff:draw()
+		end
+		
+		clip()
+	end
+	
+	-- forward messages
+	-- to do: allow subscribe_to_events at gui element level?
+	
+	function content:tap(...)
+		pointer_el:tap(...)
+	end
+	function content:doubleclick(...)
+		pointer_el:doubleclick(...)
+	end
+	
+	update_file_info(true)
+	container:attach_scrollbars{autohide=true}
+	
+end
+
+
+
+
+:: main.lua
+--[[pod_format="raw",created="2023-10-20 06:24:13",modified="2024-04-11 22:26:13",revision=2824,stored="2023-21-29 09:21:19"]]
+--[[
+	ff: theme / app menu integration
+]]
+include "icon.lua"
+include "list.lua"
+include "grid.lua"
+include "desktop.lua"
+include "open.lua"
+include "interf.lua"
+include "tabcomp.lua"
+include "finfo.lua"
+include "drop.lua"
+include "intention.lua"
+-----------------------
+
+function _init()
+
+--	printh("@@ filenav _init cd env().path: "..tostr(env().path))
+	cd(env().path)
+	
+	push_intention(env().intention or intention, env().intention and env().parent_pid)
+	
+
+	poke(0x4000,get(fetch"/system/fonts/lil.font"))
+	poke(0x5600,get(fetch"/system/fonts/p8.font"))
+	
+	window{
+		width = 272, height = 160,
+		title = intention_window_title or intention_title,
+		has_context_menu = true -- mb2 to open app menu // to do: indicate which items are for context menu
+	}
+	-- mode: list, grid, desktop
+	mode = "grid"
+	--mode = "desktop"
+	
+	desktop_path = "/desktop"
+	if (env().argv and env().argv[1] == "-desktop") then
+		mode = "desktop"
+		--if (env().desktop_path) desktop_path = env().desktop_path	
+		if (env().argv[2]) desktop_path = env().argv[2]
+		cd(desktop_path) -- path never changes after this in desktop mode
+	end
+	
+	if (env().argv and env().argv[1]) then
+		local ff=env().argv[1]
+		if (fstat(ff) == "folder") cd(ff)
+	end
+	
+
+	menuitem{
+		id = "new_file",
+		
+		label = "\^:0f19392121213f00 New File",
+		
+		action = function()
+			push_intention("new_file")
+		end
+	}
+	
+	menuitem{
+		id = "new_folder",
+		label = "\^:00387f7f7f7f7f00 New Folder",
+
+		action = function()
+			push_intention("new_folder")
+		end
+	}
+
+
+	-- Rename File, File Info: added by update_file_info_menu_item()
+	
+	
+
+	
+	--printh("===== filenav: "..pwd().." =====")
+	
+	generate_interface()
+end
+function _draw()
+	local t0=stat(1)
+	
+	cls(7)
+	gui:draw_all()
+	clip()
+	
+	-- fps
+	if (false) then
+		rectfill(get_display():width()-32,0,10000,12,1)
+		print((stat(1)-t0)\0.01,get_display():width()-30,12,8)
+	end
+
+--	print(dragging_files ~= nil and "dragging" or "---",2,20,7)
+
+end
+local last_poll_t = 0
+function _update()
+
+--[[ don't need -- is invoked by app menu shortcut
+	if (key"ctrl") then
+		if (keyp"i") open_selected_file_info()
+	end
+--]]
+	
+	if refresh_gui then
+		--if (mode != "desktop") -- 0.1.0c: commented ~ generate interface even on desktop (allow file ops)
+		generate_interface()
+		refresh_gui = false
+	end
+	
+	-- to do: could be every 4 seconds
+	-- + update immediately when gaining focus or some file activity detected 
+	-- (global timestamp of last change in /ram/system?)
+	if (time() > last_poll_t + 1.0) then
+		update_file_info()
+		last_poll_t = time()
+	end
+	
+	gui:update_all()
+
+end
+on_event("gained_visibility", function()
+	if (mode == "desktop") fetch_desktop_items()
+end)
+--[[
+-- nope ~ too slow
+on_event("lost_visibility", function()
+	if (mode == "desktop") store_desktop_items()
+end)
+]]
+
+on_event("filenav_refresh", function()
+	-- printh("@@ refreshing filenav **")
+	update_file_info(true) -- invalidate cache
+	--refresh_gui = true
+end)
+
+
+
+
+
+
+:: open.lua
+--[[pod_format="raw",created="2023-10-04 12:46:16",modified="2024-04-11 22:26:13",revision=2458,stored="2023-21-29 09:21:19"]]
+
+	
+	function click_on_file(filename, action, argv)
+		
+		--printh("opening: "..tostr(filename))
+		
+		--if (not intention and string.sub(filename,-4) == ".loc") then
+		if (string.sub(filename,-4) == ".loc") -- 0.1.0c: always open as if folder
+		then
+			local dat = fetch(filename)
+			-- switcheroony
+			-- to do: ** loop danger! **
+			if (dat and dat.location) then
+				filename = fullpath(dat.location) -- dat.location can be relative
+				click_on_file(filename, dat.action, dat.argv)
+			else
+				notify("not a valid location file")
+			end
+		elseif not intention and (
+				string.sub(filename,-4) == ".p64" or
+				string.sub(filename,-8) == ".p64.rom" or
+				string.sub(filename,-8) == ".p64.png" or
+				action == "run"
+			)
+			-- or string.sub(filename,-4) == ".lua" -- nah, usually want to edit
+		then
+			-- cartridge --> run it!
+			
+			create_process(filename,
+				unpod(argv) or
+				{window_attribs={show_in_workspace=true}}
+			)
+		
+		else
+			-- to do: could grab from file item
+			
+			if (fstat(filename) == "folder") then
+				-- directory
+				if (mode == "desktop" or key("shift")) then
+					-- open in a separate window
+					-- to do: run self
+					create_process("/system/apps/filenav.p64",
+					{ 
+						argv = {
+							fullpath(filename), 
+							fullpath(filename)
+						},
+						window_attribs={
+							show_in_workspace=true -- to activate window
+						}
+					})
+					
+				else
+					cd(filename)
+					refresh_gui = true
+				end
+				
+			else
+			
+				-- only selected intentions get processed by
+				-- double clicking on a file. for example,
+				-- under new_file (new tab) double clicking
+				-- should still mean editing that file as usual
+				-- update: couldn't find an intention that /is/
+				-- appropriate here! -> always edit
+				
+				if (intention == "save_file_as") then
+					-- filename in text field should already be set
+					process_intention()
+				else
+					-- open by file extension
+					create_process(env().open_with and env().open_with or "/system/util/open.lua",
+						{
+							argv = {fullpath(filename)},
+							--pwd = pwd()
+						}
+					)
+				
+				end
+			
+			end
+		end
+		
+	end
+
+
+:: tabcomp.lua
+--[[pod_format="raw",created="2023-53-26 19:53:00",modified="2024-04-03 05:32:39",revision=59,stored="2023-59-07 07:59:44"]]
+--[[
+	fa: create gui with relative sizes
+]]
+-- ** incredibly inefficient! to do: need to replace with string matching
+function find_common_prefix(s0, s1)
+	if (type(s0) ~= "string") then return nil end
+	if (type(s1) ~= "string") then return nil end
+	if (s0 == s1) then return s0 end
+	local len = 0
+	while(sub(s0,1,len+1) == sub(s1,1,len+1)) do
+		len = len + 1
+		--printh(len)
+	end
+	return sub(s0,1,len)
+end
+function tab_complete_filename(cmd)
+	if (cmd == "") then return cmd end
+	-- get string
+	local args = split(cmd, " \"", false)  -- also split on " to allow tab-completing filenames inside strings
+	local prefix = args[#args] or ""
+	-- construct path prefix  -- everything (canonical path) except the filename
+	local prefix = fullpath(prefix)
+	local pathseg = split(prefix,"/",false)
+	if (not pathseg) then return cmd end
+	local path_part = ""
+	for i=1,#pathseg-1 do
+		path_part = path_part .. "/" .. pathseg[i]
+	end
+	if (path_part == "") then path_part = "/" end -- canonical filename special case
+	prefix = (pathseg and pathseg[#pathseg]) or "/"
+	-- printh("@@@ path part: "..path_part.." pwd:"..pwd())
+	local files = ls(path_part)
+	if (not files) return cmd
+	-- find matches
+	local segment = nil
+	local matches = 0
+	local single_filename = nil
+
+	for i=1,#files do
+		--printh(prefix.." :: "..files[i])
+		if (sub(files[i], 1, #prefix) == prefix) then
+			matches = matches + 1
+			local candidate = sub(files[i], #prefix + 1) -- remainder
+
+			-- set segment to starting sequence common to candidate and segment
+			segment = segment and find_common_prefix(candidate, segment) or candidate
+			single_filename = path_part.."/"..files[i] -- used when single match is found
+		end
+	end
+	
+	if (segment) then
+		cmd = cmd .. segment
+		--cursor_pos = cursor_pos + #segment
+	end
+
+	if matches == 1 and single_filename and fstat(single_filename) == "folder" then
+		cmd ..= "/"
+	end
+
+	
+	return cmd
+end
+
+
+
+
+:: [eoc]

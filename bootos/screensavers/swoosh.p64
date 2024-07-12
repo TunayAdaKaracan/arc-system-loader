@@ -1,0 +1,61 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: .info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTEwLTAyIDIxOjM5OjUyIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCIsc3RvcmVkPSIyMDI0LTM5LTAyIDIxOjM5OjUyIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: _meta/
+:: _meta/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTEwLTAyIDIxOjM5OjUyIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCIsc3RvcmVkPSIyMDI0LTM5LTAyIDIxOjM5OjUyIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: _meta/workspaces.pod
+b64$LS0gcGljb3Ryb24gb2JqZWN0IGRhdGEKe3tjcHJval9maWxlPSJtYWluLmx1YSIsd29ya3Nw
+YWNlX2luZGV4PTF9fQ==
+:: main.lua
+--[[pod_format="raw",created="2023-40-31 14:40:49",revision=1,stored="2023-41-31 14:41:15"]]
+q=0
+poke(0x550b, 0xff)
+
+function _init()
+	-- set up display palette
+	for i0=0,63 do
+		local i=i0--63-i0
+		
+		poke4(0x5000 + i0 * 4,
+			(mid(0, i * 8,255) <<16) +
+			(mid(0, i * 12,255) << 8) +
+			(mid(0, i * 18,255) << 0)
+		)
+	end
+	-- colour tables
+	-- only drawing w/ color 7, so only need to set that up
+	for i=7,7 do -- draw color
+		for j=0,63 do -- target pixel color
+			poke(0x8000+i*64+j, mid(0, (63 * 1 + j * 15) // 16, 63))
+		end
+	end
+end
+function _draw()
+	local r = 24
+	q = q + 1/8000
+	cls()
+--	for i=0,63 do circfill(8+i*7, 8, 3, i) end
+--	rectfill(0,0,479,7,7)
+	for i=0,1,1/2000 do
+		i = i + q
+		local x = 240 + cos(i) * 120
+		local y = 135 + sin (i*2.94) * 50
+		x = x + cos(i * 2.77) * 30
+		y = y + sin(i * 1.46) * 30
+		local r = t() --+ cos(i*4.33) * 10
+		local a = i*4 + q*3
+		local dx = cos(a) * r
+		local dy = sin(a) * r
+		line(x - dx, y - dy, x + dx, y + dy, 7)
+	
+	end
+	print(string.format("cpu:%.3f",stat(1)),2,2)
+end
+:: [eoc]

@@ -1,0 +1,1751 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: .info.pod
+b64$LS1bW3BvZCxhdXRob3I9ImxleGFsb2ZmbGUiLGNyZWF0ZWQ9IjIwMjMtMTAtMTkgMTI6NTA6
+NTAiLGljb249dXNlcmRhdGEoInU4IiwxNiwxNiwiMDAwMDAwMDEwMTAxMDEwMTAxMDEwMTAxMDEw
+MDAwMDAwMDAwMDEwNzA3MDcwNzA3MDcwNzA3MDcwNzAxMDAwMDAwMDEwNzBkMGQwZDBkMGQwZDBk
+MGQwZDBkMDcwMTAwMDEwNzBkMGQwZDBkMGQwZDBkMGQwZDBkMGQwZDA3MDEwMTA3MGQwZDBkMDcw
+NzBkMGQwNzA3MGQwZDBkMDcwMTAxMDcwZDBkMGQwNzA3MGQwZDA3MDcwZDBkMGQwNzAxMDEwNzBk
+MGQwZDA3MDcwZDBkMDcwNzBkMGQwZDA3MDEwMTA3MGQwZDBkMDcwNzA3MDcwNzA3MGQwZDBkMDcw
+MTAxMDcwZDBkMGQwNzBkMDcwNzBkMDcwZDBkMGQwNzAxMDEwNzBkMGQwZDA3MDcwNzA3MDcwNzBk
+MGQwZDA3MDEwMTA3MGQwZDBkMGQwZDBkMGQwZDBkMGQwZDBkMDcwMTAxMDYwNzBkMGQwZDBkMGQw
+ZDBkMGQwZDBkMDcwNjAxMDEwNjA2MDcwNzA3MDcwNzA3MDcwNzA3MDcwNjA2MDEwMDAxMDYwNjA2
+MDYwNjA2MDYwNjA2MDYwNjA2MDEwMDAwMDAwMTA2MDYwNjA2MDYwNjA2MDYwNjA2MDEwMDAwMDAw
+MDAwMDEwMTAxMDEwMTAxMDEwMTAxMDEwMDAwMDAiKSxtb2RpZmllZD0iMjAyNC0wNy0xMiAxOTo0
+Mzo0MyIsbm90ZXM9IiIscnVudGltZT01LHN0b3JlZD0iMjAyNC0wMy0yMiAxMTo0MzoxMiIsdGl0
+bGU9IlBpY290cm9uIFBpeGVscyIsdmVyc2lvbj0iMC4xIix3b3Jrc3BhY2VzPXt7bG9jYXRpb249
+Im1haW4ubHVhIzIyMyIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZHJhdy5sdWEjMSIs
+d29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0idXBkYXRlLmx1YSM2OSIsd29ya3NwYWNlX2lu
+ZGV4PTF9LHtsb2NhdGlvbj0ibmF2Lmx1YSMyOCIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlv
+bj0iZ3VpLmx1YSMxMjAiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImNhbnZhcy5sdWEj
+MjQ0Iix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJnZngvMC5nZngiLHdvcmtzcGFjZV9p
+bmRleD0yfSx7bG9jYXRpb249ImdmeC8wLmdmeCIsd29ya3NwYWNlX2luZGV4PTd9fV1dbHo0AAQA
+AAADAAAAMG5pbA==
+:: canvas.lua
+--[[pod_format="raw",created="2023-04-11 02:04:02",modified="2024-04-09 09:20:36",revision=2935,stored="2023-24-28 00:24:00"]]
+local ww,hh=0,0
+local fill_cpu=0
+local x0,y0=0,0
+function do_fill_0(bmp, x, y, tc)
+
+	if (get(bmp,x,y) != tc) return
+	if (x < 0 or y < 0 or x >= ww or y >= hh) return
+
+	local l,r=x,x
+	while(get(bmp,l,y)==tc and l>=0) l-=1
+	l+=1
+	while(get(bmp,r,y)==tc and r<ww) r+=1
+	r-=1
+	
+	for xx=l,r do
+		set(bmp,xx,y,col)
+	end
+	
+	if (y > 0) then
+		local last = nil
+		for xx=l,r do
+			local val = get(bmp,xx,y-1) == tc
+			if (val and not last) then
+				do_fill_0(bmp,xx,y-1,tc)
+			end
+			last = val
+		end
+	end
+	
+	if (y < hh-1) then
+		local last = nil
+		for xx=l,r do
+			local val = get(bmp,xx,y+1) == tc
+			if (val and not last) then
+				do_fill_0(bmp,xx,y+1,tc)
+			end
+			last = val
+		end
+	end
+	
+	-- #putaflipinit
+	-- to do: why is this causing wm flicker w/ low values (0.25) ~ how is that possible?
+	-- oh.. is just the app gui? need to manually hold frame again after flip. bleh.
+	--[[
+	if (stat(1) - fill_cpu > 2) then
+		fill_cpu = stat(1) gui:draw_all() flip()
+		poke(0x547c, 1) -- keep holding frame
+	end
+	]]
+	
+end
+
+function do_fill(bmp, x, y)
+	local tc = get(bmp, x, y)
+	if (col == tc) return
+	ww,hh = bmp:attribs()
+	fill_cpu = 0
+	return do_fill_0(bmp, x, y, tc)
+end
+
+function create_outline(bmp, ww, hh)
+
+	local out = userdata("u8", ww+2, hh+2) -- 1px boundary
+	set_draw_target(out)
+	
+	sspr(bmp, 0, 0, _, _,1, 1, ww, hh)
+	
+	ww += 2 hh += 2
+	
+	local out0 = out:copy()
+	
+	--out = out:add(out, out, nil, 2) -- whoa!
+	-- src_offset, dest_offset, item_width, src_stride, dest_stride, num_items
+	out:add(out0, true, ww+1, ww+0, ww-1, ww, ww, hh-2)
+	out:add(out0, true, ww+1, ww+2, ww-1, ww, ww, hh-2)
+	out:add(out0, true, ww+1, ww*0+1, ww-1, ww, ww, hh-2)
+	out:add(out0, true, ww+1, ww*2+1, ww-1, ww, ww, hh-2)
+	
+	-- disco
+	for y=0,hh-1 do
+		out:add(8+((y\3)%3)*8, true, 0, y*ww, 4, 0, 8, ww/8+1)
+	end
+	
+	out:add(8, true,  0, 0, ww*4, ww, ww*8, hh/8+1)
+	
+	set_draw_target()
+	return out
+end
+
+
+
+function udrectfill(ud, x0, y0, x1,y1, col)
+	if (type(ud) ~= "userdata") return
+	x0\=1 y0\=1 x1\=1 y1\=1
+	if (x1<x0)x0,x1=x1,x0
+	if (y1<y0)y0,y1=y1,y0
+	
+	x0 = max(0, x0)
+	y0 = max(0, y0)
+
+	local width, height = (x1-x0)+1, (y1-y0)+1
+	width = min(width, ud:width()-x0)
+	height = min(height, ud:height()-y0)
+	
+	if (width < 1 or height < 1) return
+	
+	local udw = ud:width()
+	ud:copy(col, true, nil, x0+y0*udw,width, nil,udw,height)
+end
+
+function create_canvas(el)
+
+	local ww,hh,x0,y0
+	local drag_x0,drag_y0 = 0,0
+	local mtool
+	
+	
+	
+	function el:update()
+	
+		el.cursor = "crosshair"
+		if (mtool == "pan") el.cursor = "grab"
+		if (mtool == "fill") el.cursor = get_spr(56)
+		
+		
+		-- safety [during dev]
+		ci.zoom = ci.zoom or 1
+		ci.pan_x = ci.pan_x or 0
+		ci.pan_y = ci.pan_y or 0
+		
+		ww = cbmp_width  * ci.zoom
+		hh = cbmp_height * ci.zoom
+		
+		mtool = ctool
+		if (key"space") mtool = "pan"
+		if (key"s") mtool = "select"
+		
+		-- pixel looking at in center
+		local px = cbmp_width/2  + ci.pan_x
+		local py = cbmp_height/2 + ci.pan_y
+		
+		x0 = el.width\2  - px * ci.zoom
+		y0 = el.height\2 - py * ci.zoom
+		
+	end
+	
+	function el:click(msg)
+		backup_state()
+		
+		if mtool == "select" then
+			-- needs to happen first for calculating x,y
+			clear_selection()
+		end
+		
+		local x = (msg.mx - x0) \ ci.zoom
+		local y = (msg.my - y0) \ ci.zoom
+		local xx,yy = x,y
+		if (ci.layer) x-= ci.layer_x y-= ci.layer_y
+		--printh("click: "..pod{x,y})
+		
+		
+		-- targe bitmap: draw to floating layer if it exists
+		local tbmp = ci.layer or cbmp 
+		local tbmp_width, tbmp_height = tbmp:attribs()
+		if (type(tbmp)~="userdata") tbmp=cbmp printh("** no tbmp!!")
+		
+		drag_x0  = x  drag_y0  = y
+		click_x0 = x  click_y0 = y 
+		click_xx0 = xx  click_yy0 = yy
+		op_bmp = tbmp:copy()
+		blit(tbmp, op_bmp) -- to do: remove
+		
+		
+		
+		if mtool == "fill" then
+			do_fill(tbmp, x, y)
+		end
+		
+		-- replace
+		if (mtool == "pencil" and key"ctrl") then
+			local col0 = get(tbmp, x,y)
+			for yy=0,tbmp_height-1 do
+				for xx=0,tbmp_width-1 do
+					if (get(tbmp,xx,yy) == col0) set(tbmp,xx,yy,col)
+				end
+			end
+		end
+		
+	end
+	
+	
+	function el:drag(msg)
+		-- targe bitmap: draw to floating layer if it exists
+		local tbmp = ci.layer or cbmp 
+		
+		set_draw_target(tbmp)
+		
+		local x = (msg.mx - x0) \ ci.zoom
+		local y = (msg.my - y0) \ ci.zoom
+		local xx,yy = x,y
+		if (ci.layer) then
+			set_draw_target(ci.layer)
+			x-= ci.layer_x y-= ci.layer_y
+		end
+		
+		if (mtool == "pan") then
+			ci.pan_x -= msg.dx / ci.zoom
+			ci.pan_y -= msg.dy / ci.zoom
+		elseif mtool == "stamp" then
+			if (last_stamp_bmp_str ~= get_clipboard()) then
+				last_stamp_bmp_str = get_clipboard()
+				last_stamp_bmp = unpod(last_stamp_bmp_str)
+			end
+		
+			local bmp = last_stamp_bmp
+			if (type(bmp) == "userdata") then
+				blit(op_bmp, tbmp)
+				set_draw_target(tbmp)
+				local ww,hh = bmp:attribs()
+				-- inverted pico-8 behaviour! transparency by default
+				if (key"ctrl") rectfill(x-ww/2,y-hh/2,x+ww/2-1,y+hh/2-1,0)
+				spr(bmp, x - ww/2, y - hh/2)
+				set_draw_target()
+			end
+		
+		elseif (mtool == "select") then
+			-- xx,yy -- not relative to selection
+			csel:clear()
+			set_draw_target(csel)
+			rectfill(click_xx0 +.5, click_yy0 +.5, xx +.5, yy +.5, 1)
+			set_draw_target()
+			csel_outline = nil -- regenerate
+		elseif (mtool == "pencil" or mtool == "brush") then
+			if (msg.mb == 1) then
+				local dx, dy = x-drag_x0, y-drag_y0
+				local steps = max(abs(dx),abs(dy)) * 2
+				dx /= steps dy /= steps
+				local xx = drag_x0
+				local yy = drag_y0
+				if (mtool == "brush") then
+					-- provisional rule:
+					-- only transparent when draw colour is not 0
+					fillp(brush.pat) poke(0x550b,col == 0 and 0x00 or 0xff)
+					pal(7,col)
+					local brush_sprite = brush_gfx[brush.which]
+					
+					for i=0,steps do
+						--circfill(xx, yy, brush.thickness, col)
+						
+						spr(brush_sprite,xx-3,yy-3)
+						xx += dx
+						yy += dy
+					end
+					pal()
+					fillp() palt() poke(0x550b,0x00)
+				else
+					for i=0,steps do
+						set(tbmp, xx, yy, col)
+						xx += dx
+						yy += dy
+					end
+				end
+			end
+			if (msg.mb == 2) col = get(tbmp, x, y)
+		elseif mtool == "rect" then
+			blit(op_bmp, tbmp)
+			local func = key("ctrl") and rectfill or rect
+			func(click_x0 +.5, click_y0 +.5, x +.5, y +.5, col)
+		elseif mtool == "circ" then
+			blit(op_bmp, tbmp)
+			local func = key("ctrl") and ovalfill or oval
+			func(click_x0 +.5, click_y0 +.5, x +.5, y +.5, col)
+		elseif mtool == "line" then
+			blit(op_bmp, tbmp)
+			line(click_x0 +.5, click_y0 +.5, x +.5, y +.5, col)
+		end
+		
+		drag_x0 = x 
+		drag_y0 = y
+		
+		-- update cbmp with any changes drawn to ci.layer
+		if (ci.layer) blit(ci.layer, cbmp, 0, 0, ci.layer_x, ci.layer_y)
+		
+	end
+	
+	function el:release(msg)
+
+		local x = (msg.mx - x0) \ ci.zoom
+		local y = (msg.my - y0) \ ci.zoom
+		
+		if (mtool == "select") then
+			if (click_x0 == x and click_y0 == y) then
+				-- can't select single pixel; deselect
+				clear_selection()
+			else
+				-- create floating layer
+				if (x < click_x0) click_x0,x = x,click_x0
+				if (y < click_y0) click_y0,y = y,click_y0
+				local ww = x - click_x0 + 1
+				local hh = y - click_y0 + 1
+				
+				ci.layer = userdata("u8",ww,hh)
+				ci.layer_x = click_x0
+				ci.layer_y = click_y0
+				ci.layer0 = cbmp:copy()
+				set_draw_target(ci.layer0)
+				rectfill(click_x0, click_y0, click_x0 + ww-1, click_y0 + hh-1, 0)
+				set_draw_target()
+				blit(cbmp,ci.layer,click_x0, click_y0,0,0,ww,hh)
+			end
+		end	
+
+	end
+	
+	
+	function el:draw(msg)
+		local x = (msg.mx - x0) \ ci.zoom
+		local y = (msg.my - y0) \ ci.zoom
+		
+		--fillp(0x1248)
+		fillp()
+		rectfill(0,0,self.width,self.height,32)
+		fillp()	
+		
+		local x1,y1 = x0 + ww, y0 + hh
+		local scale = ci.zoom
+
+		color(5)
+		line(x0-2,y0-1*scale-1,x0-2,y1+1*scale)
+		line(x1+1,y0-1*scale-1,x1+1,y1+1*scale)
+		
+		line(x0-1*scale-1,y0-2,x1+1*scale,y0-2)
+		line(x0-1*scale-1,y1+1,x1+1*scale,y1+1)
+		
+		rectfill(x0-1,y0-1,x0+ww,y0+hh,0)
+		
+		sspr(cbmp, 0, 0, _, _, x0,y0,ww,hh)
+		
+		if (csel) then
+		
+			local sel_scale = min(scale, 1)
+			while sel_scale < scale and 
+				sel_scale * cbmp:width() < 512 and
+				sel_scale * cbmp:height() < 512 do
+				sel_scale += 1
+			end
+			local sel_ww = cbmp:width() * sel_scale
+			local sel_hh = cbmp:height() * sel_scale
+		
+			-- to do: also update high bits in image to protect
+			-- pixels outside of selection from modification
+			if (not csel_outline or sel_ww ~= last_outline_ww) then
+				csel_outline = create_outline(csel,sel_ww,sel_hh)
+				last_outline_ww = sel_ww
+			end
+			
+			--spr(csel_outline,x0,y0)
+			for i=0,63 do
+				palt(i,true)
+			end
+			palt(1,false) palt(2,false)
+			
+			pal(1,7) pal(2,7)
+			
+			local cc=(t()*8)%8
+			pal(9,  8 + (cc+0)%8)
+			pal(17, 8 + (cc+2)%8)
+			pal(25, 8 + (cc+4)%8)
+			pal(33, 8 + (cc+6)%8)
+			
+			
+			fillp(0xc936936c36c96c93 >> (((time()*15)\1)%4)*16)
+			
+			-- to do: fix matching
+			local qq = 1
+			if (sel_scale < scale) qq = 2
+			
+			--qq = scale / sel_scale
+			--pal() fillp()
+			sspr(csel_outline, 0, 0, _, _, 
+				x0-qq, y0-qq, ww+qq*2, hh+qq*2)
+			
+		end
+		
+		--print(pod{sel_scale,x0,y0,ww,hh},2,2,7)
+		pal() fillp()
+		
+		print(string.format("\#0 %3d %3d ",x,y), 12,  self.height-14, 6)
+		
+		
+		
+		--print(pod{ci.pan_x, ci.pan_y, ci.zoom},2,2,7)
+	end
+	
+	function el:mousewheel(msg)
+	
+		ci.zoom += msg.wheel_y
+		--scale *= (msg.wheel_y < 0) and 0.5 or 2.0
+		
+		 -- to do: can scale 0.5 for large images?
+		
+		local min_scale = 1.0
+		local max_scale = 16.0
+		
+		-- can zoom out further when wouldn't fit otherwise
+		if (cbmp:width()  >= self.width ) min_scale = 0.5
+		if (cbmp:height() >= self.height) min_scale = 0.5		
+		
+		ci.zoom = mid(min_scale, ci.zoom, max_scale)
+		if (ci.zoom >= 1) ci.zoom \= 1
+	end
+	
+	return el
+
+end
+
+
+:: draw.lua
+--[[pod_format="raw",created="2023-10-12 03:26:20",modified="2024-04-09 09:20:36",revision=1872,stored="2023-24-28 00:24:00"]]
+function _draw()
+	
+	cls(5)
+	
+
+	-- operations during _update can request a
+	-- gui update before it is next draw (avoid flicker)
+	if (refresh_gui) then
+		generate_gui()
+		-- gui:draw_all() expects :update_all() called first on current state of gui
+		gui:update_all()
+		refresh_gui = false
+	end
+		
+	gui:draw_all()
+	
+	-- custom display palette
+	-- at end.. something in :draw_all() probably calls pal()
+	poke4(0x5000+32*4, 0x20202020)
+	
+	if (custom_palette) then
+		poke4(0x5000, get(custom_palette))
+	end
+	
+end
+
+
+:: gui.lua
+--[[pod_format="raw",created="2023-05-11 02:05:16",modified="2024-04-09 09:20:36",revision=2695,stored="2023-24-28 00:24:00"]]
+--[[
+
+	should only need:
+	palette  --  with tab to show operations (or other palette styles)
+	tools
+	tool attributes // brush size, fill pattern
+	navigator
+
+	the palette and navigator can /frame/ the tools + attributes	
+
+]]
+
+show_pane = true
+
+ -- update layout without needing to regenerate gui
+ -- to do: could also use this for handling changes in display size
+ function update_gui_layout()
+ 	if (not sidebar or not canvas_el) return
+ 	
+ 	xt = show_pane and 336 or 480
+ 	sidebar_x = sidebar_x or sidebar.x
+ 	sidebar_x = (sidebar_x * 3 + xt) / 4
+ 	
+	if (sidebar_x > xt) then
+		sidebar_x = max(xt, sidebar_x - 8)
+	else
+		sidebar_x = min(xt, sidebar_x + 8)
+	end
+	
+	-- !! instant change -- maybe better (still get toolbar transition!)
+	sidebar_x = xt
+
+ 	sidebar.x = sidebar_x \ 1
+ 	sidebar.height = get_display():height()
+ 
+	canvas_el.width = sidebar_x \ 1
+	canvas_el.height = get_display():height()
+ 
+	-- send a message to wm asking to undock / dock toolbar
+	if show_pane ~= last_show_pane then	
+		--send_message(3, {event="dock_toolbar", state = show_pane})
+	end
+	last_show_pane = show_pane
+ end
+ 
+
+function generate_gui()
+
+	gui = create_gui()
+	
+	canvas_el = gui:attach(create_canvas{x=0,y=0,
+	width=336,height=get_display():height()})
+
+	sidebar = gui:attach{x=480-144,y=0,width=150,height=250}
+	
+	-- a little space above palette for tabs (operation)
+	local pal_el = sidebar:attach(create_palette{x=8,y=14,width=128,height=32})
+
+	sidebar:attach(create_pal_tabs{x=112,y=4,width=48,height=9})
+	
+--[[
+	sidebar:attach{
+		x=128,y=8,width=8,height=6,
+		draw=function() 
+			--for y=0,3 do for x=0,7 do
+			--	pset(x,y,x+y*8) end end
+			rectfill(0,0,7,3,6) 
+		end,
+		click=function() pal_swatch ^^= 1 refresh_gui=1 end
+	}
+]]	
+		
+	--sidebar:attach(create_item_info{x=8,y=64,width=128,height=20})
+
+	sidebar:attach(create_item_info{x=8,y=96,width=128,height=24})
+	sidebar:attach(create_bank_tabs{x=8+128-48+1,y=116-9,width=48,height=9})
+	sidebar:attach(create_nav{x=8,y=116,width=128,height=128})
+	
+
+	---- tools ----
+	
+	local tools = {
+		"pencil","brush","line","rect", "circ",
+		"fill", "stamp", "select", "pan"
+		--"eraser",
+		--"smudge",
+		--"sweep","text","scramble"
+	}
+	
+	local ww=12
+	local yy=pal_el.y + pal_el.height + 4
+	for i=0,#tools-1 do
+	sidebar:attach(create_tool_button(tools[i+1], 
+		10+(i%ww)*14, yy+(i\ww)*14))
+	end
+	
+	---- colour / fill pattern preview -----
+
+-- only show when tools that use fill pattern is selected
+-- (line and shape disabled for now)
+if (({brush=1,xline=1,xshape=1})[ctool]) then 
+
+	yy+=16
+	sidebar:attach({x=8,y=yy,width=24,height=24,
+		draw=function(self)
+			clip()
+			rectfill(-1,-1,self.width,self.height,0)
+			fillp(brush.pat)
+			rectfill(0,0,self.width-1,self.height-1,col)
+			fillp()
+		end
+	})
+	
+	-- brushes
+	
+	local xx = 36
+	
+	
+	for i=0,7 do
+		sidebar:attach(create_brush_button(i+1, xx +(i%ww)*12, yy))
+	end
+	
+	-- 0x8085
+	-- fill patterns
+	
+	local pat = {[0]=
+		0x0000,0x50a0,0x5a5a,0x50a0~0xffff,	
+		0x36c9,0x9c63,0x1248~0xffff,0x8421~0xffff,
+
+		0x0000, 0x80b9, 0x813d,
+		0x7e99, 0x81db, 0x7d7d,
+		0x8272, 0x834f
+	}
+	yy += 14
+	for i=0,7 do
+			sidebar:attach({x = xx + i*12, y = yy, width=11,height=10,
+				pat = pat[i],
+				draw=function(self)
+					clip()
+					--poke(0x550b,0xff)
+					rectfill(-1,-1,self.width,self.height,0)
+			
+					fillp(self.pat)
+					rectfill(0,0,self.width-1,self.height-1,
+						self.pat==brush.pat and 7 or 5)
+					fillp()
+				end,
+				click = function(self)
+					brush.pat = self.pat
+				end
+			})
+	end
+end -- brush elements
+
+	update_gui_layout()
+
+end
+
+local tool_gfx={
+pencil="[gfx]08080000700000077700007777700777770070777000700700007770000000000000[/gfx]",
+brush="[gfx]08080000077000007700000770000007000007700000077000007700000000000000[/gfx]",
+line="[gfx]08080000007000000700000070000007000000700000070000007000000000000000[/gfx]",
+select="[gfx]08087707077070000070000000007000007000000000700000707707077000000000[/gfx]",
+rect="[gfx]08087777777070000070700000707000007070000070700000707777777000000000[/gfx]",
+circ=unpod("b64:bHo0ACAAAAAiAAAA8wVweHUAQyAICAQQJzAHIAcQB0AHAAQAcBAHIAcwJ6A="),
+pan="[gfx]08080070700000707070007070700077777070777770077777700077770000000000[/gfx]",
+fill="[gfx]08080000700000000700000000700777777770777770700777007000700000000000[/gfx]",
+stamp="[gfx]08080077700000777000007770000077700077777770700000707777777000000000[/gfx]",
+smudge="[gfx]08080070000000700000007070700077777070777770077777700077770000000000[/gfx]",
+sweep="[gfx]08080000700000007000000070000007000000070000777777707070707000000000[/gfx]",
+text="[gfx]08087777777077007770777707707700077070770770770070707777777000000000[/gfx]",
+scramble="[gfx]08080700070007000700777777707077707077777770070007007700077000000000[/gfx]",
+eraser="[gfx]08080007700000777700077777707077777070077700070070000077000000000000[/gfx]",
+}
+
+brush_gfx={
+userdata"[gfx]08080000000000000000000000000007000000000000000000000000000000000000[/gfx]",
+userdata"[gfx]08080000000000000000000000000007700000077000000000000000000000000000[/gfx]",
+userdata"[gfx]08080000000000000000000700000077700000070000000000000000000000000000[/gfx]",
+userdata"[gfx]08080000000000000000000770000077770000777700000770000000000000000000[/gfx]",
+userdata"[gfx]08080000000000077000007777000777777007777770007777000007700000000000[/gfx]",
+userdata"[gfx]08080077770007777770777777777777777777777777777777770777777000777700[/gfx]",
+--[[pod,pod_type="image"]]unpod("b64:bHo0AA8AAAAOAAAA4HB4dQBDIAgIBPAJR-AS"),
+--[[pod,pod_type="image"]]unpod("b64:bHo0ABoAAAAYAAAA8AlweHUAQyAICARQB1AXQBdAF0AXQBdAF9A="),
+userdata"[gfx]08080000000000000000000000000000000000777700000000000000000000000000[/gfx]",
+userdata"[gfx]08080000000000000000000007000000700000070000007000000700000000000000[/gfx]"
+}
+
+
+function create_brush_button(which, x, y)
+	local el= {
+		which = which, x = x, y = y, width=12, height = 12,
+		cursor="pointer"	
+	}
+	
+	el.gfx = brush_gfx[which]
+	
+	function el:draw()
+		rectfill(0,1,self.width-2,self.height-2,0)
+		pal(7, self.which == brush.which and 7 or 13)
+		spr(self.gfx,2,2)
+		pal(7,7)
+	end
+	
+	function el:tap()
+		brush.which = self.which
+		brush.thickness = self.which-1
+		brush.sprite = el.gfx
+	end
+	
+	return el
+end
+
+
+function create_tool_button(which, x, y)
+	local el= {which = which, x = x, y = y, width=12, height = 12,cursor="pointer"}
+	
+	if type(tool_gfx[which]) == "userdata" then
+		el.gfx = tool_gfx[which]
+	else
+		el.gfx = userdata(tool_gfx[which])
+	end
+	
+	function el:draw()
+	--[[
+		line(1,0,9,0,13)
+		rectfill(0,1,10,9,13)
+		line(1,10,9,10,13)
+	]]
+		pal(7, which == ctool and 7 or 13)
+		spr(self.gfx,2,2)
+		pal(7,7)
+	end
+	
+	function el:tap()
+		ctool = self.which
+		refresh_gui = true
+	end
+	
+
+	return el
+end
+
+
+
+
+:: main.lua
+--[[pod_format="raw",created="2023-04-11 02:04:54",modified="2024-04-09 09:20:36",revision=2769,stored="2023-24-28 00:24:00"]]
+--[[
+	gfx5: panning, view grouping
+]]
+
+include "draw.lua"
+include "update.lua"
+include "gui.lua"
+include "canvas.lua"
+include "pal.lua"
+include "nav.lua"
+include "undo.lua"
+
+cbmp,cbmp_width,cbmp_height,csel = nil,nil,nil
+
+--[[
+	selection layer state is not saved
+]]
+function save_working_file()
+	--printh("@@ [gfx] saving working file")
+	local output = {}
+	for i=0,#item do
+		local ii=item[i]
+		output[i] = {
+			bmp = ii.bmp,
+			flags = ii.flags,
+			pan_x = ii.pan_x,
+			pan_y = ii.pan_y,
+			zoom = ii.zoom
+		}
+	end
+	return output
+end
+
+function load_working_file(item_1)
+
+	item_1 = item_1 or {}
+
+	
+		item = {}
+		for i=0,255 do
+			src = item_1[i] or {}
+			item[i] = {
+				bmp   = src.bmp or userdata("u8",16,16),
+				sel   = src.sel or userdata("u8",16,16),
+				flags = src.flags or 0,
+				extra = src.extra or nil, -- text. maybe "notes"?
+				pan_x = src.pan_x or 0,
+				pan_y = src.pan_y or 0,
+				zoom = src.zoom or 8
+			}
+			
+			add_undo_stack(item[i])
+			
+			--printh("loaded item "..i.."  bmp width:"..item[i].bmp:width())
+		end	
+		
+	set_current_item(0)
+	
+end
+
+function _init()
+
+	poke(0x4000,get(fetch"/system/fonts/p8.font"))
+	
+	window{
+		tabbed = true,
+		icon = userdata"[gfx]08087770077777700777777007777777777770777707707777077777777700000000[/gfx]"
+	}
+	
+	mkdir("/ram/cart/gfx")
+	
+	wrangle_working_file(
+		save_working_file,
+		load_working_file,
+		"/ram/cart/gfx/0.gfx" -- default
+	)
+	
+	set_current_item(0)
+	set_current_bank(0)
+
+	generate_gui()
+	
+	col = 7
+	ctool = "pencil"
+	
+	brush = {
+		spacing=1,
+		thickness=2,
+		which=3,
+		pat=0x0
+	}
+	
+	refresh_gui = true
+	
+end
+
+function set_current_bank(i)
+	--printh("setting bank: "..i)
+	current_bank = i
+end
+
+function set_neighbours_view(i, di)
+	if (not i) return
+	if (i < 0 or i > 255) return
+	local b = item[i].bmp
+	if (b and b:width() == cbmp_width and b:height() == cbmp_height) then
+		item[i].pan_x = ci.pan_x
+		item[i].pan_y = ci.pan_y
+		item[i].zoom  = ci.zoom
+		set_neighbours_view(i + di, di)
+	end
+end
+
+function set_current_item(i)
+	i = i or current_item
+	if (not item[i]) return -- out of range
+	
+	if (current_item) then
+		set_neighbours_view(current_item+1,1)
+		set_neighbours_view(current_item-1,-1)
+	end
+	
+	current_item = flr(i)  -- want it to be an integer
+	ci = item[current_item]
+
+	cbmp = item[current_item].bmp
+	cbmp_width, cbmp_height = cbmp:width(), cbmp:height()
+
+	if not item[current_item].sel or
+		item[current_item].sel:width() ~= cbmp_width or
+		item[current_item].sel:height() ~= cbmp_height
+	then
+		item[current_item].sel = userdata("u8",cbmp_width, cbmp_height)
+	end
+	
+	csel = item[current_item].sel
+	csel_outline = item[current_item].sel_outline
+	
+	-- generate_gui()
+	--refresh_gui = true
+end
+
+on_event("lost_focus",
+	function (msg)
+		map_gfx_state = map_gfx_state or fetch"/ram/shared/map_gfx.pod" or {}
+		map_gfx_state.current_sprite_index = current_item
+		map_gfx_state.gfx_proc_id = pid()
+		store("/ram/shared/map_gfx.pod", map_gfx_state)
+	end
+)
+
+on_event("gained_focus",
+	function()
+		map_gfx_state = fetch"/ram/shared/map_gfx.pod"
+		if (map_gfx_state) then
+			set_current_item(map_gfx_state.current_sprite_index)
+		end
+	end
+)
+
+on_event("set_palette",
+	function(msg)
+		if (type(msg.palette) == "userdata") then
+			local w, h, type = msg.palette:attribs()
+			if (w == 64 and type == "i32") then
+				custom_palette = msg.palette
+			end
+		end
+	end
+)
+
+--[[
+	
+]]
+function colour_fit(bmp, pal0)
+
+	local cols = pal0:width()
+	local pal1 = {}
+	
+	for i=0,cols-1 do
+		local r = (pal0:get(i) >> 16) & 0xff
+		local g = (pal0:get(i) >>  8) & 0xff
+		local b = (pal0:get(i) >>  0) & 0xff
+		
+		local best_dist, best_col = 100000000, 0
+		for i=0,63 do
+			local r1 = peek(0x5000+i*4+2)
+			local g1 = peek(0x5000+i*4+1)
+			local b1 = peek(0x5000+i*4+0)
+			local dist = (r1-r)^2 + (g1-g)^2 + (b1-b)^2
+			if (dist < best_dist) best_col = i best_dist = dist
+		end
+		
+		pal1[i] = best_col
+	end
+	
+	-- set draw pal and draw on to self
+	palt(0) -- no transparency
+	pal(pal1)
+	
+	set_draw_target(bmp)
+	spr(bmp)
+	set_draw_target()
+	
+	return bmp
+end
+
+
+on_event("drop_items",function(msg)
+
+	-- single file for now
+	local dropped_item = msg.items[1]
+	if dropped_item and dropped_item.pod_type == "file_reference" and 
+		type(dropped_item.fullpath) == "string" and
+		dropped_item.fullpath:ext() == "png" then
+		
+		local g = fetch(dropped_item.fullpath)
+		if (type(g) == "userdata") then
+			
+			local bmp, pal1 = g:convert("u8", true)
+			backup_state()
+			item[current_item].bmp = colour_fit(bmp, pal1)
+			set_current_item(current_item)
+			clear_selection()
+		end
+
+	else
+		notify("could not load dropped file")
+	end
+	
+	
+end)
+
+
+
+
+:: nav.lua
+--[[pod_format="raw",created="2023-10-11 02:18:48",modified="2024-04-09 09:20:36",revision=3435,stored="2023-24-28 00:24:00"]]
+--[[
+	navigate sprite bank
+	+ top-level operations (resize bitmap)
+
+	tab to toggle pane (and dock/undock toolbar!)
+]]
+
+local icons=
+{
+	-- notes
+	"[gfx]08087777770077777700700007007777770070000700777777000777777000000000[/gfx]",
+	
+	-- scale
+	"[gfx]08087070707000000000700000700000000077700070777000007770707000000000[/gfx]",
+	
+	-- unlock, lock
+	"[gfx]08080077700007000700070000000777770007707700077777000000000000000000[/gfx]",
+	"[gfx]08080000000000777000070007000777770007707700077777000000000000000000[/gfx]"
+}
+
+function make_toggle_button(el)
+
+	local el = el or {}
+	el.width = el.width or 7
+	el.height = el.height or 7
+	el.set = el.set or function() end
+	el.get = el.get or function() end
+	el.cursor="pointer"
+	
+	function el:draw()
+		local b = el.bmp0
+		if (self.get() and el.bmp1) b = el.bmp1
+		local col = self.get() and 7 or 13
+		pal(7,col)
+		spr(b, 0, 0)
+		pal()
+	end
+	
+	function el:click()
+		el.set(not el.get())
+	end
+	
+	return el
+end
+
+
+-- to do: lock aspect button 
+-- (only need to change width to go from 12x8 -> 24x16)
+function resize_item(index, width, height)
+	-- note: userdata only takes numbers for sizes, not strings (!)
+
+	if (width) width=tonum(width)
+	if (height) height=tonum(height)
+	
+	local ww = item[index].bmp:width()
+	local hh = item[index].bmp:height()
+	local aspect = ww / hh
+
+	local ww = tonum(width) or ww
+	local hh = tonum(height) or hh
+	
+	if (lock_aspect) then
+		if (not width)  width  = hh * aspect
+		if (not height) height = ww / aspect
+	else
+		width = width or ww
+		height = height or hh
+	end
+	
+	--printh("width:"..tostr(width).."  height:"..tostr(height))
+	--printh("type(width):"..type(width).."  type(height):"..type(height))
+
+	if (width < 1 or width > 8192 or
+		height < 1 or height > 8192 or
+		width * height > 1024*1024) then
+		-- to do: error "bad size" or "too big"
+		return
+	end
+		
+	local old = item[index].bmp
+	local new = userdata("u8", width, height)
+	
+	blit(old, new, 0,0, 
+		new:width()\2 - old:width()\2,
+		new:height()\2 - old:height()\2
+	)
+	
+	item[index].bmp = new
+	
+	set_current_item(index) -- update 
+	refresh_gui = true
+end
+
+
+function create_item_info(el)
+
+	el = gui:new(el)
+
+	function el:draw()
+		--rect(0,0,self.width-1, self.height-1, 13)
+	end
+	
+	-- preview thumb
+	el:attach{
+		x=0,y=0,width=16,height=16,
+		draw=function(self)
+			rectfill(0,0,23,23,0)
+			local b= item[current_item].bmp
+			spr(b,self.width/2 - b:width()/2, self.height/2-b:height()/2)
+		end
+	}
+	
+	local xx0 = 20
+	local yy  = 0
+	-- index
+	el:attach{
+		x=xx0,y=yy,width=15,height=7,
+		draw=function(self)
+			local b= item[current_item].bmp
+			rectfill(0,0,self.width-1,self.height-1,0)
+			print(string.format("%03d",current_item),2,1,7)
+		end
+	}
+	
+	local xx = xx0 + 18
+	
+	-- width
+	el:attach_field{
+		x=xx,y=yy,width=15,height=7,
+		get=function() return item[current_item].bmp:width() end,
+		set=function(self,val) 
+			resize_item(current_item, val, nil)
+		end,
+		label=""--size:"
+	}
+	
+	-- toggle lock
+	el:attach(make_toggle_button{
+		x=xx+16,y=0,
+		bmp0=userdata(icons[3]),
+		bmp1=userdata(icons[4]),
+		set=function(val) lock_aspect = val end,
+		get=function() return lock_aspect end,
+	})
+	
+	-- height
+	el:attach_field{
+		x=xx+24,y=yy,width=15,height=7,
+		get=function() return item[current_item].bmp:height() end,
+		set=function(self,val) 
+			resize_item(current_item, nil, val)
+		end,
+		label=""
+	}	
+	
+	-- sprite flags
+	for i=0,7 do
+		el:attach{
+		cursor="pointer",
+		--x=xx0+i*7,
+		x=81+i*6,
+		y=0,
+		width=5,height=9,
+		index=i,
+		draw=function(self)
+			local col0 = 1
+			local col1 = 13
+			if (item[current_item].flags & (1<<self.index)) > 0 then
+				col0 = 8 + self.index
+				col1 = 7
+			end
+			circfill(2,2,2,col0)
+			circ(2,2,2,0)
+		end,
+		
+		click = function(self)
+			backup_state()
+			item[current_item].flags ^^= (1<<self.index)
+		end,
+	}
+	end
+	
+	-- edit extra. later!
+	--[[
+	el:attach(make_toggle_button{
+		x=20,y=9,
+		bmp0=userdata(icons[1])
+	})
+	]]
+	
+	-- stretch; don't need
+	--[[
+	el:attach(make_toggle_button{
+		x=54,y=9,
+		bmp0=userdata(icons[2])
+	})	
+	]]
+
+	return el
+end
+
+
+function create_bank_tabs(el)
+
+	el = gui:new(el)
+
+	function el:draw()
+		--rect(0,0,self.width-1, self.height-1, 13)
+	end
+	
+	for i=0,3 do
+		local y_offs = i == current_bank and 0 or 1
+		local tab = el:attach({
+			x=i*12,y=y_offs,width=11,height=el.height - y_offs,
+			index=i,
+			cursor="pointer",
+			draw = function(self)
+				local sel = current_bank == self.index
+				rectfill(0,0,self.width-1, self.height-1, sel and 7 or 6)
+				pset(0,0,5)
+				line(0,1,1,0,5)
+				line(0,2,2,0,5)
+				
+				pset(self.width-1,0,5)
+				
+				line(0,self.height-1,self.width-1,self.height-1,13)
+				print(self.index,5,1,13)
+			end,
+			click = function(self)
+				set_current_bank(self.index)
+				refresh_gui = true
+			end
+			
+		})
+	end
+	
+
+	
+	return el
+end
+
+function create_nav(el)
+
+	function el:draw()
+		clip()
+		rectfill(-1,-1,self.width, self.height, 0)
+		
+		for y=0,7 do
+			for x=0,7 do
+				local scale = 1
+				local bmp = item[x + y*8 + current_bank*64].bmp
+				local ww,hh = bmp:width(), bmp:height()
+				-- to do: this makes very thin bmps invisible in preview
+				scale = 16 / max(ww,hh)
+				if (scale >= 1) then
+					scale = scale \ 1
+				elseif (scale >= 0.666) then
+					scale = 1 -- up to 24x24, still show pixel for pixel
+				end
+				
+				
+				clip(self.sx + x*16, self.sy + y*16, 16,16)
+				sspr(bmp,
+					0,0,nil,nil,
+					x*16 + 8 - ww * scale/2,
+					y*16 + 8 - hh * scale/2,
+					ww*scale, hh*scale)
+			end
+		end
+		
+		if (current_bank == current_item\64) then
+			
+			local ii = (current_item - current_bank*64)
+			local xx = (ii % 8) * 16
+			local yy = (ii \ 8) * 16
+	
+			clip()
+			
+			rect(xx-2,yy-2,xx+17,yy+17,0)
+			rect(xx-1,yy-1,xx+16,yy+16,7)
+		end
+		
+		
+	end
+	
+
+	function el:drag(msg)
+		local i = (msg.mx * 8 \ self.width) + (msg.my * 8 \ self.height) * 8
+		set_current_item(i + current_bank*64)
+	end
+	
+	return el
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:: pal.lua
+--[[pod_format="raw",created="2023-05-11 02:05:01",modified="2024-03-07 08:23:39",revision=655,stored="2023-11-28 03:11:19"]]
+local pcols = {[0]=
+	0,19,3,27,  11,26,10,23,
+	1,17,12,28, 18,16,13,29,
+	2,30,14,31, 24,8,25,9,
+	20,4,21,15, 5,22,6,7,
+}
+
+pcols_continuous = {[0] =
+	0,20,4,31,15,8,24,2,
+	21,5,22,6,7,23,14,30,
+	1,16,17,12,28,29,13,18,
+	19,3,27,11,26,10,9,25,
+}
+
+pcols_identity = {[0] =
+	0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
+	16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
+}
+
+
+
+function create_pal_tabs(el)
+
+	el = gui:new(el)
+
+	function el:draw()
+		--rect(0,0,self.width-1, self.height-1, 13)
+	end
+	
+	local swatch_name={[0]="^","^"}
+	
+	for i=0,1 do
+		local y_offs = i == pal_swatch and 0 or 1
+		local tab = el:attach({
+			x=i*12,y=y_offs,width=11,height=el.height - y_offs,
+			index=i,
+			draw = function(self)
+				local sel = pal_swatch == self.index
+				rectfill(0,0,self.width-1, self.height-1, sel and 6 or 13)
+				pset(0,0,5)
+				line(0,1,1,0,5)
+				line(0,2,2,0,5)
+				
+				pset(self.width-1,0,5)
+				
+				line(0,self.height-1,self.width-1,self.height-1,13)
+				print(swatch_name[self.index],5,1,5)
+				
+			end,
+			
+			click = function(self)
+				pal_swatch = self.index
+				refresh_gui = true
+			end
+			
+		})
+	end
+	
+
+	
+	return el
+end
+
+
+
+--for i=0,63 do pcols[i]=i end
+
+--[[
+pcols[22],pcols[21]=pcols[21],pcols[22]
+pcols[16],pcols[17],pcols[18] = pcols[18], pcols[16],pcols[17]
+]]
+
+pal_swatch = 1
+
+function create_palette(el)
+
+	-- identity
+	for i=0,63 do pcols[i] = i end
+	
+	if pal_swatch == 1 then
+		for i=0,63 do 
+			pcols[i] = pcols_continuous[i\2] or 0 
+		end
+	end
+	
+	-- to do: adaptive
+	local epr = 16
+	local ww = el.width / epr
+	local hh = el.height / 4
+	
+	function el:draw()
+		clip()
+		
+		rectfill(0,0,self.width, self.height, 0)
+		rectfill(-1,-1,self.width, self.height, 0)
+		
+		for y=0,64\epr-1 do
+			for x=epr-1,0,-1 do
+				rectfill(x * ww, y * hh, x * ww + ww-1, y * hh + hh-1, 
+				pcols[x + y*epr])
+				if (pcols[x + y*epr] == col) then
+					local xx = x * ww
+					local yy = y * hh
+					if (pal_swatch == 0 or x%2 == 0) then
+						rect(xx+0,yy+0,xx+ww*(1+pal_swatch)-1,yy+hh-1,7)
+						rect(xx+1,yy+1,xx+ww*(1+pal_swatch)-2,yy+hh-2,0)
+					end
+				end
+			end
+		end
+		
+		
+	end
+	
+	function el:drag(msg)
+		local xx = msg.mx \ ww
+		local yy = msg.my \ hh
+		col = pcols[xx + yy * epr] or 0
+	end
+	
+	
+	return el
+end
+
+
+
+
+
+
+
+
+
+
+:: undo.lua
+--[[pod_format="raw",created="2023-29-14 03:29:27",modified="2024-41-04 11:41:27",revision=1501,stored="2023-24-28 00:24:00"]]
+
+
+local function undo_save_state(ii)
+	-- don't store nils, to preserve order
+	return {
+		
+		ii.flags,
+		ii.bmp:copy(),
+		ii.sel and ii.sel:copy(),
+		ii.layer0 and ii.layer0:copy(),
+		ii.layer and ii.layer:copy(),
+		ii.layer_x or 0,
+		ii.layer_y or 0,
+		ii.pan_x,
+		ii.pan_y,
+		ii.zoom
+	}
+end
+
+local function undo_load_state(s, ii)
+
+	ii.flags = s[1]
+	ii.bmp =   s[2]
+	ii.sel =   s[3] or nil
+	ii.layer0 = s[4] or nil
+	ii.layer = s[5] or nil
+	ii.layer_x = s[6]
+	ii.layer_y = s[7]
+	ii.pan_x = s[8]
+	ii.pan_y = s[9]
+	ii.zoom = s[10]
+	
+end
+
+function backup_state()
+
+	local ii = item[current_item]
+	local tt0 = stat(1)
+	ii.undo_stack:checkpoint()
+
+--	printh(string.format("%3.3f",stat(1)-tt0).." // patch size:"..
+--		#(ii.undo_stack.undo_stack[#ii.undo_stack.undo_stack]))
+end
+
+
+function undo()
+	local ii = item[current_item]
+	ii.undo_stack:undo()
+end
+
+function redo()
+	local ii = item[current_item]
+	ii.undo_stack:redo()
+end
+
+function add_undo_stack(ii)
+	ii.undo_stack = create_undo_stack(undo_save_state, undo_load_state, 0x11, ii)
+end
+
+
+
+
+:: update.lua
+--[[pod_format="raw",created="2023-10-10 07:45:26",modified="2024-04-09 09:20:36",revision=2543,stored="2023-24-28 00:24:00"]]
+
+function get_selected_region()
+	local x0,y0 = 10000, 10000
+	local x1,y1 = 0,0
+	for y = 0, cbmp_height-1 do
+		for x = 0, cbmp_width-1 do
+			if (get(csel, x, y) > 0) then
+				x0 = min(x0, x) y0 = min(y0, y)
+				x1 = max(x1, x) y1 = max(y1, y)
+			end 
+		end
+	end
+	if (x0 == 10000) x0,y0,x1,y1 = 0, 0, cbmp_width-1, cbmp_height-1
+	
+	return x0, y0, x1-x0+1, y1-y0+1
+end
+
+
+function copy_selected_region()
+	local x0, y0, ww, hh = get_selected_region()
+	local out = userdata("u8", ww, hh)
+	--printh(pod{x0,y0, ww,hh})
+	blit(cbmp, out, x0, y0, 0, 0)
+	return out
+end
+
+
+function rotate_selection(dx, dy)
+	--local x,y,w,h = get_selected_region()
+	--local bmp2 = copy_selected_region()
+	local x,y = 0, 0
+	local bmp2 = cbmp:copy()
+	local w,h = bmp2:attribs()
+	set_draw_target(cbmp)
+	
+	clip(x,y,w,h)
+	rectfill(x,y,x+w-1,y+h-1,0)
+	for yy=-1,1 do
+		for xx=-1,1 do
+			spr(bmp2,dx+x+xx*w,dy+y+yy*h)
+		end
+	end
+			
+	clip()
+	set_draw_target()
+end
+
+function move_selection(dx, dy)
+	
+	backup_state()
+	
+	if (not ci.layer) return rotate_selection(dx, dy)
+	
+	blit(ci.layer0, cbmp)
+	ci.layer_x += dx
+	ci.layer_y += dy
+	blit(ci.layer, cbmp, 0, 0, ci.layer_x, ci.layer_y)
+	
+	-- new selection
+	csel:clear()
+	local ww, hh = ci.layer:attribs()
+	set_draw_target(csel)
+	rectfill(ci.layer_x, ci.layer_y, ci.layer_x + ww-1, ci.layer_y + hh-1, 1)
+	csel_outline = nil -- regenerate
+	set_draw_target()
+end
+
+ 
+function clear_selection()
+	if (csel) csel:clear()
+	csel_outline = nil -- refresh
+	ci.layer, ci.back = nil, nil -- what is ci.back? to do: delete if not used
+end
+
+function select_all()
+	backup_state()
+	csel:copy(1,true)
+	csel_outline = nil -- regenerate	
+	local ww,hh = cbmp_width,cbmp_height
+	ci.layer = userdata("u8",ww,hh)
+	ci.layer_x = 0
+	ci.layer_y = 0
+	ci.layer0 = cbmp:copy()
+	blit(cbmp,ci.layer)
+end
+
+
+function modify_selection(op)
+	backup_state()
+	
+	local tbmp = ci.layer or cbmp
+	local orig = tbmp:copy()
+	
+	if (op == "flip_x") then
+		for x=0, tbmp:width()-1 do
+			blit(orig,tbmp,x,0,tbmp:width()-1-x,0,1,tbmp:height())
+		end
+		
+	end
+	
+	if (op == "flip_y") then
+		for y=0, tbmp:height()-1 do
+			blit(orig,tbmp,0,y,0,tbmp:height()-1-y,tbmp:width(),1)
+		end
+	end
+	
+	-- layer only -- don't clear whole map with del
+	if (ci.layer and op == "clear") then
+		ci.layer:clear()
+	end
+	
+	-- update changes
+	if (ci.layer) blit(ci.layer, cbmp, 0, 0, ci.layer_x, ci.layer_y)
+end
+
+
+ function _update()
+ 
+--[[
+	-- use update_gui_layout instead
+	if (get_display():height() != last_display_height) refresh_gui = true
+	last_display_height = get_display():height()
+]]	
+
+	if (refresh_gui) then
+		generate_gui()
+		refresh_gui = false
+	end
+	
+ 	gui:update_all()
+ 	update_gui_layout()
+ 	set_draw_target()
+ 	
+ 	------------------------------------------
+ 	if (gui:get_keyboard_focus_element()) return
+ 	------------------------------------------
+ 	
+ 	if keyp("tab") then
+		show_pane = not show_pane
+	elseif keyp("enter") then
+		clear_selection()
+	end
+	
+	local mag = key("ctrl") and 8 or 1
+	if (keyp("left"))  move_selection(-mag, 0)
+	if (keyp("right")) move_selection( mag, 0)
+	if (keyp("up"))    move_selection( 0,-mag)
+	if (keyp("down"))  move_selection( 0, mag)
+	
+	if (keyp("f")) modify_selection("flip_x")
+	if (keyp("v")) modify_selection("flip_y")
+	if (keyp("del") or keyp("backspace")) modify_selection("clear")
+	
+	-- navigate
+	local mag = key("shift") and 8 or 1
+	if (keyp("-")) set_current_item(current_item - mag)
+	if (keyp("+")) set_current_item(current_item + mag)
+	
+	
+ 	-- ctrl --
+ 	
+ 	if (key("ctrl")) then
+ 
+ 	if keyp("c") or keyp("x") then
+ 		set_clipboard(pod(copy_selected_region(),7,{pod_type="gfx"}))
+		if keyp("x") then
+			backup_state()
+			set_draw_target(cbmp)
+			local x,y,w,h = get_selected_region()
+			rectfill(x,y,x+w-1,y+h-1,0)
+			set_draw_target()
+		end
+	end
+	
+	if keyp("v") or keyp("b") then
+		local ct = get_clipboard()
+		local bmp1 = nil
+		if (sub(ct,1,5) == "[gfx]") then
+			bmp1 = userdata(ct)
+		else
+			bmp1 = unpod(ct)
+		end
+		if (type(bmp1) == "userdata") then
+		
+			-- paste big
+			if (keyp"b") then
+				local w,h = bmp1:attribs()
+				local bmp2 = userdata("u8",w*2,h*2)
+				for y=0,h*2-1 do
+					for x=0,w*2-1 do
+						bmp2:set(x,y,get(bmp1,x/2,y/2))
+					end
+				end
+				bmp1 = bmp2
+			end
+			
+			backup_state()
+			item[current_item].bmp = bmp1
+			set_current_item(current_item)
+		end
+	end
+	
+	if keyp("z") then
+		undo()
+		set_current_item(current_item)
+		refresh_gui = true
+	end
+	
+	if keyp("y") then
+		redo()
+		set_current_item(current_item)
+		refresh_gui = true
+	end
+	
+	if keyp("a") then
+		select_all()
+	end
+	
+	
+	end -- ctrl
+	
+	
+ end
+
+:: [eoc]

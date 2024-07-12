@@ -1,0 +1,167 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: .info.pod
+b64$LS1bW3BvZCxhdXRob3I9ImxleGFsb2ZmbGUiLGNyZWF0ZWQ9IjIwMjQtMDQtMzAgMTk6MDk6
+MzMiLGljb249dXNlcmRhdGEoInU4IiwxNiwxNiwiMDAwMDAwMDEwMTAxMDEwMTAxMDEwMTAxMDEw
+MDAwMDAwMDAwMDEwNzA3MDcwNzA3MDcwNzA3MDcwNzAxMDAwMDAwMDEwNzBkMGQwZDBkMGQwZDBk
+MGQwZDBkMDcwMTAwMDEwNzBkMGQwZDBkMGQwZDBkMGQwZDBkMGQwZDA3MDEwMTA3MGQwZDBkMDcw
+NzBkMGQwNzA3MGQwZDBkMDcwMTAxMDcwZDBkMDcwNzBkMGQwZDBkMDcwNzBkMGQwNzAxMDEwNzBk
+MGQwNzA3MGQwZDBkMGQwNzA3MGQwZDA3MDEwMTA3MGQwZDA3MDcwZDBkMGQwZDA3MDcwZDBkMDcw
+MTAxMDcwZDBkMDcwNzBkMGQwZDBkMDcwNzBkMGQwNzAxMDEwNzBkMGQwZDA3MDcwZDBkMDcwNzBk
+MGQwZDA3MDEwMTA3MGQwZDBkMGQwZDBkMGQwZDBkMGQwZDBkMDcwMTAxMDYwNzBkMGQwZDBkMGQw
+ZDBkMGQwZDBkMDcwNjAxMDEwNjA2MDcwNzA3MDcwNzA3MDcwNzA3MDcwNjA2MDEwMDAxMDYwNjA2
+MDYwNjA2MDYwNjA2MDYwNjA2MDEwMDAwMDAwMTA2MDYwNjA2MDYwNjA2MDYwNjA2MDEwMDAwMDAw
+MDAwMDEwMTAxMDEwMTAxMDEwMTAxMDEwMDAwMDAiKSxtb2RpZmllZD0iMjAyNC0wNy0xMiAxOTo0
+Mzo0MyIsbm90ZXM9IiIsc3RvcmVkPSIyMDIzLTU0LTEyIDEwOjU0OjA2Iix0aXRsZT0iUGljb3Ry
+b24gQ29kZSBFZGl0b3IiLHZlcnNpb249IjAuMSIsd29ya3NwYWNlcz17e2xvY2F0aW9uPSJtYWlu
+Lmx1YSIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZ2Z4LzAuZ2Z4Iix3b3Jrc3BhY2Vf
+aW5kZXg9Mn0se2xvY2F0aW9uPSJtYXAvMC5tYXAiLHdvcmtzcGFjZV9pbmRleD0zfX1dXWx6NAAE
+AAAAAwAAADBuaWw=
+:: gfx/
+:: gfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTAxLTI0IDE5OjAxOjU2Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTAxLTI0IDE5OjAxOjU2Il1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: gfx/0.gfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTQ3LTI1IDA3OjQ3OjUwIixtb2RpZmllZD0iMjAyMy01
+NC0xMiAxMDo1NDowNiIscmV2aXNpb249Ml1dbHo0AHEAAAAFMwAA8xR7WzBdPXtibXA9cHh1AEMg
+EBAE8PAsZmxhZ3M9MCxwYW5feAgA73k9MCxzY2FsZT0xMn0sMwD-------------------------
+-----------------------------------------_dQPTEyfX0=
+:: map/
+:: map/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTAxLTI0IDE5OjAxOjU2Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTAxLTI0IDE5OjAxOjU2Il1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: map/0.map
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTQ3LTI1IDA3OjQ3OjUwIixtb2RpZmllZD0iMjAyMy01
+NC0xMiAxMDo1NDowNiIscmV2aXNpb249Ml1dbHo0AF0AAABYBAAA8BN7bGF5ZXI9e1swXT17Ym1w
+PXVzZXJkYXRhKCJpMTYiLDE2AwAvIjABAP---__hIikscGFuX3g9MAgA8gZ5PTAsc2NhbGU9MSx0
+aWxlX2g9MTYKAHB3PTE2fX19
+:: sfx/
+:: sfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTAxLTI0IDE5OjAxOjU2Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTAxLTI0IDE5OjAxOjU2Il1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: main.lua
+--[[pod_format="raw",created="2023-02-24 19:02:00",modified="2023-54-12 10:54:06",revision=3]]
+local ce
+
+function _draw()
+
+	g:draw_all() -- covers whole screen; don't need to cls()
+
+end
+
+function _update()
+
+	-- code editor always has keyboard focus when search is not open
+	if (not ce:search_box_is_open()) ce:set_keyboard_focus(true)
+
+	g:update_all()
+
+end
+
+
+function _init()
+
+	window{
+		tabbed = true,
+		icon   = userdata("[gfx]08080770077077000077770000777700007777000077770000770770077000000000[/gfx]"),
+	}
+
+	g = create_gui()
+	
+	ce = g:attach_text_editor({
+		x=0,y=0,
+		width=get_display():width(),
+		height=get_display():height(),
+		syntax_highlighting=true,
+		show_line_numbers=true,
+		markup=false, -- to do: remove markup from editor widget
+		embed_pods=true,
+		has_search=true
+	})
+
+	ce:attach_scrollbars()
+	
+	wrangle_working_file(
+
+		-- save to obj
+		function ()
+			return table.concat(ce:get_text(),"\n")
+		end,
+
+		-- load from obj (assumed to be a string)
+		function (str, meta)
+			local text = split(str, "\n", false)
+			--if (text) printh("code: loaded "..#text.." lines")
+			if (not text or #text == 0) then text = {""} end
+			ce:set_text(text)
+			ce.syntax_highlighting = pwf():ext() == "lua"
+		end,
+
+		-- default filename
+		"untitled.txt", 
+
+		-- location string
+		function()
+			local x,y = ce:get_cursor()
+			return y
+		end,
+
+		-- process location string. if it is a number, jump to that number
+		-- to do: "hoge.lua#function:foo"? or just "hoge.lua#foo" to search for that string?
+
+		function(loc)
+			--printh("code recieved loc: "..pod(loc))
+			if tonum(loc) then
+				--printh("[code] setting cursor y to: "..loc)
+				ce:set_cursor(nil, tonum(loc))
+				--ce:center_cursor(0.3) -- 0.3 put cursor nearer to top.  to do: why does this not work on first load via infobar?
+			end
+		end
+
+	)
+	
+	-- to do: menu items
+	--[[
+	"\^:304884844c360300 Find Text     (CTRL-F)",
+	"\^:1f003f003e007c00 Jump to Line  (CTRL-L)",
+	]]
+
+	-- test
+	ce:center_cursor(0.5)
+
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:: untitled.txt
+--[[pod_format="raw",created="2024-42-25 01:42:14",modified="2024-42-25 01:42:14",revision=0]]
+
+:: [eoc]

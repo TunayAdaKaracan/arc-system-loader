@@ -1,0 +1,962 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: .info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEwLTIyIDEwOjI4OjEzIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTI1LTE4IDExOjI1OjIyIix3b3Jrc3BhY2VzPXt7
+bG9jYXRpb249Im1haW4ubHVhIix3b3Jrc3BhY2VfaW5kZXg9N30se2xvY2F0aW9uPSJnZngvMC5n
+ZngiLHdvcmtzcGFjZV9pbmRleD04fX1dXWx6NAAEAAAAAwAAADBuaWw=
+:: gfx/
+:: gfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEwLTIyIDEwOjI4OjEzIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTI4LTIyIDEwOjI4OjEzIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: gfx/0.gfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTA1LTMwIDEwOjA1OjMzIixtb2RpZmllZD0iMjAyMy0y
+NS0xOCAxMToyNToyMiIscmV2aXNpb249NTFdXWx6NACAAAAABDMAAPEWe1swXT17Ym1wPXB4dQBD
+IBAQBPDwLGZsYWdzPTAscGFuX3g9MggA33k9MixzY2FsZT04fSwyAAwTMDIAEzAyAC8xMjMA----
+--------------------------------------------------------------_2UD0xMn19
+:: map/
+:: map/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEwLTIyIDEwOjI4OjEzIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTI4LTIyIDEwOjI4OjEzIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: map/0.map
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTQ3LTE4IDEwOjQ3OjMzIixtb2RpZmllZD0iMjAyMy0x
+OC0yMiAwNToxODoxNSIscmV2aXNpb249N11de2xheWVyPXtbMF09e2JtcD11c2VyZGF0YSgiaTE2
+IiwxNiwxNiwiMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMCIpLHBhbl94PTAscGFuX3k9MCxzY2FsZT0xLHRpbGVfaD0xNix0aWxlX3c9MTZ9fX0=
+:: dat.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEyLTEwIDA1OjEyOjQyIixtb2RpZmllZD0iMjAyMy0y
+OC0xMCAwNToyODoxNSIscmV2aXNpb249N11de2Zvbz0iNiIsaG9nZT0ib2tleWRva2UifQ==
+:: main.lua
+--[[pod_format="raw",created="2023-03-30 05:03:12",modified="2023-25-18 11:25:22",revision=4612]]
+--[[
+
+	pf
+	
+]]
+
+local top_label_metadata = "[metadata]"
+local top_label = "[content]"
+
+local text_col = 6
+local scroll_y = 0
+
+local selected = -1
+
+local container
+local content
+local undo_stack
+
+-- the pod, but wrapped in a table
+-- means can refer to root items using p as parent,
+-- but also can have metadata + data forks.
+
+p = {
+	metadata = {
+		title = "foo",
+		author = "zep",
+		_system = {_desc="app data goes here; e.g. search bloom, universal file ID, md5?"}
+	},
+	contents = {
+		colours = {"the","quick","brown","fox"},
+		theme = {},
+		volume = 24,
+		audio = true,
+		fullscreen = false,
+		window_scale = 2,
+		icon = userdata"[gfx]08087770000070700000777000000700777007777070070077700000000000000000[/gfx]",
+		zstr = "this is a string",
+		zstr2= "this is a multiline string\nline 2\nline 3",
+		zstr3= "another string",
+		zstr4= "and another",
+	}
+}
+
+-- hacky notetree scheme; doesn't help much though.
+-- don't want to type in the numbers manually!
+p2={
+	metadata = {},
+	contents = {
+		["1 The World is everything that is the case"] =
+		{
+			["1.1"] = "foo",
+			["1.2"] = "bar",
+		}
+	}
+}
+
+p3={
+	metadata = {},
+	contents = {
+		hoge = {"a table for testing"}
+	}
+}
+
+if (p.contents.theme) then
+for i=1,50 do
+	add(p.contents.theme, "theme "..i)
+end
+end
+
+-- table pointing to each item,
+
+local pp = {}                      -- pod pointer -- generated along with gui
+local expand = {[p.contents]=true} -- which tables to expand. contents starts shown
+
+
+local function close_texted(save)
+	if (not texted) return
+	if (save) then
+		enter_new_value(table.concat(texted:get_text(),"\n"))
+	end
+	
+	editing_parent = nil
+	texted:detach()
+	texted = false
+	window{capture_escapes = false}
+	refresh_gui = true
+	editing_which = nil
+	
+end
+
+
+local function comp(i0, i1)
+
+	-- table values go first (similar to file listings)
+	-- (but only for non-number indexes -- can have tables in an order)
+	if (type(i0.v) == "table" and type(i0.k) != "number" and type(i1.v) != "table") return true
+	if (type(i1.v) == "table" and type(i1.k) != "number" and type(i0.v) != "table") return false
+	
+	local k0 = i0.k
+	local k1 = i1.k
+	
+	-- sort by key (not tables, or both tables)
+	if (type(k0) != type(k1)) then
+		-- sort by key type. numbers go last
+		if (type(k0) == "number") return false
+		if (type(k1) == "number") return true
+		
+		-- unusual case: differening types, and neither are tables or numbers
+		-- -> alphabetical by type
+		return type(k0) < type(k1)
+	end
+	
+	return k0 < k1 -- same type: can compare, I think?
+end
+
+
+local function get_key_str(key, val)
+	if (type(key)=="number") then 
+		--key = "\014\|i"..key.."\|e\015"
+		key = "\^:0000001818000000"
+	else
+		if (type(val) != "table") key = tostr(key)..":"
+	end
+	
+	if (val == p.metadata) key = top_label_metadata
+	if (val == p.contents) key = top_label
+	
+	return key
+end
+
+function enter_new_value(val)
+
+	local res = undo_stack:checkpoint()
+	-- printh("checkpoint: "..tostr(res))
+	local type0 = type(editing_parent[editing_key])
+	if (editing_which == "key") type0 = type(editing_key)
+	
+	-- keep numbers as numbers
+	if (type0 == "number") then
+		local num = tonum(val)
+		if (num) val = num
+	end
+	
+	if (editing_which == "key") then
+	
+	-- key changed --> set it
+	if (val != editing_key) then
+		if (val == "") then
+			-- int key
+			editing_parent[#editing_parent+1] = editing_parent[editing_key]
+		else
+			-- string key
+			editing_parent[val] = editing_parent[editing_key]
+		end
+		editing_parent[editing_key] = nil
+	end
+	
+	else
+	
+		editing_parent[editing_key] = val
+
+	end
+	
+end
+					
+	
+
+function add_node(content, parent, key, sy, depth, gui_label)
+
+	--printh("type(parent)"..type(parent))
+	
+	local item = add(pp, {
+		parent=parent,
+		key=key,
+		sy=sy,
+		depth=depth,
+		gui_label=gui_label,
+	})
+	
+	local val = parent[key]
+	
+	-- calculate item height based on item
+	local sy0 = sy
+	_,sy = print(tostr(parent[key]), 100000, sy)
+	item.height = sy - sy0
+	
+
+	if (editing_key == key and editing_parent == parent
+		and editing_which == "key") then
+		-- edit val
+		
+		selected = #pp -- always select the item being edited
+		
+		local xx = 10 + depth * 10 -- indentation calculation dupe
+		local kk = get_key_str(key, parent[key])
+		local kw = print(kk,0,-10000)
+		local bw = type(parent[key]) == "table" and 20 or 0 -- button width
+		
+		local x0 = xx + 30
+		texted = content:attach_text_editor{
+			bgcol = 0,
+			x = x0,
+			y = item.sy-3, -- fudged to match
+			width = get_display():width() - x0 - 20,
+			height = item.height,
+			block_scrolling = true,
+			key_callback = { 
+				enter = function () 
+					-- keep new value and close
+					close_texted(true)
+				end,
+				escape	 = function()
+					-- close without keeping value
+					close_texted(false)
+				end,
+			}
+		}
+		texted:set_keyboard_focus(true)
+		texted:set_text(tostr(key))
+		texted:set_cursor(10000,1)
+		texted:select_all()
+		window{capture_escapes = true}
+		
+		last_num_lines = #texted:get_text()
+	
+	elseif (editing_key == key and editing_parent == parent) then
+		-- edit val
+		
+		selected = #pp -- always select the item being edited
+		
+		local xx = 10 + depth * 10 -- indentation calculation dupe
+		local kk = get_key_str(key, parent[key])
+		local kw = print(kk,0,-10000)
+		local bw = type(parent[key]) == "table" and 20 or 0 -- button width
+		
+		local x0 = xx + bw + kw + 1 -- fudged to match
+		texted = content:attach_text_editor{
+			bgcol = 0,
+			x = x0,
+			y = item.sy-3, -- fudged to match
+			width = get_display():width() - x0 - 20,
+			height = item.height,
+			block_scrolling = true,
+			key_callback = { 
+				enter = function () 
+					-- holding shift: let editor handle the enter
+					if(key("shift")) return true
+					
+					-- keep new value and close
+					close_texted(true)
+				end,
+				escape	 = function()
+					-- close without keeping value
+					close_texted(false)
+				end,
+			}
+		}
+		texted:set_keyboard_focus(true)
+		texted:set_text(tostr(val))
+		texted:set_cursor(10000,1)
+		window{capture_escapes = true}
+		
+		last_num_lines = #texted:get_text()
+	end
+
+	
+	-- no parent: gui item
+	if (not parent) return sy
+	
+   -- don't expand prev encountered table
+	if (encountered[val]) return sy
+	
+	if (type(val) == "table" and expand[val]) then
+		encountered[val] = true
+		
+		-- sort children
+		local child = {}
+		for k,v in pairs(val) do
+			add(child,{k=k,v=v})
+		end
+
+		--table.sort(child, comp) -- to do: keys sort replacement
+		
+		for i=1,#child do
+			sy = add_node(content, val, child[i].k, sy, depth+1)
+		end
+		
+		-- show when table is empty ([+] needs to something to expand!)
+		if (#child == 0) then
+			sy = add_node(content, val,nil,sy,depth+1,"{empty}")
+		end
+	end
+	
+	return sy
+end
+
+
+function create_pod_editor(parent, el)
+
+	-- is local to file
+	container = parent:attach(el)
+	
+	-- needs a draw function in order to clip
+	function container:draw()
+	end
+
+	-- is local to file
+	content = container:attach{
+		x=0,y=0,
+		width=container.width,
+		height=container.height -- will be updated by generate_pp
+	}
+	
+	
+	container:attach_scrollbars()
+	
+
+	local function generate_pp()
+		-- close any active editor
+		if (texted) texted:detach()
+		
+		-- generate from scratch each time
+		pp = {}
+		encountered = {} 
+		pp_height = add_node(content, p, "metadata", 7, 0)
+		pp_height = add_node(content, p, "contents", pp_height, 0)
+	
+		-- might be regenerating without refreshing gui
+		if (content) then
+			content.height = max(pp_height + 20, container.height)
+		end
+	
+	end
+	
+
+	function content:draw()
+		rectfill(0, 0, self.width-1, self.height-1, 1)
+		
+		local sy = 10
+		local item_h = 12
+		
+		-- to do: use y to render only needed items
+		for i=1,#pp do
+		
+			local item = pp[i]
+			local sx = 10 + item.depth * 10
+			--local sy = 10 + (item.y or 0)  -- y
+			local sy = item.sy
+			
+			local key = item.key
+			local parent = item.parent
+			
+			if i == selected and not editing_parent then
+				rectfill(0,sy-2,480,sy+item.height-3,2)
+			end
+			
+			-- messy: use this loop for calculating drawn y too
+			-- use for positioning cursor / text box
+			--item.sy = sy
+			local sy = item.sy 
+			
+			if item.gui_label then
+				-- gui line (add item)
+				print(item.gui_label, sx, sy, 13)
+			
+			elseif editing_key == key and editing_parent == parent then
+				
+				if (editing_which == "key") then
+					print("key:", sx, sy, 13)
+				else
+					-- editing a value
+					local label = get_key_str(key)
+					print("\fe"..label.." \f6", sx, sy, text_col)
+				end
+				
+			else
+				-- value	
+				local val = parent[key]
+				if (type(val) == "table") then
+					local label = get_key_str(key,val)
+					
+					print((expand[val] and "[-] " or "[+] ")..label, sx, sy, text_col)
+				else
+					local label = get_key_str(key).." "
+					local col = "\f6"
+					if (type(val) != "string") col = "\fc"
+					local xx = print("\fe"..label,sx,sy,text_col)
+					print(col..tostr(val), xx, sy, text_col)
+					
+				end
+			end
+		end
+		
+	end
+	
+	function content:tap(msg)
+		--local i = 1 + y \ 12
+		
+		close_texted(true)
+		
+		local i = 1
+		while (i < #pp and msg.my >= pp[i].sy + pp[i].height) do
+			i += 1
+		end
+		
+		if (i < 1 or i > #pp) return
+		
+		local selected0 = selected
+		selected = i	
+		--printh("selected: "..selected)
+
+		local item = pp[i]
+		local key = item.key
+		local parent = item.parent
+			
+		-- button (not currently used)
+		if (item.gui_label) then
+			if (item.gui_label == "[new]") then
+				add(parent, "new item string")
+				refresh_gui = true
+				
+			end
+			return
+		end
+		
+		-- expand table
+		
+		-- click on item to expand / edit
+		local val = parent[key]
+		
+		local xx = 10 + item.depth * 10 -- indentation calculation dupe
+		local kk = get_key_str(key, val)
+		local kw = print(kk,0,-10000)
+		local bw = type(val) == "table" and 20 or 0 -- button width
+		
+		if (type(val) == "table" and msg.mx < xx + bw) then
+			expand[val] = not expand[val]
+			refresh_gui = true
+		elseif msg.mx < xx + bw + kw then
+			-- edit key
+			if (selected0 == i or msg.last_mb > 1) edit_pp_key(item)
+		else
+			-- edit value -- if already selected 
+			-- to do: right click for context menu?
+			if (selected0 == i or msg.last_mb > 1) edit_pp_value(i)
+		end
+		
+	end
+	
+	-- so that can double click on an item to edit it
+	-- (otherwise second tap won't count)
+	-- to do: review ** maybe a problem with event behaviour **
+	-- content.doubleclick = content.tap
+	
+
+	-- hrrm.. could be automated by attach_scrollbars, but some custom
+	-- logic in text editor version
+	function content:clamp_scrolling()
+		local max_y = max(0, content.height - container.height)
+		content.y = mid(0, content.y, -max_y)
+		content.x = min(0, content.x)
+	end
+	function content:update()
+
+		local selected_0 = selected
+		if (not editing_parent) then
+			if (keyp("up")) selected = mid(1, selected - 1, #pp)
+			if (keyp("down"))  selected = mid(1, selected + 1, #pp)
+		end
+		
+		if (selected != selected_0 and content) then
+			content.y = mid(-pp[selected].sy-6, content.y, 
+				-pp[selected].sy+container.height-22)
+		end
+	
+		content:clamp_scrolling()
+	end
+	
+	function container:mousewheel(msg)
+		if (key("ctrl")) then
+			content.x += msg.wheel_y * 32 
+		else
+			content.y += msg.wheel_y * 32 
+		end
+	end
+	
+	generate_pp()
+
+	-- return inner thing -- same as code editor
+	return content
+end
+
+
+function generate_gui()
+	gui_w = get_display():width()
+	gui_h = get_display():height()
+	
+	gui = create_gui()
+	
+	pe = create_pod_editor(gui, {
+		x=0,y=0,width=gui_w,height=gui_h
+	})
+	
+	pe.y = scroll_y
+	
+	-- based starting cursor position in text editor (if it exists)
+	-- on mouse position.
+	if (texted) texted:set_cursor()
+	
+	
+end
+
+-- store expand[] in a way that can be stored without
+-- referencing the nodes in p directly (for undoing)
+
+function store_expand_data(p)
+	-- traverse tree in order
+	local exp = {}
+	local function add_node(n)
+		if (type(n) != "table") return
+		local out = {__expand = expand[n]}
+		for k,v in pairs(n) do
+			if (type(v) == "table") out[k] = add_node(v)
+		end
+		return out
+	end
+	return add_node(p)
+end
+
+function restore_expand_data(p, dat)
+	expand = {}
+	--printh("@@ expanding from: "..pod(dat))
+	-- restore pod node pnode from node in data dnode
+	local function restore_node(pnode, dnode) 
+		if (type(dnode) != "table") return
+		if (dnode.__expand) expand[pnode] = true
+		for k,v in pairs(dnode) do
+			restore_node(pnode[k], dnode[k])
+		end
+	end
+	restore_node(p, dat)
+end
+
+function save_working_file()
+	store(current_filename, p.contents, p.metadata)
+	printh("storing metadata: "..pod(p.metadata))
+	local e = store_expand_data(p)
+	load_working_file(current_filename) -- update metadata!
+	restore_expand_data(p, e)
+	notify("saved "..current_filename)
+end
+
+
+function load_working_file(filename)
+	
+	printh("load_working_file: "..filename.."  resolves as:"..fullpath(filename))
+
+	current_filename = filename
+	local dat, meta = fetch(filename)
+	if (dat) then
+		p = {
+			metadata = meta,
+			contents = dat
+		}
+	else
+		p = {
+			metadata = {},
+			contents = {}
+		}
+	end
+	
+	expand = {[p.contents]=true}
+end
+
+function _init()
+
+	poke(0x4000,get(fetch("/system/fonts/lil.font"))) -- variable width
+	poke(0x5600,get(fetch("/system/fonts/p8.font")))  -- for tiny numbers
+	
+	undo_stack = create_undo_stack(
+		function() 
+		return {
+			pod(p),
+			selected,
+			store_expand_data(p),
+		} 
+		end,
+		
+		function(s)
+			p = unpod(s[1])
+			selected = s[2]
+			restore_expand_data(p, s[3])
+			-- show_cursor()
+		end
+	)
+	
+	cd(env().path)
+	
+	-- get_filename_from_args logic
+	-- can't use wrangle_working_file because need to also manage metadata
+	local fn = (env().argv and env().argv[1]) or "untitled.pod"
+	fn = fullpath(fn)	
+	current_filename = fullpath(fn)
+	
+	load_working_file(current_filename)
+	
+	window{
+		width=200,
+		height=200,
+		userdata"[gfx]08087770000070700000777000000700777007777070070077700000000000000000[/gfx]"
+	}
+	
+
+	menuitem{
+		id = "open_file",
+		label = "\^:7f4141417f616500 Open File",
+		shortcut = "CTRL-O", -- ctrl-s is handled by window manager
+		action = function() 
+			create_process("/system/apps/filenav.p64", {window_attribs={workspace = "current"}})
+		end
+	}
+
+	menuitem{
+		id = "save_file",
+		label = "\^:7f4141417f616500 Save File",
+		shortcut = "CTRL-S", -- ctrl-s is handled by window manager
+		action = function() 
+			save_working_file()
+			notify("saved "..current_filename)
+			refresh_gui = true
+			--send_message(pid(), {event = "save_working_file"})
+		end
+	}
+
+	
+end
+
+
+function _draw()
+	cls(5)
+	
+	gui:draw_all()
+	
+end
+
+function edit_pp_key(item)
+	local parent = item.parent
+	local key = item.key
+	
+	editing_parent = parent
+	editing_key    = key
+	editing_which  = "key"
+		
+	refresh_gui = true
+end
+
+function edit_pp_value(i, k)
+	local item = pp[i]
+	local parent = item.parent
+	local key = item.key
+	
+	
+	
+	-- expand / collapse table
+	if (type(parent[key]) == "table") then
+		expand[parent[key]] = not expand[parent[key]]
+		refresh_gui = true
+		return
+	end
+	
+	-- toggle boolean
+	if (type(parent[key]) == "boolean") then
+		parent[key] = not parent[key]
+		return
+	end
+	
+	if (type(parent[key]) == "number" and (k=="left" or k=="right")) then
+		if (k=="left") parent[key] -= 1
+		if (k=="right") parent[key] += 1
+		return
+	end
+	
+	-- userdata -- can't edit yet
+	if (type(parent[key]) == "userdata") then
+		return
+	end
+	
+	editing_parent = parent
+	editing_key    = key
+	editing_which  = "value"
+	editing_index  = i
+	refresh_gui = true
+	
+end
+
+
+function update_texted()
+	if (not texted) return
+	
+		local num_lines = #texted:get_text()
+		if (num_lines != last_num_lines) then
+		
+			-- resize (without refreshing gui)
+			local hh0 = texted.parent.height
+			local hh 
+			_,hh = print(table.concat(texted:get_text(),"\n"), 100000, 0)
+			local dh = hh - hh0
+			
+			-- update height of text editor box
+			texted.height += dh
+			texted.parent.height += dh
+			pp_height += dh
+			if (content) then
+				content.height = max(pp_height + 20, container.height)
+			end
+			
+			-- update positions of items below this one
+			pp[editing_index].height += dh
+			for i=editing_index+1, #pp do
+				pp[i].sy += dh
+			end
+			
+		end
+		last_num_lines = num_lines
+		
+end
+
+function new_item(prefix, newval, dindex)
+	undo_stack:checkpoint()
+	dindex = dindex or 0
+	local item = pp[selected]
+		local parent = item.parent[item.key]
+		local index = nil
+		
+		-- leaf or unexpanded table -> operate on parent
+		if (type(parent) != "table" or not expand[parent]) then
+			parent = item.parent 
+			if (type(item.key) == "number") index = item.key + dindex
+		end
+		
+		if (type(index) == "number") then
+			add(parent, newval, index)
+			-- edit straight away (when not a table)
+			if (type(newval) != "table") then
+				editing_parent = parent
+				editing_key = index
+			end
+		else
+			-- new string key
+			local keyi = 0
+			local key = prefix..keyi
+			while type(parent[key]) != "nil" do
+				keyi += 1
+				key = prefix..keyi
+			end
+			parent[key] = newval
+			-- edit it
+			editing_parent = parent
+			editing_key = key
+			editing_which = "key"
+		end
+		
+		expand[parent] = true -- make sure its visible
+		refresh_gui = true
+end
+
+--[[
+	"false" <--> false
+	"3.5"   <--> 3.5
+	""      <--> {}
+]]
+function toggle_type()
+	undo_stack:checkpoint()
+	local item = pp[selected]
+	local parent = item.parent
+	local key    = item.key
+	local val    = parent[key]
+	
+	type0 = type(val)
+	if (type0 == "string") then
+		local num = tonum(type0)
+		if     val == "false" then parent[key] = false
+		elseif val == "true"  then parent[key] = true
+		elseif val == ""      then parent[key] = {}
+		elseif num            then parent[key] = num
+		end
+		
+	elseif (type0 == "boolean" or type0 == "number") then
+		parent[key] = tostr(parent[key])
+	elseif (type0 == "table") then
+		parent[key] = ""
+	end
+	
+end
+
+
+function update_kbd()
+
+	-- when editing text, let all keyboard events go there
+	if (texted) return
+	
+	-- delete at pos
+	if (keyp("del")) then
+		undo_stack:checkpoint()
+		local item = pp[selected]
+		item.parent[item.key] = nil
+		refresh_gui = true
+	end
+	
+	-- insert at pos
+	if (keyp("insert")) then
+		new_item("_key_","")
+	end
+	
+	-- insert after pos
+	if (keyp("enter") and key("shift")) then
+		new_item("_key_","",1)
+		clear_key("enter")
+	end
+	
+	-- toggle type
+	if (keyp("t") and key("ctrl")) then
+		toggle_type()
+	end
+	
+	-- to do: can also press left/right to expand/collapse tables
+	-- and to inc/decr values
+	if ((keyp("enter") or keyp("left") or 
+			keyp("right"))) then
+		k = nil
+		if (keyp("left"))  k = "left"
+		if (keyp("right")) k = "right"
+		
+		edit_pp_value(selected, k)
+		clear_key("enter") -- don't immediately close again	
+	end
+	
+	if (key("ctrl")) then
+		if keyp("z") then
+			local res = undo_stack:undo()
+			--printh("undoing: "..tostr(res))
+			refresh_gui = true
+		end
+
+		if keyp("y") then
+			undo_stack:redo()
+			refresh_gui = true
+		end
+		
+		if keyp("s") then
+			save_working_file()
+			notify("saved "..current_filename)
+			refresh_gui = true
+		end
+		
+		if keyp("v") then
+			local item = pp[selected]
+			local text = get_clipboard()
+			local c,m = unpod(text)
+			if (c) then
+				item.parent[item.key] = c
+			else
+				item.parent[item.key] = text
+			end
+			
+		end
+		
+		if keyp("c") then
+			local item = pp[selected]
+			local val = item.parent[item.key]
+			if (type(val) == "string" or type(val) == "number") then
+				set_clipboard(tostr(val))
+			else
+				set_clipboard(tostr(pod))
+			end
+		end
+		
+		
+	end
+end
+
+
+function _update()
+
+	update_texted()
+	update_kbd()
+	
+	if refresh_gui or
+		gui_w != get_display():width() or
+		gui_h != get_display():height()
+	then
+		generate_gui()
+		refresh_gui = false
+	end
+	
+	gui:update_all()
+	
+	scroll_y = pe.y
+end
+
+
+
+
+
+
+
+
+
+
+
+
+:: [eoc]

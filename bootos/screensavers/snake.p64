@@ -1,0 +1,175 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: .info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTA0LTMwIDE5OjA5OjMzIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCIsc3RvcmVkPSIyMDI0LTAzLTEyIDE3OjQ4OjMxIix3b3Jrc3BhY2VzPXt7
+bG9jYXRpb249Im1haW4ubHVhIzgxIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJnZngv
+MC5nZngiLHdvcmtzcGFjZV9pbmRleD0yfSx7bG9jYXRpb249Im1hcC9tYXAwLm1hcCIsd29ya3Nw
+YWNlX2luZGV4PTN9LHtsb2NhdGlvbj0ic2Z4L3NmeDAuc2Z4Iix3b3Jrc3BhY2VfaW5kZXg9NH19
+XV1sejQABAAAAAMAAAAwbmls
+:: gfx/
+:: gfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTAzLTA2IDE1OjA0OjQzIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCIsc3RvcmVkPSIyMDI0LTAzLTA2IDE1OjA0OjQzIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: gfx/0.gfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTAzLTA2IDE1OjA0OjQzIixtb2RpZmllZD0iMjAyNC0w
+My0xMiAxNzo0ODozMCIscmV2aXNpb249NDM4XV1sejQAXgIAAOYzAADzFHtbMF09e2JtcD1weHUA
+QyAQEATw8CxmbGFncz0wLHBhbl94CADLeT0wLHpvb209OH0sMQD-GRY5kHlgmVBZFxlAaRcpMLkw
+DxmZDjAeeR5AnlAOLw5eYA4tPpA_8BZYADf-Aw8OHjkuUA4PFw8ObmAODQ8XDWEAEw-qAEc-Ljku
+7ABEAFoAjx4fHV5gDh1O5QBSDzEAHv8kER6QHhAekB4wXhceQG4XLjC_MB4BXgEeMA8TDgFeAQ4N
+MA2eDTAdfh1AHV4dYH2AXfAVlAAeDzEA-0P-KyAaYBpAKkAqYAo5AApwCQpJCmCZUJlAuTA5BwE5
+BwEwDxkpETkRMA4pAQ8QOQENQA6JUA55DmAOWQ6JAiAwMBpAbwAhGnBtAA-tAgVvSR5QnmB_XwAg
+FSBfAE8AOQqAXwAEPx5JLl8AJBUQKwEAXwBDCkkKCSsB-xYBBzkBBzkwETkRKQ8ZMA8QATkOASkP
+GUCJDVCJDWANWQ2QPfAW_gEeDzEAsAPSBA5PAiMeGU8CIy5pMwUeLDMFD3cGgg9YADIPNQIF-wAZ
+HxlAaS1QDS8OXWANLD03AuT-NqAfG5AUAA4DHoAEDxQPEwMukA8UkA8YKB8UKA8YQA14Bw8ODTB4
+JwgweAwHGDC4MA0IDIhACBxoDUAYHFhgeIAYHRjwFXQAMf8cAysdKwNAA3sHDxoDMHsnCzB7DAcb
+MLswAwsMi0ALHGsDQBscW2B7gBsTG88GIA8xAP--------------------------------------
+-----------------4BQbT04fX0=
+:: map/
+:: map/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTAzLTA2IDE1OjA0OjQzIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCIsc3RvcmVkPSIyMDI0LTAzLTA2IDE1OjA0OjQzIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: map/map0.map
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTAzLTA2IDE1OjA0OjQzIixtb2RpZmllZD0iMjAyNC0w
+My0xMiAxNzo0ODozMCIscmV2aXNpb249Mzg4XV1sejQAVAAAAEQQAADwCHt7Ym1wPXVzZXJkYXRh
+KCJpMTYiLDMyAwAvIjABAP--------------------uhIikscGFuX3g9MAgA0nk9MCx0aWxlX2g9
+MTYKAGB3PTE2fX0=
+:: sfx/
+:: sfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTAzLTA2IDE1OjA0OjQzIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCIsc3RvcmVkPSIyMDI0LTAzLTA2IDE1OjA0OjQzIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: sfx/sfx0.sfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTAzLTA2IDE1OjA0OjQzIixtb2RpZmllZD0iMjAyNC0w
+My0xMiAxNzo0ODozMSIscmV2aXNpb249Mzg1XV1sejQAEAEAAFEHAADwJ3B4dQADKAAAAwAED0AQ
+Ag4AAaABIAKgDgAPEAAN8MoBAgMEBQYHAQ--kAgJCgsPDA8NDw4PDxAA8AANDxEPEg8TDxQPFQ8W
+DxcTAPEBDxgPGQ8aDxsPHA8dDx4PHxQA8QAgDyEPIg8jDyQPJQ8mDycUAPEAKA8pDyoPKw8sDy0P
+Lg8vFADxADAPMQ8yDzMPNA81DzYPNxQA-wU4DzkPOg87DzwPPQ8_Dz8BD--w-wEA6-8nWgEQBg8g
+EAEgASAB8AACEAIMEAEgDyEgATAPQPDDDygP--DGD-gKD-8PgA-3Dw0B8AkBEAYMMAD-OR--AQDc
+v-gPQAANQP--sPBwCgD--2Qf-wEAl1D-----Hw==
+:: main.lua
+--[[pod_format="raw",created="2024-03-06 15:04:43",modified="2024-03-12 17:48:30",revision=512]]
+
+
+function make_actor(k,x,y)
+	local a = {
+		k = k, x = x, y = y,
+		a = 0.4
+	}
+	return add(actor, a)
+	
+end
+
+function _init()
+	actor={}
+	
+	for i=1,10 do
+		local a = make_actor(1,240,135)
+		if (i == 1) a.head = true head = a a.a = rnd()
+		if (i > 1) then
+			a.parent = actor[#actor-1]
+			actor[#actor-1].child = a
+			a.k = 2
+		end
+	end
+	
+	for i=1,1 do
+		make_actor(rnd{32,33},rnd(440)+20,rnd(230)+20).is_food = true
+	end
+	
+end
+
+function draw_actor(a)
+	local bindex = a.k
+	
+	if (a.k == 1) then
+		local aa = a.a
+		aa = (aa + .25) % 1
+		bindex = 16 + (aa*4)\1
+		--print(aa.." --> "..bindex,4,30,7)
+	end
+	
+	spr(bindex,a.x-8,a.y-8)
+	
+end
+
+function _draw()
+	cls()
+	
+	for yy=0,270 do
+		for i=1,#actor do
+			if (actor[i].y\1 == yy) draw_actor(actor[i])
+		end
+	end
+	--foreach(actor, draw_actor)
+	
+end
+
+function move_actor(a)
+	local seglen = 10
+	if (a.parent) then
+		local p = a.parent
+		local dx = a.x - p.x
+		local dy = a.y - p.y
+		local dd = sqrt(dx*dx+dy*dy)
+		if (dd > seglen) then
+			local aa = atan2(dx,dy)
+			a.x = p.x + cos(aa)*seglen
+			a.y = p.y + sin(aa)*seglen
+			
+		end
+		
+	end
+	
+	if (a.is_food) then
+		local dx,dy = a.x - head.x, a.y - head.y
+		if (dx*dx+dy*dy < 200) then
+			del(actor,a)
+			local ns = make_actor(a.k,head.x, head.y)
+			local s2 = head.child
+			head.child = ns ns.parent = head
+			s2.parent = ns ns.child = s2
+			
+			make_actor(rnd{32,33},rnd(440)+20,rnd(230)+20).is_food = true
+	
+		end
+	end
+	
+end
+
+function move_head(a)
+
+	local dx = cos(a.a) * 2
+	local dy = sin(a.a) * 2
+	
+	a.a+=cos(t()/20)*.001
+	a.x += dx
+	
+	if (a.x <= 10 or a.x >= 470) then
+		a.x -= dx
+		dx *= 1
+		a.a = atan2(-dx,dy)
+		a.a += rnd(0.05)-rnd(0.05)
+	end
+	
+	dy = sin(a.a) * 2
+	a.y += dy
+	if (a.y <= 10 or a.y >= 260) then
+		a.y -= dy 
+		a.a = atan2(dx, -dy)
+		a.a += rnd(0.05)-rnd(0.05)
+	end
+	
+end
+
+
+function _update()
+	
+	move_head(actor[1])
+	foreach(actor, move_actor)
+end
+
+:: [eoc]

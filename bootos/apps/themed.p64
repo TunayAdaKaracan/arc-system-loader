@@ -1,0 +1,294 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: .info.pod
+b64$LS1bW3BvZCxhdXRob3I9InplcCIsY3JlYXRlZD0iMjAyMy0xMC0xNyAwNToxNTo0MCIsaWNv
+bj11c2VyZGF0YSgidTgiLDE2LDE2LCIwMDAwMDAwMDAwMDAwMDAxMDEwMDAwMDAwMDAwMDAwMDAw
+MDAwMDAwMDAwMDAxMDcwNzAxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDEwNzA3MDEwMDAwMDAw
+MDAwMDAwMDAwMDAwMDAwMDEwNzA3MDcwNzAxMDAwMDAwMDAwMDAxMDEwMTAxMDEwMTA3MDcwNzA3
+MDEwMTAxMDEwMTAxMDEwNzA3MDcwNzA3MDcwNzA3MDcwNzA3MDcwNzA3MDEwMTA2MDcwNzA3MGQw
+NzA3MDcwNzBkMDcwNzA3MDYwMTAxMDYwNjA3MDcwZDA3MDcwNzA3MGQwNzA3MDYwNjAxMDAwMTA2
+MDYwNzA3MDcwNzA3MDcwNzA3MDYwNjAxMDAwMDAwMDEwNjA3MDcwNzBkMGQwNzA3MDcwNjAxMDAw
+MDAwMDAwMDAxMDcwNzA3MDcwNzA3MDcwNzAxMDAwMDAwMDAwMDAxMDcwNzA3MDcwNjA2MDcwNzA3
+MDcwMTAwMDAwMDAwMDEwNzA3MDYwNjA2MDYwNjA2MDcwNzAxMDAwMDAwMDAwMTA3MDYwNjA2MDEw
+MTA2MDYwNjA3MDEwMDAwMDAwMDAxMDYwNjAxMDEwMDAwMDEwMTA2MDYwMTAwMDAwMDAwMDEwMTAx
+MDAwMDAwMDAwMDAwMDEwMTAxMDAwMCIpLG1vZGlmaWVkPSIyMDI0LTA3LTEyIDE5OjQzOjQzIixu
+b3Rlcz0iIixzdG9yZWQ9IjIwMjQtMDMtMDkgMTA6MzI6MTAiLHRpdGxlPSJUaGVtZSBFZGl0b3Ii
+LHZlcnNpb249IiIsd29ya3NwYWNlcz17e2xvY2F0aW9uPSJtYWluLmx1YSIsd29ya3NwYWNlX2lu
+ZGV4PTF9fV1dbHo0AAQAAAADAAAAMG5pbA==
+:: gfx/
+:: gfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEwLTE3IDA1OjE1OjQwIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTE1LTE3IDA1OjE1OjQwIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: gfx/0.gfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTQzLTI4IDAyOjQzOjU5Iixtb2RpZmllZD0iMjAyMy0z
+MS0yMiAxODozMTozMCIscmV2aXNpb249NDUzLHN0b3JlZD0iMjAyMy0yNS0yOSAwOToyNTo1MCJd
+XWx6NADJAQAAgjQAAPEGe1swXT17Ym1wPXB4dQBDIAgIBAcAAgASkAgAGZcOAPMAhyxmbGFncz0w
+LHBhbl94CADqeT0wLHNjYWxlPTEyfSxOAFMXIAcQBwQAJxcQBABQQBcgBwAEAA9TAB7-BCAXQAeg
+BwAHUBdQBwAHoAdAFyBEAB6zAAcgByAnAFcAJyCeAAYOAA_SAB--BBAHEAcQVyBXIGcARyAXYBdg
+FxBEAB6VByAHQAcgB-ABCQAPQwAeICAHEQERMKsBMxAHAAgAAGcBX0AHcAdw1wAgv1AnMEfwAQdQ
+NyA3PwAfr4AHcAfwCwdQB5A7ABugDAwE8AoXkBfwMAUAHwo9AB4QZ-gAEmAAAQ8MAAUPHgALAgwA
+D7YAH0AYB7AXRQBQEAdwBxBNAF8XsAfwGEgAHv8D4AeAJ5AngAfwGQegJ3AnoAfQQwAeUAAXABdQ
+lgKhB0AHQAdQByAHcMYD3-ABB4BHcCeABwAH8AlWAB4QR1EAIAA3BgAxEDcA9QIBEgBBBxAHkAIA
+CAgAH4BfABtfEBAE8PAzAP------------------------------------------------------
+---------wtQPTEyfX0=
+:: map/
+:: map/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEwLTE3IDA1OjE1OjQwIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTE1LTE3IDA1OjE1OjQwIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: map/0.map
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTQzLTI4IDAyOjQzOjU5Iixtb2RpZmllZD0iMjAyMy01
+NS0zMSAwNjo1NTo1OSIscmV2aXNpb249MzEzLHN0b3JlZD0iMjAyMy0yNS0yOSAwOToyNTo1MCJd
+XWx6NABdAAAAWAQAAPATe2xheWVyPXtbMF09e2JtcD11c2VyZGF0YSgiaTE2IiwxNgMALyIwAQD-
+---voSIpLHBhbl94PTAIAPIGeT0wLHNjYWxlPTEsdGlsZV9oPTE2CgBwdz0xNn19
+:: sfx/
+:: sfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEwLTE3IDA1OjE1OjQwIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTE1LTE3IDA1OjE1OjQwIl1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: main.lua
+--[[pod_format="raw",created="2023-43-28 02:43:59",modified="2023-28-05 08:28:48",revision=597,stored="2023-25-29 09:25:50"]]
+-- themed: Theme Editor
+
+local current_k = "desk0"
+
+function _init()
+	poke(0x4000, get(fetch"/system/fonts/lil.font"))
+	
+	window{
+		width=240,
+		height=132,
+		resizeable=false, -- to do
+		title="Theme Editor"
+	}
+	
+	tdat = 
+		fetch"/ram/shared/theme.pod" or
+		fetch"/appdata/system/theme.pod" or
+		{}
+		
+	if (type(tdat.desktop_pattern)!="userdata") then
+		tdat.desktop_pattern = userdata("u8", 8,8)
+	end
+
+	
+--function wrangle_working_file(save_state, load_state, untitled_filename)
+
+	wrangle_working_file(
+		function()
+			printh("@@ saving theme")
+			return unpod(pod(tdat))
+		end,
+		
+		-- load
+		function(tdat0)
+			-- printh("@@ loading theme")
+			tdat = tdat0
+			if (not tdat) then tdat = 
+				fetch"/ram/shared/theme.pod" or
+				fetch"/appdata/system/theme.pod" or
+				{}
+			end
+			store_live_changes()
+		end,
+		"/appdata/system/theme.pod" -- edit the default custom theme by default
+	)
+	
+	generate_gui()
+end
+local category={
+	{[0]="Desktop", "desktop0","desktop1","desktop_shadow"},
+	{[0]="Icon",    "icon0","icon1","icon2","icon3"},
+	{[0]="Window",  "window_frame","window_title","window_button","window_border"},
+	{[0]="Dormant", "dormant_frame","dormant_title","dormant_button","dormant_border"},
+	{[0]="Toolbar", "toolbar_back","toolbar_item","toolbar_selected"},
+}
+	
+pcols = {[0] =
+	0,20,4,31,15,8,24,2,
+	21,5,22,6,7,23,14,30,
+	1,16,17,12,28,29,13,18,
+	19,3,27,11,26,10,9,25,
+}
+function store_live_changes()
+	store("/ram/shared/theme.pod",tdat)
+end
+		
+	
+function create_colbox(el)
+	local el = gui:attach(el)
+	function el:draw()
+		local k = self.k
+		rectfill(0,0,self.width-1,self.height-1,0)
+		if (k==current_k and k) then
+			rect(0,0,self.width-1,self.height-1,7)
+			rect(1,1,self.width-2,self.height-2,0)
+		end
+		
+		rectfill(1,1,self.width-2,self.height-2,tonum(tdat[k]) or 0)
+	end
+	
+	function el:click()
+		current_k = self.k
+	end
+	
+	return el
+end
+function create_pattern_editor(el)
+	function el:draw()
+		rectfill(0,0,1000,1000,0)
+		sspr(tdat.desktop_pattern,0,0,nil,nil,0,0,self.width,self.height)
+	end
+	
+	function el:click(msg)
+		local x = msg.mx * tdat.desktop_pattern:width() / self.width
+		local y = msg.my * tdat.desktop_pattern:height() / self.height
+		draw_col = tdat.desktop_pattern:get(x,y) != 0 and 0 or 7
+	end
+	
+	function el:drag(msg)
+		local x = msg.mx * tdat.desktop_pattern:width() / self.width
+		local y = msg.my * tdat.desktop_pattern:height() / self.height
+		set(tdat.desktop_pattern, x, y, draw_col)
+		store_live_changes()
+		
+	end
+	
+	
+	return el
+end
+function create_palette_chooser(el)
+	function el:draw(msg)
+		rectfill(0,0,self.width-1,self.height-1,0)
+		local ww=self.width\8
+		local hh=self.height\4
+		for y=0,3 do
+			for x=0,7 do
+				local sx=x*ww
+				local sy=y*hh
+				rectfill(sx+1,sy+1,sx+ww-1,sy+hh-1,pcols[x+y*8])
+			end
+		end
+	end
+	
+	function el:click(msg)
+		local xx=mid(0,msg.mx * 8 / self.width,  7)\1
+		local yy=mid(0,msg.my * 4 / self.height, 3)\1
+		if (pcols[xx + yy * 8]) tdat[current_k] = pcols[xx + yy * 8]
+		store_live_changes()
+	end
+	return el
+end
+function generate_gui()
+	gui = create_gui()
+	
+	-- palette
+	gui:attach(create_palette_chooser{
+		x=120,y=6,width=113,height=41
+	})
+	
+	-- pattern editor
+	
+	gui:attach(create_pattern_editor{
+		x = 120, y = 52, width = 72, height = 72})
+	-- colour boxes
+	for i=1,#category do
+		local sx,sy=6,6+(i-1)*12
+		
+		gui:attach{
+			x = sx, y = sy, width=50, height=10,
+			label = category[i][0],
+			draw = function(self) print(self.label, 0,0,7) end
+		}
+		for j=1,#category[i] do
+			create_colbox{x=sx+40+j*12,y=sy,width=9,height=9,k=category[i][j]}
+		end
+	end
+	
+	-- pattern presets
+	for y=0,4 do
+		for x=0,2 do
+			local sx,sy = 196 + x * 12, 52 + y * 12
+			gui:attach{
+				x = sx, y = sy, width=12, height=12,
+				index = x + y * 3,
+				draw = function(self, msg)
+					rectfill(0,0,11,11,0)
+					local bmp=get_spr(self.index)
+					spr(self.index, 6-bmp:width()/2, 6-bmp:height()/2)
+				end,
+				tap = function(self, msg)
+					tdat.desktop_pattern = get_spr(self.index):copy()
+					store_live_changes()
+				end
+			}
+		end
+	end
+	
+	-- buttons
+	local xx, yy = 10, 110
+	local spacing = 5
+	
+	xx+= gui:attach_button{
+		x=xx,y=yy,
+		label = "Set as Default",
+		click = function()
+			store("/appdata/system/theme.pod", tdat)
+			local sdat = fetch"/appdata/system/settings.pod"
+			-- change entry in system settings
+			if (sdat) then
+				sdat.theme = "/appdata/system/theme.pod"
+				store("/appdata/system/settings.pod", sdat)
+			end
+			notify("stored to /appdata/system/theme.pod")
+		
+		end
+	}.width+spacing
+
+--[[
+	xx+= gui:attach_button{
+		x=xx,y=yy,
+		label = "Revert",
+		click = function()
+			fcopy("/appdata/system/theme.pod","/ram/shared/theme.pod")
+			tdat = fetch"/ram/shared/theme.pod"
+			if (type(tdat.desktop_pattern)!="userdata") then
+				tdat.desktop_pattern = userdata("u8", 8,8)
+			end
+		end
+	}.width+spacing
+	
+]]
+
+
+end
+
+function _draw()
+	cls(1)
+	
+	gui:draw_all()
+end
+function _update()
+	gui:update_all()
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:: [eoc]

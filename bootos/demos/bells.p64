@@ -1,0 +1,138 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: .info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTA0LTMwIDE5OjA5OjMzIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDI0LTAzLTIxIDA4OjQyOjUyIix3b3Jrc3BhY2VzPXt7
+bG9jYXRpb249Im1haW4ubHVhIzMiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImdmeC8w
+LmdmeCIsd29ya3NwYWNlX2luZGV4PTJ9LHtsb2NhdGlvbj0ibWFwL21hcDAubWFwIix3b3Jrc3Bh
+Y2VfaW5kZXg9M30se2xvY2F0aW9uPSJzZngvc2Z4MC5zZngiLHdvcmtzcGFjZV9pbmRleD00fX1d
+XWx6NAAEAAAAAwAAADBuaWw=
+:: gfx/
+:: gfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTAwLTMwIDE5OjAwOjE5Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTAwLTMwIDE5OjAwOjE5Il1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: gfx/0.gfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTAwLTMwIDE5OjAwOjIwIixtb2RpZmllZD0iMjAyNC0w
+My0yMSAwODo0Mjo1MiIscmV2aXNpb249NjQ5XV1sejQAbQAAAAUxAADzFHtbMF09e2JtcD1weHUA
+QyAQEATw8CxmbGFncz0wLHBhbl94CADPeT0wLHpvb209OH0sMQD-------------------------
+---------------------------------------nUG09OH19
+:: map/
+:: map/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTAwLTMwIDE5OjAwOjE5Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTAwLTMwIDE5OjAwOjE5Il1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: map/map0.map
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTAwLTMwIDE5OjAwOjIwIixtb2RpZmllZD0iMjAyNC0w
+My0yMSAwODo0Mjo1MiIscmV2aXNpb249NjU5XV1sejQAaAAAAFgQAADwCHt7Ym1wPXVzZXJkYXRh
+KCJpMTYiLDMyAwAvIjABAP--------------------vxCCIpLGhpZGRlbj1mYWxzZSxwYW5feD0w
+CADSeT0wLHRpbGVfaD0xNgoAEHcKAIB6b29tPTF9fQ==
+:: sfx/
+:: sfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTAwLTMwIDE5OjAwOjE5Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDIzLTAwLTMwIDE5OjAwOjE5Il1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: sfx/sfx0.sfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTAwLTMwIDE5OjAwOjIwIixtb2RpZmllZD0iMjAyNC0w
+My0yMSAwODo0Mjo1MiIscmV2aXNpb249NzYzXV1sejQAaAEAAHoHAADfcHh1AAMoAAADAATw-wEA
+7PBO8QEQBg8gEAEgAQwQAfAAAhACDhABIA8hIAEwDxuQDxECIA5QAQ8WEAHwnwIABkAP1A_vD48P
+eg9fD0oPOg8vDyofHw8aHxUPDwXwuQ-4Cg--D4AP9w8NAfAJARAGSwBJCQwFAFkAkAkPGQ-aAiAC
+cF0A-zAPFlABD-sGAAEAD_-AAQggD3dgDxvwggIBCEAP9A-pD9kPyQ_ED2oPWg9FDz8fLx8lDxoP
+FQ8P8AgBoA8Y8JRyAAIsASDJAGBAkA8REhDJANH0EAEwDyqQAQIQAg8tIAAAEwDQD84gDzaQDxMC
+IA8OUAkBUA8PIA6QjwCQGmAPHfBCAgAJ_gARufoA8ABkD1oPSg8-DzUPLw8lDx_RAD8K8LqKABWP
+8MMPKA--8MYwALof-wEA3PIF_A9AAA8QQA8w--8vAf0vDv0v8HATAC-9sAoA--9cH-8BAJdQ----
+-x8=
+:: main.lua
+--[[pod_format="raw",created="2023-00-30 19:00:20",modified="2024-03-21 08:42:52",revision=842]]
+--[[
+	bells demo by zep
+	a	
+]]
+nn={}
+function pick_note()
+	if (#nn == 0) nn = {50,53,55,57,60, 62,65,67,69,72}
+	return del(nn,rnd(nn))
+end
+
+function _init()
+
+	
+	local sfxdat = fetch"sfx/sfx0.sfx"
+	
+	memmap(0x30000, sfxdat)
+
+--[[
+	-- to do: nicer way to transfer large amounts of data from userdata -> ram
+	-- can't fetch(get(foo)) large blocks because of stack limit
+	for i=0,2 do
+		poke(0x30000 + (i<<16), get(sfxdat,(i<<16),0x10000))
+	end
+]]
+
+	bell={}
+	for y=-1,5 do
+		for x=-1,5 do
+			local sx = 142+x*40 + (y&1) * 20
+			local sy = 70+y*30
+			local oct = 0
+			local inst = y < 2 and 0 or 1
+			if (y == -1) oct = 1
+			if (y == 4) oct = -1
+			if (y == 5) oct = -1 inst = 2
+			
+			add(bell,{
+				x = sx, y = sy,
+				q = 0,
+				n = pick_note() + oct*12,
+				inst = inst
+			})
+		end
+	end
+end
+
+
+function _draw()
+	cls()
+	for b in all(bell) do
+		
+		for i=0,2 do
+			local rr = b.q * (i-1)/2
+			circ(b.x, b.y, 15 + rr, 7+i+b.y/20)
+		end
+		
+		local tt=b.q/30
+		tt*=tt
+		circ(b.x, b.y, 15 + tt*30, 7)
+		
+	end
+	--print(stat(1),2,2,8)
+end
+
+chan = 0
+function _update()
+	local mx, my = mouse()
+	for b in all(bell) do
+		
+		local dx = mx - b.x
+		local dy = my - b.y
+		if sqrt(dx*dx+dy*dy) < 15 then
+			-- play bell
+			if (not b.active) then
+				b.q = 30
+				-- pitch, inst, vol (0..64), effect, effect_p, chan_index
+				-- (effects not implemented yet)
+				note(b.n,b.inst,64,0,0,chan) 
+				chan=(chan+1)%8 -- rotate around first 8 channels
+			end
+			b.active = true
+		else
+			b.active = false
+		end
+		if (b.q > 0) b.q -= 1
+	end
+end
+
+
+
+:: [eoc]

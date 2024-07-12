@@ -1,0 +1,158 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: .info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTEwLTA5IDAyOjUwOjQ1Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDI0LTA5LTAyIDE3OjA5OjU3Iix3b3Jrc3BhY2VzPXt7
+bG9jYXRpb249Im1haW4ubHVhIix3b3Jrc3BhY2VfaW5kZXg9MX19XV1sejQABAAAAAMAAAAwbmls
+:: _meta/
+:: _meta/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTEwLTA5IDAyOjUwOjQ1Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0MyIsc3RvcmVkPSIyMDI0LTUwLTA5IDAyOjUwOjQ1Il1dbHo0AAQAAAADAAAA
+MG5pbA==
+:: _meta/workspaces.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTI4LTIyIDA5OjI4OjMyIixtb2RpZmllZD0iMjAyMy0z
+Ni0wNCAwNjozNjoyOCIscmV2aXNpb249NDU3Nl1dbHo0AC0AAAArAAAA8Bx7e2Nwcm9qX2ZpbGU9
+Im1haW4ubHVhIix3b3Jrc3BhY2VfaW5kZXg9MX19
+:: main.lua
+--[[pod_format="raw",created="2023-29-22 09:29:33",modified="2024-09-02 17:09:57",revision=2817]]
+--[=[
+
+Transformation matrices in Picotron can be constructed as 3x4 userdata, and then
+applied to vectors (3x1 userdata) or other matrices using :matmul3d()
+
+v      = vec(1.0, 0.0, 0.0)               -- create an xyz vector (a point in space)
+v      = v:matmul3d(m)                    -- transform v by matrix m
+v      = v:matmul3d(op_a):matmul3d(op_b)  -- transform v by 2 matrices (a then b)
+op_ab  = op_a:matmul3d(op_b)              -- combine two operations into one matrix
+
+The 12 values in a 3d transformation matrix look like this:
+--[[pod_type="image"]]unpod("b64:bHo0AIUCAAABAwAA8ClweHUAgAAAAE0AAAABAAAAAwTw--_G_CDwNPgu8DD4APAcWPAtSPArSPAqOPALFhAW8A1I8CkoMAoAEQIFAKBWYCjwKRhQNvADDwDwBAUWgCjwKBhgFvAFRvAEFqAY8CgcAMIHFvADFrAY8AR88Aw9ABAGOwDxPIAY8Akc8A048Aw28BIY8Agc8A848DAo8Acc8BH4NvAGHPAT_DPwADwgHPBpHBB88GMMAAzwG-sr8AYMEAzwGvsv8AIM8B078Chb4AgAEAlaADAMO9ANABcQowCFUCuwDPAeKzClAINwG6AM8B8bUKcAg4AbkAzwIBtAqQCFkBuADPAhKyCoAPFwYBtwDPAiO-ALNvAPK2AM8CRL8Cs7YBfwJHvwDPsOcBc48CL7L4ALQHjwAQjwDPsP8BULwHiQCPBPC-AFeCAIEBgwGPBEC-ANSBAYEBjwC-wb4AvwEAgwOKD8L7AL8A8IUBig-AbwFlyQC-AOCFA4gDzwLEyAC-ATGBAYcCzwDHcBuDxwC-ASGDAYUCxA2gBmPGAL8CAsfwEgcCwRACMccNoAIZAcDwATYNoAEaAPACYsQNoAAS8AYDzwDTbwEAsAQCEs8C9qAPETIjzwKlyAC-AjvPAW-ACQC-Al-C3AC-At-BnwCQvwbwvwcAYA8A8j-SjwBAvwIv0s8AELMBsgG-AWPfAlXcALAAsACxAQAIEVPfAoXbArIAwAUi3wK02wKABAFR3wDYYAQAst8AEQACgULdcAhjAt8AFb8BQt2ACEQC3wBRvwFB3ZACFgHRAAFC1dAhJwEAAWPV0CUEAd8AFLkADwDgw28A0t8C498ClN8C9d8CCd8DL9K-A4-SPw--_z")
+The top 3x3 area can be thought of as a coordinate space that transformed point will
+be scaled and rotated into. So, v.x means "how far to travel along the red vector in
+m". The last row is a translation vector e.g. 2,0,0 means move the result right by 2.
+
+]=]
+
+function identity_matrix()
+	local m = userdata("f64",3,4)
+	set(m, 0, 0,
+		1, 0, 0, 
+		0, 1, 0, 
+		0, 0, 1, 
+		0, 0, 0
+	)
+	return m
+end
+
+
+-- rotate point x,y around origin by angle a
+function rot2d(x,y,a)
+	return cos(a)*x - sin(a)*y, cos(a)*y + sin(a)*x
+end
+
+-- create a transformation matrix that rotates around a given axis by angle
+-- axis is a string: "x", "y", "z"
+function rotation_matrix(axis, angle)
+	
+	-- component offsets depend on which axis to rotate around
+	local dat = {x={3,6}, y={0,6}, z={0,3}}
+	local c0,c1 = dat[axis][1], dat[axis][2]
+	
+	local m = identity_matrix()
+	
+	-- rotate the component vectors (each one is a column from rows 0..2)
+	for column=0,2 do
+		m[column + c0], m[column + c1] = rot2d(m[column + c0], m[column + c1], angle)
+	end
+	return m
+end
+
+
+function _init()
+
+	-- make 3136 points
+	p={} n = 40
+	for z = -n,n,2 do
+		for x = -n,n,2 do
+			local y = sin(z*cos(x/19)/1000) + sin(z/52) - cos(z/35)*sin(x/77)*2 + 3
+				-- x, y, z, colour
+				-- note: we can store the colour here, because matmul3d
+				-- only cares about the first 3 values of each row!
+				p[#p+1] = vec(x, y, z, 10+y*1.5) 
+		end
+	end
+	
+	-- create a userdata the same size, used for z-sorting
+	order = userdata("f64", 2, #p)
+	for i=0,#p-1 do
+		set(order, 0, i, i+1) -- starting score
+		set(order, 1, i, i+1) -- index
+	end
+	
+end	
+
+
+
+function _draw()
+	cls()
+	local ww = 240.0
+	
+	-- create 3 matrices that modify the orientation and position of
+	-- the landscape (in this demo, there is no concept of a camera)
+	
+	spin_around = rotation_matrix("y",t()/20)        
+	tilt        = rotation_matrix("x",0.06)          -- 0 to stay flat
+	shift_z     = identity_matrix() shift_z[11] = 70 -- try 20 for close up
+	
+	-- matmul3d() is used to multiply 3x4 matrices
+	-- here the 3 transformations will be applied from left to right
+	
+	m = spin_around:matmul3d(tilt):matmul3d(shift_z)
+	
+	-- (this gives the same result as applying each matrix separately in the
+	-- inner loop: v = v:matmul3d(spinaround) v = matmul3d(tilt) etc)
+	
+	-------- sort ---------
+
+	-- (using camera z values from last frame!)
+	
+	order:sort()
+	
+	-------- draw ---------
+	
+	local v = vec(0,0,0) -- reused for every transformed point
+	
+	local v0 = vec(0,0,0,0)
+	for i=0,#order-1,2 do
+		blit(p[order[i+1]],v0) -- grab from the sorted list
+		
+		v0.y += cos(t()*.5+(v0.x+v0.y)*.01)*5
+
+		-- apply the 3 transformations using a single matrix
+		-- (m means spin around, tilt, and then shift along z)
+		-- write the output to v instead of creating a new userdata 
+		-- ( faster than e.g. v = matmul3d(m, v0) )
+		v0:matmul3d(m, v)
+		
+		local sz = v.z
+		
+		order[i] = -sz -- set the score for sorting next frame (draw furthest first)
+
+		if (sz > 0.01) then
+			-- in front of viewplane; draw it
+			local ww_div_sz = ww / sz		
+			local sx = 240.0 + v.x * ww_div_sz
+			local sy = 135 + v.y * ww_div_sz
+			--pset(sx,sy,v0.u)
+			circfill(sx,sy-50, 250/sz, v0[3])
+		end
+	end
+		
+	--print(string.format("cpu: %3.3f (%dfps)", stat(1), stat(7)), 10, 10, 1)
+	
+end
+
+
+
+:: [eoc]

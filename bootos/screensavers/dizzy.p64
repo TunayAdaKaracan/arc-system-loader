@@ -1,0 +1,147 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: .info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEwLTIyIDA5OjI5OjE3Iixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCJdXWx6NAAEAAAAAwAAADBuaWw=
+:: _meta/
+:: _meta/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTEwLTIyIDA5OjI4OjMyIixtb2RpZmllZD0iMjAyNC0w
+Ny0xMiAxOTo0Mzo0NCJdXWx6NAAEAAAAAwAAADBuaWw=
+:: _meta/workspaces.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDIzLTI4LTIyIDA5OjI4OjMyIixtb2RpZmllZD0iMjAyMy0y
+Mi0zMCAyMzoyMjowNyIscmV2aXNpb249NDk1OV1dbHo0AC0AAAArAAAA8Bx7e2Nwcm9qX2ZpbGU9
+Im1haW4ubHVhIix3b3Jrc3BhY2VfaW5kZXg9MX19
+:: main.lua
+--[[pod_format="raw",created="2023-29-22 09:29:33",modified="2023-22-30 23:22:07",revision=2795]]
+-- dizzy by zep
+
+function identity_matrix()
+	local m = userdata("f64",3,4)
+	set(m, 0, 0,
+		1, 0, 0, 
+		0, 1, 0, 
+		0, 0, 1, 
+		0, 0, 0
+	)
+	return m
+end
+
+
+-- rotate point x,y around origin by angle a
+function rot2d(x,y,a)
+	return cos(a)*x - sin(a)*y, cos(a)*y + sin(a)*x
+end
+
+-- create a transformation matrix that rotates around a given axis by angle
+-- axis is a string: "x", "y", "z"
+function rotation_matrix(axis, angle)
+	
+	-- component offsets depend on which axis to rotate around
+	local dat = {x={3,6}, y={0,6}, z={0,3}}
+	local c0,c1 = dat[axis][1], dat[axis][2]
+	
+	local m = identity_matrix()
+	
+	-- rotate the component vectors (each one is a column from rows 0..2)
+	for column=0,2 do
+		m[column + c0], m[column + c1] = rot2d(m[column + c0], m[column + c1], angle)
+	end
+	return m
+end
+
+
+function _init()
+
+	-- make points
+	p={} n = 55
+	for i=1,3000 do
+				--local y = cos(x/19) + sin(z/32) - cos(z/35)*sin(x/47)*4 + 3
+				-- x, y, z, colour
+				-- note: we can store the colour here, because matmul3d
+				-- only cares about the first 3 values of each row!
+				p[#p+1] = vec(
+					cos(i/220.4)*140.7,
+					cos(i/264)*30.2,
+					cos(i/285)*31.2,
+					8+(i)%11,
+					cos(i/80)*200+110) 
+	end
+	
+	-- create a userdata the same size, used for z-sorting
+	order = userdata("f64", 2, #p)
+	for i=0,#p-1 do
+		set(order, 0, i, i+1) -- starting score
+		set(order, 1, i, i+1) -- index
+	end
+	
+end	
+
+
+
+function _draw()
+	cls()
+	local ww = 240.0
+	
+	-- create 3 matrices that modify the orientation and position of
+	-- the landscape (in this demo, there is no concept of a camera)
+	
+	spin_around = rotation_matrix("x",t()/(cos(t()/10)*2+25))        
+	tilt        = rotation_matrix("x",0.02)          -- 0 to stay flat
+	shift_z     = identity_matrix() shift_z[11] = 80 -- try 20 for close up
+	
+	-- matmul3d() is used to multiply 3x4 matrices
+	-- here the 3 transformations will be applied from left to right
+	
+	m = spin_around:matmul3d(tilt)
+	m = m:matmul3d(rotation_matrix("y",t()/23))
+	m = m:matmul3d(rotation_matrix("z",t()/30))
+	m = m:matmul3d(shift_z)
+	
+	-- (this gives the same result as applying each matrix separately in the
+	-- inner loop: v = v:matmul3d(spinaround) v = matmul3d(tilt) etc)
+	
+	-------- sort ---------
+
+	-- (using camera z values from last frame!)
+	
+	order:sort()
+	
+	-------- draw ---------
+	
+	local v = vec(0,0,0) -- reused for every transformed point
+	
+	for i=0,#order-1,2 do
+		local v0 = p[order[i+1]] -- grab from the sorted list
+
+		-- apply the 3 transformations using a single matrix
+		-- (m means spin around, tilt, and then shift along z)
+		-- write the output to v instead of creating a new userdata 
+		-- ( faster than e.g. v = matmul3d(m, v0) )
+		v0:matmul3d(m, v)
+		
+		local sz = v.z
+		
+		order[i] = -sz -- set the score for sorting next frame (draw furthest first)
+
+		if (sz > 0.05) then
+			-- in front of viewplane; draw it
+			local ww_div_sz = ww / sz		
+			local sx = 240.0 + v.x * ww_div_sz
+			local sy = 135 + v.y * ww_div_sz
+			--pset(sx,sy,v0.u)
+			circfill(sx, sy, v0[4]/sz, v0[3])
+		end
+	end
+	
+--[[
+	local str=string.format("points: %d  cpu: %3.3f (%dfps)",
+		#p, stat(1), stat(7))
+	print(str, 11, 11, 0)
+	print(str, 10, 10, 6)
+]]
+	
+end
+
+
+:: [eoc]
