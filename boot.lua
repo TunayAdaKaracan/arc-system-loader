@@ -1,15 +1,98 @@
---[[pod_format="raw",created="2024-07-12 20:06:39",modified="2024-07-12 21:10:39",revision=4]]
+--[[pod_format="raw",created="2024-07-12 20:06:39",modified="2024-07-12 22:57:06",revision=6]]
 --[[
 	Arc Loader by Kutup Tilkisi
 ]]
 
 -- TODO: system selector
+
+function pod(obj, flags, meta)
+	local encountered = {}
+	local function check(n)
+		local res = false
+		if (encountered[n]) return true
+		encountered[n] = true
+		for k,v in pairs(n) do
+			if (type(v) == "table") res = res or check(v)
+		end
+		return res
+	end
+	if (type(obj) == "table" and check(obj)) then
+		return nil, "error: multiple references to same table"
+	end
+
+	if (meta) then
+		local meta_str = generate_meta_str(meta)
+		return _pod(obj, flags, meta_str)
+	end
+
+	return _pod(obj, flags)
+end
+
 function fetch_metadata(filename)
 	local result = _fetch_metadata(fstat(filename) == "folder" and filename.."/.info.pod" or filename)
 	return result
 end
 
-local selected_os = fetch_metadata("/systems").os or "picotron"
+local function generate_meta_str(meta_p)
+	local meta = unpod(pod(meta_p)) or {}
+
+	local meta_str = "--[["
+	if (meta.pod_format and type(meta.pod_format) == "string") then
+		meta_str ..= "pod_format=\""..meta.pod_format.."\""
+		meta.pod_format = nil
+	elseif (meta.pod_type and type(meta.pod_type) == "string") then
+		meta_str ..= "pod_type=\""..meta.pod_type.."\""
+		meta.pod_type = nil
+	else
+		meta_str ..= "pod"
+	end
+
+	local meta_str1 = _pod(meta, 0x0) 
+	if (meta_str1 and #meta_str1 > 2) then
+		meta_str1 = string.sub(meta_str1, 2, #meta_str1-1)
+		meta_str ..= ","
+		meta_str ..= meta_str1
+	end
+
+	meta_str..="]]"
+
+	return meta_str
+
+end
+
+
+function store_metadata(filename, meta)
+	local old_meta = fetch_metadata(filename)
+		
+	if (type(old_meta) == "table") then
+		if (type(meta) == "table") then			
+			for k,v in pairs(meta) do
+				old_meta[k] = v
+			end
+		end
+		meta = old_meta
+	end
+	if (type(meta) != "table") meta = {}
+	meta.modified = date() 
+	local meta_str = generate_meta_str(meta)
+
+	if (fstat(filename) == "folder") then
+		local info_filename = filename.."/.info.pod" 
+		if false then
+			_store_metadata(info_filename, meta_str)
+				
+		else
+			_store_local(info_filename, nil, meta_str) 
+		end
+	else
+		_store_metadata(filename, meta_str)
+	end
+end
+
+-- Actual boot.lua
+local systems_metadata = fetch_metadata("/systems")
+local selected_os = systems_metadata.os or "picotron"
+local type = systems_metadata.type or 1
 
 -- from api.lua#_rm
 local function delete(path)
@@ -93,4 +176,18 @@ local function run_system()
 	booter()
 end
 
+if type == 1 then
+	if not systems_metadata.bypass then
+		selected_os = ".bootos"
+	else
+		store_metadata("/systems", {bypass=false})
+	end
+elseif type == 2 then
+	for i=1,20 do
+		flip()
+		if (stat(988) > 0) then
+			selected_os = ".bootos"
+		end
+	end	
+end
 run_system()

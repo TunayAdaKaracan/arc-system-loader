@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-07-12 16:10:18",modified="2024-07-12 20:39:00",revision=93]]
+--[[pod_format="raw",created="2024-07-12 16:10:18",modified="2024-07-12 23:00:53",revision=94]]
 all_os = ls("/systems")
 selected_i = 1
 timer = fetch_metadata("/systems").timer or 5
@@ -26,6 +26,14 @@ function _update()
 		selected_i = max(selected_i-1, 1)
 	elseif keyp("space") or time() - start > timer then
 		store_metadata("/systems", {os=all_os[selected_i]})
-		send_message(2, {event="reboot"}) -- reboot
+		
+		-- if it is on type 2 setting, do not set bypass to true.
+		-- Changing type 2 -> type 1 while bypass set to true will run the selected system immediatly.
+		-- Prevents unwanted behaviour.
+		if fetch_metadata("/systems").type == 1 then
+			store_metadata("/systems", {bypass=true})
+		end
+		
+		send_message(2, {event="reboot"})
 	end
 end

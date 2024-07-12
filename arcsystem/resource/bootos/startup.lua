@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-07-12 20:01:33",modified="2024-07-12 20:01:33",revision=0]]
+--[[pod_format="raw",created="2024-07-12 20:01:33",modified="2024-07-12 23:01:50",revision=2]]
 
 -- load settings
 local sdat = fetch"/appdata/system/settings.pod"
