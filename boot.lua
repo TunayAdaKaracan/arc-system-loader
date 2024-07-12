@@ -1,3 +1,4 @@
+--[[pod_format="raw",created="2024-07-12 20:06:39",modified="2024-07-12 20:07:58",revision=1]]
 --[[
 	Arc Loader by Kutup Tilkisi
 ]]
@@ -8,7 +9,7 @@ function fetch_metadata(filename)
 	return result
 end
 
-local selected_system = fetch_metadata("/systems").system or "picotron"
+local selected_os = fetch_metadata("/systems").os or "picotron"
 
 -- from api.lua#_rm
 local function delete(path)
@@ -35,7 +36,7 @@ local function delete(path)
 end
 
 local function copy_system(path)
-	local source_path, target_path = "/systems/"..selected_system..path, "/system"..path
+	local source_path, target_path = "/systems/"..selected_os..path, "/system"..path
 	local attribs = fstat(source_path)
 
 	if attribs == "folder" then
@@ -75,16 +76,11 @@ local function run_system()
 	prepare_system()
 
 	local sysboot_src = fetch("/system/sysboot.lua")
-
-	if type(sysboot_src) ~= "string" then
-		-- TODO: See why io.write is not reachable within this file.
-		-- Maybe it is related to system settings?
-		io.write(pod(sysboot_src))
-	end
-
+	
 	local booter, err = load(sysboot_src)
 	if not booter then
-		if system != "picotron" then
+		if selected_os != "picotron" then
+			-- fallback
 			run_system("picotron")
 		end
 	end

@@ -1,3 +1,4 @@
+--[[pod_format="raw",created="2024-07-12 20:01:33",modified="2024-07-12 20:01:33",revision=0]]
 
 -- load settings
 local sdat = fetch"/appdata/system/settings.pod"
@@ -47,7 +48,7 @@ if bypass then
 end
 
 
-create_process("/system/apps/test.lua", 
+create_process("/system/apps/arcselector.p64", 
 	{
 			window_attribs = {fullscreen = true, pwc_output = true, immortal = true},
 			immortal   = true -- exit() is a NOP; separate from window attribute :/

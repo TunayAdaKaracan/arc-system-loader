@@ -1,24 +1,22 @@
---[[pod_format="raw",created="2024-06-26 12:33:32",modified="2024-07-12 19:40:39",revision=1142]]
+--[[pod_format="raw",created="2024-06-26 12:33:32",modified="2024-07-12 20:05:23",revision=1149]]
 include("utils/json.lua")
 include("utils/basexx.lua")
 include("utils/textwrap.lua")
 include("gui.lua")
 
-bootfile = {}
-
-function bootfile.local()
+function get_bootfile_local()
 	return fetch("resource/boot.lua")
 end
 
-function bootfile.remote()
+function get_bootfile_remote()
 	local url = "https://raw.githubusercontent.com/TunayAdaKaracan/arc-system-loader/main/boot.lua"
 	return fetch(url)
 end
 
-local function install_system_selector()
+local function install_bootos()
 end
 
-local function install_defaults()
+local function install_arcsystem()
 	-- First create the systems folder to hold installed ones
 	mkdir("/systems")
 	
@@ -40,15 +38,15 @@ local function install_defaults()
 	rm("/system/boot.lua")
 	
 	-- Finally save system loader as boot.lua
-	store("/system/boot.lua", bootfile.local())
+	store("/system/boot.lua", get_bootfile_local())
 	
 	-- Settings
-	store_metadata("/systems", {os="picotron", timer=5, type=})
+	store_metadata("/systems", {os="picotron", timer=5, type=1})
 end
 
 function install_loader()
-	install_defaults()
-	install_system_selector()
+	install_arcsystem()
+	install_bootos()
 end
 
 -- System Installation
@@ -87,7 +85,7 @@ end
 
 function _update()
 	if is_installed and not is_up_to_date_checked then
-		is_up_to_date = bootfile.remote() == fetch("/system/boot.lua")
+		is_up_to_date = get_bootfile_remote() == fetch("/system/boot.lua")
 		is_up_to_date_checked = true
 		
 		if not is_up_to_date then

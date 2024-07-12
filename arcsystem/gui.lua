@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-06-30 22:32:35",modified="2024-07-12 19:36:31",revision=260]]
+--[[pod_format="raw",created="2024-06-30 22:32:35",modified="2024-07-12 20:04:34",revision=261]]
 include "utils/369gui.lua"
 gui = create_gui()
 
@@ -38,7 +38,7 @@ function gui.attach_update_button()
 		y=60,
 		label="Update",
 		click=function(self)
-			store("/system/boot.lua", bootfile.remote())
+			store("/system/boot.lua", get_bootfile_remote())
 			gui:detach(self)
 			is_up_to_date = true
 			gui.attach_system_selector()
