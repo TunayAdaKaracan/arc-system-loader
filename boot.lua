@@ -1,9 +1,7 @@
---[[pod_format="raw",created="2024-07-12 20:06:39",modified="2024-07-12 22:57:06",revision=6]]
+--[[pod_format="raw",created="2024-07-12 20:06:39",modified="2024-07-13 20:52:11",revision=9]]
 --[[
-	Arc Loader by Kutup Tilkisi
-]]
-
--- TODO: system selector
+	Arc Loader by Kutup Tilkisi & 369px
+]] 
 
 function pod(obj, flags, meta)
 	local encountered = {}
