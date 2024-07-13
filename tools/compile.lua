@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-07-13 20:17:57",modified="2024-07-13 20:41:06",revision=5]]
+--[[pod_format="raw",created="2024-07-13 20:17:57",modified="2024-07-13 20:45:04",revision=6]]
 -- Compiles all arcsystem and makes them ready to publish.
 
 -- IMPORTANT !!!!!!

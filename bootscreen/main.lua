@@ -1,9 +1,18 @@
+--[[pod_format="raw",created="2024-07-13 20:44:58",modified="2024-07-13 20:44:58",revision=0]]
 include "gui.lua"
 
-all_os = ls("/systems")
-selected_i = 1
-timer = fetch_metadata("/systems").timer or 5
-start = time()
+local all_os = ls("/systems")
+local systems_data = fetch_metadata("/systems")
+local selected_i = 1 -- fallback if system is no longer available
+
+for i, os in all(all_os) do
+	if systems_data.os == os then
+		selected_i = i
+	end
+end
+
+local timer = systems_data.timer or 5
+local start = time()
 
 function _draw()
 	cls(0)
