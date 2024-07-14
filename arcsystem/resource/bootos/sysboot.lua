@@ -1,3 +1,4 @@
+--[[pod_format="raw",created="2024-07-14 21:42:22",modified="2024-07-14 21:43:06",revision=1]]
 --[[
 	Picotron Kernel
 	Handle process creation and slice allocation
@@ -8,8 +9,6 @@
 -- need to fetch early to determine fullscreen or windowed
 local sdat = fetch"/appdata/system/settings.pod" or  {}
 _apply_system_settings(sdat)
-
-
 
 -- allowed to assume / and /ram is mounted before boot.lua is run
 -- and that there is already /system

@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-07-12 20:06:39",modified="2024-07-13 20:52:11",revision=9]]
+--[[pod_format="raw",created="2024-07-12 20:06:39",modified="2024-07-14 21:41:44",revision=16]]
 --[[
 	Arc Loader by Kutup Tilkisi & 369px
 ]] 
@@ -185,6 +185,7 @@ elseif type == 2 then
 		flip()
 		if (stat(988) > 0) then
 			selected_os = ".bootos"
+			break
 		end
 	end	
 end

@@ -1,11 +1,11 @@
---[[pod_format="raw",created="2024-07-13 20:44:58",modified="2024-07-13 21:05:54",revision=3]]
+--[[pod_format="raw",created="2024-07-13 20:44:58",modified="2024-07-14 21:35:44",revision=19]]
 include "gui.lua"
 
-local all_os = ls("/systems")
-local systems_data = fetch_metadata("/systems")
-local selected_i = 1 -- fallback if system is no longer available.
+all_os = ls("/systems")
+systems_data = fetch_metadata("/systems")
+selected_i = 1 -- fallback if system is no longer available.
 
-for i, os in all(all_os) do
+for i, os in ipairs(all_os) do
 	if systems_data.os == os then
 		selected_i = i
 	end

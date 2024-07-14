@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-07-13 20:17:57",modified="2024-07-13 21:05:24",revision=22]]
+--[[pod_format="raw",created="2024-07-13 20:17:57",modified="2024-07-14 21:12:32",revision=29]]
 -- Compiles all arcsystem and makes them ready to publish.
 
 -- IMPORTANT !!!!!!
@@ -45,10 +45,12 @@ cp(PATH.."/boot.lua", "/system/boot.lua")
 print("Bundling bootscreen")
 cp(PATH.."/bootscreen", "/ram/cart")
 save(PATH.."/bundled/arcselector.p64")
+wait(20)
 
 -- copy bootscreen to /arcsystem/resource/bootos/apps/arcselector.p64
 print("Bundling bootscreen to bootos")
 save(PATH.."/arcsystem/resource/bootos/apps/arcselector.p64")
+wait(20)
 
 -- move /arcsystem/bootos to /systems/.bootos
 print("Copying /arcsystem/resource/bootos to /systems/.bootos")
