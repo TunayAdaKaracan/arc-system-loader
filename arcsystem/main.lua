@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-06-26 12:33:32",modified="2024-07-15 13:18:38",revision=1156]]
+--[[pod_format="raw",created="2024-06-26 12:33:32",modified="2024-07-15 13:20:43",revision=1157]]
 include("utils/json.lua")
 include("utils/basexx.lua")
 include("utils/textwrap.lua")
@@ -14,7 +14,7 @@ function get_bootfile_remote()
 end
 
 local function install_bootos()
-	local console_run = env().corun_program == nil
+	local console_run = env().corun_program ~= nil
 	local fullpath
 	if not console_run then
 		fullpath = env().prog_name .. "/"
@@ -32,7 +32,7 @@ end
 
 local function install_arcsystem()
 	-- First create the systems folder to hold installed ones
-	local install_systems_folder = ls("/systems") ~= nil	
+	local install_systems_folder = ls("/systems") == nil	
 
 	if install_systems_folder then mkdir("/systems") end
 	
