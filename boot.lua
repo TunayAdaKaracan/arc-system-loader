@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-07-12 20:06:39",modified="2024-07-14 21:41:44",revision=16]]
+--[[pod_format="raw",created="2024-07-12 20:06:39",modified="2024-07-15 13:00:44",revision=24]]
 --[[
 	Arc Loader by Kutup Tilkisi & 369px
 ]] 
@@ -89,8 +89,8 @@ end
 
 -- Actual boot.lua
 local systems_metadata = fetch_metadata("/systems")
-local selected_os = systems_metadata.os or "picotron"
-local type = systems_metadata.type or 1
+local selected_os = systems_metadata.os or systems_metadata.system or "picotron"
+local type = systems_metadata.type or 3
 
 -- from api.lua#_rm
 local function delete(path)
@@ -153,25 +153,39 @@ local function prepare_system()
 	delete("/arcloadertemp")
 end
 
+-- If current system is not picotron returns true
+local function run_default_os()
+	-- Can't do anything if default one is broke. We remove systems folder
+	if selected_os ~= "picotron" then
+		selected_os = "picotron"
+		run_system()
+	else
+		-- Default OS is faulty. Remove /system folder and arc. User must create a backup
+		delete("/system")
+		_signal(34)
+		return
+	end
+end
+
 local function run_system()
 	prepare_system()
 
 	local sysboot_src = fetch("/system/sysboot.lua")
-	if not sysboot_src and selected_os != "picotron" then
-		selected_os = "picotron"
-		run_system()
-		return
+	if not sysboot_src then
+		return run_default_os()
 	end	
 
 	local booter, err = load(sysboot_src)
 	if not booter or err  then
-		selected_os = "picotron"
-		run_system()
-		return
+		return run_default_os()
 	end
 
 	-- Will never return. No problem
-	booter()
+	if not pcall(booter) then
+		-- A crash!
+		-- We should return to picotron default OS.
+		return run_default_os()
+	end
 end
 
 if type == 1 then

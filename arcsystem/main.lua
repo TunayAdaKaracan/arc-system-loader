@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-06-26 12:33:32",modified="2024-07-12 20:55:00",revision=1154]]
+--[[pod_format="raw",created="2024-06-26 12:33:32",modified="2024-07-15 12:58:54",revision=1155]]
 include("utils/json.lua")
 include("utils/basexx.lua")
 include("utils/textwrap.lua")
@@ -32,15 +32,19 @@ end
 
 local function install_arcsystem()
 	-- First create the systems folder to hold installed ones
-	mkdir("/systems")
+	local install_systems_folder = ls("/systems") ~= nil	
+
+	if install_systems_folder then mkdir("/systems") end
 	
 	-- Not sure why can't directly transfer but this is the way
 	cp("/system", "/original")
-	cp("/original", "/systems/picotron")
+	if install_systems_folder then cp("/original", "/systems/picotron") end
 	
 	-- Rename boot.lua to sysboot.lua and delete old file
-	cp("/systems/picotron/boot.lua", "/systems/picotron/sysboot.lua")
-	rm("/systems/picotron/boot.lua")
+	if install_systems_folder then
+		cp("/systems/picotron/boot.lua", "/systems/picotron/sysboot.lua")
+		rm("/systems/picotron/boot.lua")
+	end
 	
 	-- Create /system folder in host so it will stay same between starts.
 	rm("/system")
@@ -55,7 +59,7 @@ local function install_arcsystem()
 	store("/system/boot.lua", get_bootfile_local())
 	
 	-- Settings
-	store_metadata("/systems", {os="picotron", timer=5, type=1})
+	store_metadata("/systems", {os="picotron", timer=5, type=3})
 end
 
 function install_loader()

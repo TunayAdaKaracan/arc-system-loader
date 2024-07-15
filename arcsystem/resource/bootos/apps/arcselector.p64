@@ -2,8 +2,8 @@ picotron cartridge // www.picotron.net
 version 2
 
 :: .info.pod
-b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTA3LTE0IDIxOjQyOjI4Iixtb2RpZmllZD0iMjAyNC0w
-Ny0xNCAyMTo0MjoyOCJdXWx6NAAEAAAAAwAAADBuaWw=
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTA3LTE1IDEzOjAwOjUyIixtb2RpZmllZD0iMjAyNC0w
+Ny0xNSAxMzowMDo1MiJdXWx6NAAEAAAAAwAAADBuaWw=
 :: gui.lua
 --[[pod_format="raw",created="2024-07-14 21:01:47",modified="2024-07-14 21:31:02",revision=12]]
 --gui.lua by 369px
