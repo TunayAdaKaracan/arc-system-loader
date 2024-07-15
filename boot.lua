@@ -89,8 +89,8 @@ end
 
 -- Actual boot.lua
 local systems_metadata = fetch_metadata("/systems")
-local selected_os = systems_metadata.os or "picotron"
-local type = systems_metadata.type or 1
+local selected_os = systems_metadata.os or systems_metadata.system or "picotron"
+local type = systems_metadata.type or 3
 
 -- from api.lua#_rm
 local function delete(path)
