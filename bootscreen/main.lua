@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-07-13 20:44:58",modified="2024-07-14 21:35:44",revision=19]]
+--[[pod_format="raw",created="2024-07-13 20:44:58",modified="2024-07-15 13:10:43",revision=26]]
 include "gui.lua"
 
 all_os = ls("/systems")
@@ -11,8 +11,9 @@ for i, os in ipairs(all_os) do
 	end
 end
 
-local timer = systems_data.timer or 5
-local start = time()
+timer = systems_data.timer or 5
+start = time()
+any_input = false
 
 function _draw()
 	cls(0)
@@ -22,9 +23,11 @@ end
 function _update()
 	if keyp("down") then
 		selected_i = min(selected_i+1, #all_os)
+		any_input = true
 	elseif keyp("up") then
 		selected_i = max(selected_i-1, 1)
-	elseif keyp("space") or time() - start > timer then
+		any_input = true
+	elseif keyp("space") or (time() - start > timer and not any_input) then
 		store_metadata("/systems", {os=all_os[selected_i]})
 		
 		-- if it is on type 2 setting, do not set bypass to true.
