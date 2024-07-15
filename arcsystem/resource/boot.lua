@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-07-12 20:06:39",modified="2024-07-15 13:00:44",revision=24]]
+--[[pod_format="raw",created="2024-07-12 20:06:39",modified="2024-07-15 15:08:08",revision=25]]
 --[[
 	Arc Loader by Kutup Tilkisi & 369px
 ]] 
@@ -154,7 +154,7 @@ local function prepare_system()
 end
 
 -- If current system is not picotron returns true
-local function run_default_os()
+function run_default_os()
 	-- Can't do anything if default one is broke. We remove systems folder
 	if selected_os ~= "picotron" then
 		selected_os = "picotron"
@@ -167,7 +167,7 @@ local function run_default_os()
 	end
 end
 
-local function run_system()
+function run_system()
 	prepare_system()
 
 	local sysboot_src = fetch("/system/sysboot.lua")

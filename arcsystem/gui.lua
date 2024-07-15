@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-06-30 22:32:35",modified="2024-07-12 20:04:34",revision=261]]
+--[[pod_format="raw",created="2024-06-30 22:32:35",modified="2024-07-15 15:06:36",revision=263]]
 include "utils/369gui.lua"
 gui = create_gui()
 
@@ -46,7 +46,7 @@ function gui.attach_update_button()
 	})
 end
 
-is_installed = (ls("/systems")~=nil)
+is_installed = (ls("/systems")~=nil and fetch("/system/sysboot.lua") ~= nil)
 is_up_to_date_checked = false
 is_up_to_date = nil
 
