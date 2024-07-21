@@ -34,7 +34,7 @@ end
 -- only loop if there is a _draw or _update
 -- logic here applies to window manager too!
 
--- printh("entering mainloop at cpu:"..stat(1))
+-- printh("entering mainloop at cpu:"..flr(stat(1)/100).."%   mem:"..flr(stat(0)/1024).."k")
 
 while (_draw or _update) do
 

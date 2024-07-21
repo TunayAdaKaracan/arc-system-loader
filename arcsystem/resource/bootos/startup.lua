@@ -1,4 +1,3 @@
---[[pod_format="raw",created="2024-07-12 20:01:33",modified="2024-07-12 23:01:50",revision=2]]
 
 -- load settings
 local sdat = fetch"/appdata/system/settings.pod"
@@ -8,11 +7,18 @@ if not sdat then
 	store("/appdata/system/settings.pod", sdat)
 end
 
--- newer settings that should default to a non-nil value
+-- settings added since first release should default to a non-nil value
+
 if (sdat.anywhen == nil) then
 	sdat.anywhen = true
 	store("/appdata/system/settings.pod", sdat)
 end
+
+if (sdat.pixel_scale == nil) then
+	sdat.pixel_scale = 2
+	store("/appdata/system/settings.pod", sdat)
+end
+
 
 -- present working cartridge
 local num = 0
@@ -37,11 +43,11 @@ for i=1,20 do
 	if (stat(988) > 0) bypass = true _signal(35) 
 end
 
-if bypass then
+if (bypass) then
 	create_process("/system/apps/terminal.lua", 
 		{
-				window_attribs = {fullscreen = true, pwc_output = true, immortal = true},
-				immortal   = true -- exit() is a NOP; separate from window attribute :/
+			window_attribs = {fullscreen = true, pwc_output = true, immortal = true},
+			immortal   = true -- exit() is a NOP; separate from window attribute :/
 		}
 	)
 	return
@@ -54,3 +60,4 @@ create_process("/system/apps/arcselector.p64",
 			immortal   = true -- exit() is a NOP; separate from window attribute :/
 	}
 )
+

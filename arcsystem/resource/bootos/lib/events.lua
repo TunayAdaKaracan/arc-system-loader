@@ -1,3 +1,4 @@
+--[[pod_format="raw",created="2024-05-28 08:10:08",modified="2024-05-28 08:13:55",revision=5]]
 --[[
 
 	events.lua
@@ -314,7 +315,10 @@ do
 		scancode = get_scancode(scancode)
 
 		if (type(scancode) == "table") then
-			for i=1,#scancode do clear_key(scancode[i]) end
+			for i=1,#scancode do 
+				frame_keypressed_result[scancode[i]] = nil
+				key_state[scancode[i]] = nil
+			end
 			return
 		end
 
@@ -470,9 +474,10 @@ do
 							end
 
 							if (key_state[lalt] or key_state[ralt]) then
-								if (msg.scancode == name_to_scancodes["left"][1]) accept = false
-								if (msg.scancode == name_to_scancodes["right"][1]) accept = false
-								if (msg.scancode == name_to_scancodes["enter"][1]) accept = false
+								if (msg.scancode == name_to_scancodes["left"][1])  accept = false -- wm workspace flipping
+								if (msg.scancode == name_to_scancodes["right"][1]) accept = false -- wm workspace flipping
+								if (msg.scancode == name_to_scancodes["enter"][1]) accept = false -- host alt+enter
+								if (msg.scancode == name_to_scancodes["tab"][1])   accept = false -- host alt+tab
 							end
 						end
 
@@ -539,6 +544,14 @@ do
 	function on_event(event, f)
 		if (not message_hooks[event]) message_hooks[event] = {}
 		add(message_hooks[event], f)
+
+		-- for file modification events: let pm know this process is listening for that file
+		if (sub(event, 1, 9) == "modified:") then
+			send_message(2, {
+				event = "_subscribe_to_file",
+				filename = sub(event, 10)
+			})
+		end
 	end
 
 	-- kernel space for now -- used by wm (jettisoned)

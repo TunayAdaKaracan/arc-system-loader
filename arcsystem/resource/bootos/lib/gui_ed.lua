@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-03-13 18:17:04",modified="2024-04-05 01:40:13",revision=4]]
+--[[pod_format="raw",created="2024-03-13 18:17:04",modified="2024-06-30 01:20:27",revision=10]]
 --[[
 
 	/dev/ed/gui_ed.lua
@@ -52,10 +52,12 @@ end
 
 
 
-function open_search_pane(container, search_func)
+function open_search_pane(container, search_func, prompt_str)
 
 	-- already open
 	if (container.search_box) return
+
+	prompt_str = prompt_str or "Find:"
 
 --	printh("opening search pane from container: "..tostr(container))
 
@@ -67,7 +69,7 @@ function open_search_pane(container, search_func)
 	function search_box:draw()
 		rectfill(0,0,self.width,self.height,6)
 		line(0,self.height-1,self.width,self.height-1,13)
-		print("Find:",8,6, 5)
+		print(prompt_str,8,6, 5)
 	end
 
 	local search_field = search_box:attach_text_editor({
@@ -75,10 +77,13 @@ function open_search_pane(container, search_func)
 		key_callback = {enter = function () search_func(1) close_search_pane(container) end }
 	})
 
-	search_field:set_text({container.last_search_str or ""})
-	search_field:select_all()
-	search_field:set_keyboard_focus(true) -- to do: perhaps should allow search_field:set_keyboard_focus()
+	if (prompt_str == "Find:") then
+		search_field:set_text({container.last_search_str or ""})
+		search_field:select_all()
+	end
 
+	search_field:set_keyboard_focus(true) -- to do: perhaps should allow search_field:set_keyboard_focus()
+	
 	container.search_box = search_box
 	container.search_field = search_field
 
@@ -105,12 +110,10 @@ function attach_text_editor(g, parent)
 	local cursor_y1 = 7
 
 	local cur_x, cur_y = 1, 1
+	local cur_xp = 0 -- cursor x in pixels (preserve original position when moving across a shorter line that clamps cur_x)
 
 	local hydrated = {}
 	local hydrate_y = 1
-
-	local margin_left = 0
-	local margin_top  = 3
 
 
 	local sel = {{line=0, char=0}, {line=0, char=-1}, {line=0, char=0}}
@@ -165,8 +168,16 @@ function attach_text_editor(g, parent)
 	content.has_search          = container.has_search
 	content.bgcol               = container.bgcol or 1
 	content.fgcol               = container.fgcol or 6
+	content.curcol              = container.curcol or 14
+	content.selcol              = container.selcol or 10
+	content.lncol               = container.lncol or 16
 	content.block_scrolling     = container.block_scrolling
 	content.key_callback        = container.key_callback or {}
+
+	content.margin_top          = container.margin_top or 3
+	content.margin_left         = container.margin_left or 4
+	content.margin_left1        = content.margin_left + (content.show_line_numbers and 28 or 0) -- updated every frame
+
 
 	---
 	local text = {""}
@@ -202,7 +213,9 @@ function attach_text_editor(g, parent)
 	-- don't care about x for now
 	local function find_cur_y_for_click(my)
 
-		local yy = margin_top
+		local yy = content.margin_top
+
+		my += 1  -- slight fudge to match cursor / because space below characters visually part of next row
 
 		for i = 1, #text do			
 			yy += (hydrated[i] and hydrated[i].draw_h) or char_h
@@ -382,7 +395,7 @@ function attach_text_editor(g, parent)
 			token_state = token_state,
 			token_state0 = (i == 1 or not hydrated[i-1]) and 0 or hydrated[i-1].token_state,
 			-- draw_y includes the top margin
-			draw_y = i > 1 and (hydrated[i-1].draw_y + hydrated[i-1].draw_h) or margin_top
+			draw_y = i > 1 and (hydrated[i-1].draw_y + hydrated[i-1].draw_h) or content.margin_top
 		}
 
 		hydrated[i] = item
@@ -425,6 +438,7 @@ function attach_text_editor(g, parent)
 		item.renderable, item.token_state = highlight_line(line, token_state)
 		item.token_state = item.token_state or 0
 
+
 		local x1, y1 = print(item.renderable, 0, -1000)
 		if (y1) item.draw_h = y1 + 1000
 	end
@@ -432,7 +446,11 @@ function attach_text_editor(g, parent)
 
 		
 	
-
+	local function set_cur_xp()
+		-- -2 (~ half character width) so that can move between characters that are <= 2px apart without getting rounded down
+		cur_xp = find_x_for_cur_x(cur_x, text[cur_y]) - 2 
+		--printh("set cur_xp: "..cur_xp)
+	end
 
 
 	-- visible_x / visible_y: minimum distance from cusor to edge
@@ -452,8 +470,8 @@ function attach_text_editor(g, parent)
 
 		if (not xx or not yy) return
 
-		content.y = mid (-(yy - visible_y), content.y, -(yy - (container.height - margin_top) + char_h + 4 + visible_y))
-		content.x = mid (-(xx - visible_x), content.x, -(xx - (container.width - margin_left) + char_w + 8 + visible_x))
+		content.y = mid (-(yy - visible_y), content.y, -(yy - (container.height - content.margin_top) + char_h + 4 + visible_y))
+		content.x = mid (-(xx - visible_x), content.x, -(xx - (container.width - content.margin_left1) + char_w + 8 + visible_x))
 
 		--printh(xx)
 
@@ -516,11 +534,11 @@ function attach_text_editor(g, parent)
 
 		-- line number background
 		if (self.show_line_numbers) then
-			rectfill(0, 0, 26, self.height, 16)
+			rectfill(0, 0, 26, self.height, content.lncol)
 		end
 		
-		local x = margin_left
-		local y = margin_top 
+		local x = content.margin_left1
+		local y = content.margin_top 
 		local inside_comment = false
 		local something_selected = is_something_selected()
 
@@ -528,20 +546,19 @@ function attach_text_editor(g, parent)
 		local end_i   = mid(1, find_cur_y_for_click(container.height - content.y),  #text)
 
 		-- draw_y includes the top margin
-		y = (hydrated[start_i] and hydrated[start_i].draw_y or margin_top)
+		y = (hydrated[start_i] and hydrated[start_i].draw_y or content.margin_top)
 
 		for i= start_i, end_i do
 
 			-- draw selection
-			-- to do: how to display \n?
 			if (sel and i >= sel[1].line and i <= sel[2].line) then
 				
 				local c0 = i > sel[1].line and 1 or sel[1].char
-				local c1 = i < sel[2].line and #text[i] or sel[2].char
-				if (c1 >= c0 or (text[i]=="" and sel[1].line ~= sel[2].line)) then -- c1==c0 means single character selected   except "" (means \n)
-					local sx0 = margin_left + get_sx_for_cur_x(text[i], c0-1)
-					local sx1 = margin_left + get_sx_for_cur_x(text[i], c1)-1
-					rectfill(sx0, y + cursor_y0, sx1, y + cursor_y1, 10)
+				local c1 = i < sel[2].line and #text[i]+1 or sel[2].char -- +1 for implied \n
+				if (c1 >= c0) then -- c1==c0 means single character selected
+					local sx0 = content.margin_left1 + get_sx_for_cur_x(text[i], c0-1)
+					local sx1 = content.margin_left1 + get_sx_for_cur_x(text[i].." ", c1)-1 -- extra char on right so that newline selection is visible
+					rectfill(sx0, y + cursor_y0, sx1, y + cursor_y1, content.selcol)
 				end
 			end
 
@@ -556,7 +573,7 @@ function attach_text_editor(g, parent)
 		
 			--clip()
 			if (self.parent.show_line_numbers) then
-				print(string.format("%4d",i), 3, y, 1)
+				print(string.format("%4d",i), 3, y, content.bgcol)
 			end
 
 			-- validate line to print; might propagate backwards
@@ -620,7 +637,7 @@ function attach_text_editor(g, parent)
 					sx = print(substr,x,-100)
 				end
 				
-				rectfill(sx, sy + cursor_y0, sx+char_w-1, sy+cursor_y1, 14)
+				rectfill(sx, sy + cursor_y0, sx+char_w-1, sy+cursor_y1, content.curcol)
 
 			end
 			
@@ -646,6 +663,7 @@ function attach_text_editor(g, parent)
 			-- printh("just one line")
 			text[y] = insert_string(text[y], x, str)
 			cur_x += #str
+			set_cur_xp()
 			return
 		end
 
@@ -669,6 +687,7 @@ function attach_text_editor(g, parent)
 
 		cur_y += nl
 		cur_x = #lines[#lines] + 1
+		set_cur_xp()
 
 		hydrate_y = y
 
@@ -702,6 +721,7 @@ function attach_text_editor(g, parent)
 			text[cur_y] = delete_string(text[cur_y], cur_x-1, cur_x-1)
 			cur_x = cur_x - 1
 		end
+		set_cur_xp()
 	end
 
 	
@@ -717,17 +737,19 @@ function attach_text_editor(g, parent)
 		if (not is_something_selected()) return ""
 
 		if (sel[1].line == sel[2].line) then
-			return sub(text[sel[1].line], sel[1].char, sel[2].char)
+			-- select within single line
+			str = sub(text[sel[1].line], sel[1].char, sel[2].char)
+		else
+			-- select across multiple lines
+			str ..= (sub(text[sel[1].line], sel[1].char) or "") .. "\n"
+			for i = sel[1].line + 1, sel[2].line - 1 do
+				str ..= text[i] .. "\n"
+			end
+			str ..= (sub(text[sel[2].line], 1, sel[2].char) or "")
 		end
 
-		str ..= (sub(text[sel[1].line], sel[1].char) or "") .. "\n"
-		for i = sel[1].line + 1, sel[2].line - 1 do
-			str ..= text[i] .. "\n"
-		end
-		str ..= (sub(text[sel[2].line], 1, sel[2].char) or "")
-
+		if (sel[2].char > #text[sel[2].line]) str ..= "\n" -- trailing \n
 		return str
-
 	end
 
 
@@ -743,7 +765,7 @@ function attach_text_editor(g, parent)
 		cur_y = sel[1].line
 
 		-- perfectly delete from start of line0 to end of line1 --> don't keep first line
-		if (sel[1].char == 1 and sel[2].char == #text[sel[2].line]) then
+		if (sel[1].char == 1 and sel[2].char > #text[sel[2].line]) then  -- "sel[2].char >" means newline is selected
 			l0 = sel[1].line
 		end
 
@@ -753,6 +775,7 @@ function attach_text_editor(g, parent)
 		-- 2. remove anything inbetween
 
 		local n = l1 - l0 + 1 -- number of lines to delete
+
 
 		if (n > 0) then
 			for i = l0, #text do
@@ -765,6 +788,8 @@ function attach_text_editor(g, parent)
 		if (#text == 0) then
 			text = {""}
 		end
+
+		set_cur_xp()
 
 	end
 
@@ -790,7 +815,7 @@ function attach_text_editor(g, parent)
 		sel[2].char = sel[2].char - 1
 		if (sel[2].char < 1 and sel[2].line > 1) then
 			sel[2].line -= 1
-			sel[2].char = #text[sel[2].line]
+			sel[2].char = #text[sel[2].line] + 1 -- +1 for implicit \n
 		end
 
 	end
@@ -810,7 +835,7 @@ function attach_text_editor(g, parent)
 			-- printh(string.format(" --> mx %d my %d", mx, my))
 			local cy = find_cur_y_for_click(my)
 			cur_y = mid(1, cy, #text)
-			cur_x = find_cur_x_for_click(mx - margin_left, text[cur_y])
+			cur_x = find_cur_x_for_click(mx - content.margin_left1, text[cur_y])
 			deselect()
 			show_cursor()
 			return
@@ -819,7 +844,9 @@ function attach_text_editor(g, parent)
 		if (x) cur_x = x
 		if (y) cur_y = y
 
+		set_cur_xp()
 		show_cursor() -- always show
+		
 	end
 
 	function content:center_cursor(...)
@@ -930,7 +957,7 @@ function attach_text_editor(g, parent)
 		local pos = cur_x
 		local cat0 = 0 -- unknown starting category
 		
-		while ((dir < 0 and pos > 1) or (dir > 0 and pos <= #line)) do
+		while ((dir < 0 and pos > 1) or (dir > 0 and pos <= #line + 1)) do -- #line + 1 for \n
 
 			if (dir < 0) pos += dir
 			
@@ -940,7 +967,14 @@ function attach_text_editor(g, parent)
 			-- found a character that disagrees with starting category -> end of span
 			if ((cat0 > 0) and (cat != cat0)) then
 				if (dir > 0 and pos > 0) pos -= 1
-				return (pos - cur_x) + 1
+
+				if (cat0 == 6 and cat ~= 6) then
+					-- skip whitespace and search for end of non-whitespace
+					-- going left: jump to start of word; going right: jump to end of word
+					cat0 = cat
+				else
+					return (pos - cur_x) + 1
+				end
 			end
 
 			if (cat0 == 0 and cat != 0) then		
@@ -956,28 +990,51 @@ function attach_text_editor(g, parent)
 	end
 
 
+	local function comment_selection()
+		local found_uncommented = false
+		
+		local something_selected = is_something_selected()
+		local line1 = something_selected and sel[1].line or cur_y
+		local line2 = something_selected and sel[2].line or cur_y
+
+		for i=line1,line2 do
+			if (text[i] and text[i]:sub(1,2) ~= "--") found_uncommented = true
+		end		
+			
+		if found_uncommented then
+			for i=line1,line2 do
+				text[i] = "--"..text[i]
+			end
+		else
+			-- uncomment all
+			for i=line1,line2 do
+				if (text[i]) text[i] = text[i]:sub(3)
+			end
+		end
+	end
+
 
 	local function indent_selection()
 
 		checkpoint()
 
+		line1, line2 = sel[1].line, sel[2].line
+	
 		if (key("shift")) then
-			for i=sel[1].line,sel[2].line do
-				if (ord(text[i],1) == 9) then
+			for i=line1, line2 do
+				if text[i] and (ord(text[i],1) == 9 or sub(text[i],1,1) == " ") then
 					text[i] = sub(text[i],2)
 					if (i == sel[1].line) sel[1].char -= 1
 					if (i == sel[2].line) sel[2].char -= 1
 				end
 			end
 		else
-
-			for i=sel[1].line,sel[2].line do
-				text[i] = "\009"..text[i]
+			for i=line1,line2 do
+				if (text[i]) text[i] = "\009"..text[i]
 			end
 			sel[1].char += 1
 			sel[2].char += 1
 		end
-
 
 
 	end
@@ -1007,6 +1064,7 @@ function attach_text_editor(g, parent)
 				sel[1].char, cur_x = x0, x0
 				sel[2] = {line = y, char = x1}
 				show_cursor(50, 80)
+				set_cur_xp()
 				return
 			end
 			y += 1 x = 1
@@ -1018,17 +1076,32 @@ function attach_text_editor(g, parent)
 
 	end
 
+	local function block_closer(line)
 
+		-- find first and last non-whitespace tokenoid
+		local str, pos, cat, tok0, tok1
+		pos = 1
+		while (pos <= #line) do
+			str, pos, cat = tokenoid(line, pos)
+			if ((not tok0 or tok0 == "local") and cat==1) tok0 = str -- first identifier tokenoid (ignore "local")
+			if (cat ~= 0) tok1 = str                                 -- last non-whitespace tokenoid
+		end
+
+		if (tok1 == "do" or tok1 == "then" or tok1 == "else") return "end"
+		if (tok1 == "repeat") return "until"
+
+		-- function definition
+		if (tok0 == "function") return "end"
+
+		return nil
+	end
 
 	function content:update()
 
 		self.width = 10000 -- hack; don't need to know width [yet]. but need to catch mouse events when scrolled to the right
 
-		if (not self.parent.show_line_numbers) then
-			margin_left = 4
-		else
-			margin_left = 32
-		end
+		-- update content.margin_left1 -- adjusted dynamically when line numbers turned on/off
+		content.margin_left1 = content.margin_left + (content.show_line_numbers and 28 or 0)
 
 		-- rolling hydration (semi-lazy layout evaluation; spread out computation before e.g. jump to end of file)
 
@@ -1074,6 +1147,7 @@ function attach_text_editor(g, parent)
 					delete_selected()
 					text[cur_y] = insert_string(text[cur_y], cur_x, k)
 					cur_x = cur_x + 1
+					set_cur_xp()
 					show_cursor()
 				end
 			end
@@ -1092,6 +1166,7 @@ function attach_text_editor(g, parent)
 					delete_selected()
 					text[cur_y] = insert_string(text[cur_y], cur_x, k)
 					cur_x = cur_x + 1
+					set_cur_xp()
 					show_cursor()
 				end
 			end
@@ -1119,7 +1194,19 @@ function attach_text_editor(g, parent)
 					cur_x = 1 + #whitespace
 					cur_y = cur_y + 1
 					show_cursor()
+
+					-- block
+					if (key"shift") then
+						local blc = block_closer(text[cur_y-1])
+						if (blc) then
+							insert_line(cur_y+1, whitespace..blc)
+							text[cur_y] ..= "\t" -- indent
+							cur_x += 1
+						end
+					end
+
 				end
+				set_cur_xp()
 			end
 
 			-- backspace
@@ -1196,7 +1283,7 @@ function attach_text_editor(g, parent)
 					--cur_x = cur_x - 1
 					cur_x += calculate_skip_steps(-1)
 				end
-				
+				set_cur_xp()
 			end
 			if (keyp("right")) then
 				if (cur_x > #text[cur_y]) then
@@ -1207,6 +1294,7 @@ function attach_text_editor(g, parent)
 				else
 					cur_x += calculate_skip_steps(1)
 				end
+				set_cur_xp()
 			end
 			if (keyp("up") or keyp("pageup")) then
 				local n = keyp("pageup") and 20 or 1
@@ -1214,7 +1302,7 @@ function attach_text_editor(g, parent)
 					if (cur_y < 2) then
 						cur_x = 1
 					else
-						local xx = find_x_for_cur_x(cur_x, text[cur_y])
+						local xx = cur_xp and cur_xp or find_x_for_cur_x(cur_x, text[cur_y])
 						cur_y = cur_y - 1
 						cur_x = xx > 0 and 1 + find_cur_x_for_click(xx, text[cur_y]) or 1
 						cur_x = mid(1, cur_x, #text[cur_y] + 1)
@@ -1228,7 +1316,7 @@ function attach_text_editor(g, parent)
 					if (cur_y >= #text) then
 						cur_x = #text[cur_y]+1
 					else
-						local xx = find_x_for_cur_x(cur_x, text[cur_y])
+						local xx = cur_xp and cur_xp or find_x_for_cur_x(cur_x, text[cur_y])
 						cur_y = cur_y + 1
 						cur_x = xx > 0 and 1 + find_cur_x_for_click(xx, text[cur_y]) or 1
 						cur_x = mid(1, cur_x, #text[cur_y] + 1)
@@ -1237,16 +1325,18 @@ function attach_text_editor(g, parent)
 				contain_cursor()
 			end
 
-			if (keyp("home")) then
+			if (keyp("home") or (key"ctrl" and keyp"up")) then
 				if (key"ctrl") cur_y = 1
 				cur_x = 1
 				show_cursor()
+				set_cur_xp()
 			end
 
-			if (keyp("end")) then
+			if (keyp("end") or (key"ctrl" and keyp"down")) then
 				if (key"ctrl") cur_y = #text
 				cur_x = #text[cur_y]+1
 				show_cursor()
+				set_cur_xp()
 			end
 
 			
@@ -1305,8 +1395,46 @@ function attach_text_editor(g, parent)
 					end)
 				end
 
+				if keyp("l") and content.has_search then
+					open_search_pane(container, function ()
+						local line_num = tostring(container.search_field:get_text()[1])
+						if (line_num) then
+							cur_y = mid(1, flr(line_num), #text)
+							show_cursor()
+							set_cur_xp()
+						end
+					end, "Line:")
+				end
+
 				if keyp("g") and container.last_search_str then
 					search_text(1, container.last_search_str)
+				end
+
+				if keyp("e") then  -- End
+					cur_x = #text[cur_y]+1
+					show_cursor()
+					set_cur_xp()
+				end
+
+				if keyp("w") then  -- staWt
+					cur_x = 1
+					show_cursor()
+					set_cur_xp()
+				end
+
+				-- ctrl+b: block comment
+				if keyp("b") then
+					checkpoint()
+					comment_selection()
+				end
+
+				-- ctrl+d: duplicate line
+				if keyp("d") then
+					checkpoint()
+					deselect()
+					insert_line(cur_y, text[cur_y])
+					cur_y += 1
+					show_cursor()
 				end
 
 			end
@@ -1395,7 +1523,8 @@ function attach_text_editor(g, parent)
 		local cy = find_cur_y_for_click(msg.my)
 		if (cy ~= cur_y) checkpoint()
 		cur_y = mid(1, cy, #text)
-		cur_x = find_cur_x_for_click(msg.mx - margin_left, text[cur_y])
+		cur_x = find_cur_x_for_click(msg.mx - content.margin_left1, text[cur_y])
+		set_cur_xp()
 		if (key("shift")) then
 			-- add to selection
 			sel[2] = {line=cur_y, char=cur_x-1}
@@ -1404,19 +1533,21 @@ function attach_text_editor(g, parent)
 			set_selection{{line=cur_y, char=cur_x}, {line=cur_y, char=cur_x-1}}
 		end
 		show_cursor()
+		return true
+	end
+
+	-- stop tap messages inside editor from rising to parent
+	function content:tap(msg)
+		return true
 	end
 
 	function content:doubletap(msg)
-
-
+		-- dupe from click
 		local cy = find_cur_y_for_click(msg.my)
 		cur_y = mid(1, cy, #text)
-		cur_x = find_cur_x_for_click(msg.mx - margin_left, text[cur_y])
-
---		printh("@@ content:doubletap cur_y: "..cur_y)
-
+		cur_x = find_cur_x_for_click(msg.mx - content.margin_left1, text[cur_y])
 		select_from_double_tap(text[cur_y], cur_x, sel)
-
+		return true
 	end
 
 
@@ -1424,9 +1555,10 @@ function attach_text_editor(g, parent)
 		-- dupe from click
 		local cy = find_cur_y_for_click(msg.my)
 		cur_y = mid(1, cy, #text)
-		cur_x = find_cur_x_for_click(msg.mx - margin_left, text[cur_y])
+		cur_x = find_cur_x_for_click(msg.mx - content.margin_left1, text[cur_y])
 		extend_selection_to_cursor()
 		show_cursor()
+		return true
 	end
 
 	

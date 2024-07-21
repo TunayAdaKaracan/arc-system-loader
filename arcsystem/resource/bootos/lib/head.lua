@@ -43,6 +43,10 @@ local _fetch_anywhen = _fetch_anywhen
 local _fetch_remote_result = _fetch_remote_result
 local _store_local = _store_local
 local _signal = _signal
+local _unmap
+
+-- sprites are owned by head -- process can assume exists
+local _spr = {} 
 
 
 function reset()
@@ -90,6 +94,57 @@ function reset()
 end
 
 
+-- from sfx.p64 -- create default instrument 0. Want note(48) to do something useful out of the box.
+-- later: more default instruments? copy PICO-8 set? (hrmf)
+-- want to nudge users towards creating / curating their own starter set
+-- a common set instruments that become the "picotron sound" will likely form either way // ref: jungle_flute.xi
+
+function clear_instrument(i)
+	local addr = 0x40000 + i * 0x200
+	memset(addr, 0, 0x200)
+	
+	-- node 0: root
+	poke(addr + (0 * 32), -- node 0
+	
+			0,    -- parent (0x7)  op (0xf0)
+			1,    -- kind (0x0f): 1 root  kind_p (0xf0): 0  -- wavetable_index
+			0,    -- flags
+			0,    -- unused extra
+				
+			-- MVALs:  kind/flags,  val0, val1, envelope_index
+			
+			0x2|0x4,0x20,0,0,  -- volume: mult. 0x40 is max (-0x40 to invert, 0x7f to overamp)
+			0x1,0,0,0,     -- pan:   add. center
+			0x1,0,0,0,     -- tune: +0 -- 0,48,0,0 absolute for middle c (c4) 261.6 Hz
+			0x1,0,0,0,     -- bend: none
+			-- following shouldn't be in root
+			0x0,0,0,0,     -- wave: use wave 0 
+			0x0,0,0,0      -- phase 
+	)
+	
+	
+	-- node 1: triangle wave
+	poke(addr + (1 * 32), -- instrument 0, node 1
+	
+			0,    -- parent (0x7)  op (0xf0)
+			2,    -- kind (0x0f): 2 osc  kind_p (0xf0): 0  -- wavetable_index
+			0,    -- flags
+			0,    -- unused extra
+				
+			-- MVALs:  kind/flags,  val0, val1, envelope_index
+			
+			0x2,0x20,0,0,  -- volume: mult. 0x40 is max (-0x40 to invert, 0x7f to overamp)
+			0x1,0,0,0,     -- pan:   add. center
+			0x21,0,0,0,    -- tune: +0 -- 0,48,0,0 absolute for middle c (c4) 261.6 Hz
+			               -- tune is quantized to semitones with 0x20
+			0x1,0,0,0,     -- bend: none
+			0x0,0x40,0,0,  -- wave: triangle
+			0x0,0,0,0      -- phase 
+	)
+
+end
+
+
 local function init_runtime_state()
 
 	-- experiment: always start with a display
@@ -103,13 +158,19 @@ local function init_runtime_state()
 	poke (0x547c, 0)  -- video mode
 ]]
 
-	-- runtime state
+	-- new seed on each run
 	srand()
 
 	-- default map
-	memmap(0x100000, userdata("i16", 32, 32))
+	memmap(userdata("i16", 32, 32), 0x100000)
 
-	-- reset() does most of the work but doesn't reset entire runtime state (maybe it should?)
+	-- clear sprites
+	_spr = {}
+
+	-- default sfx: single inst 0
+	clear_instrument(0)
+
+	-- reset() does most of the work but is specific to draw state; sometimes want to reset() at start of _draw()!  (ref: jelpi)
 	reset()
 
 end
@@ -200,6 +261,9 @@ function create_process(prog_name, env_patch, do_debug)
 		include("/system/lib/gui.lua")
 		include("/system/lib/app_menu.lua")
 		include("/system/lib/wrangle.lua")
+		include("/system/lib/theme.lua")
+
+		_signal(38) -- start of userland code (for memory accounting)
 
 		include("/system/lib/jettison.lua")
 		
@@ -249,9 +313,15 @@ end
 	-- hidden from userland program
 	local _disp = nil
 	local _target = nil
+	local userdata_ref = {} -- hold mapped userdata references
+	local _current_map = nil -- only really needed for handling automatic reference release
 
 	-- default to display
 	function set_draw_target(d)
+
+		-- 0.1.0h: unmap existing target (garbage collection)
+		_unmap(_target, 0x10000)
+		
 		d = d or _disp
 
 		--printh("setting draw target to:"..tostr(d))
@@ -259,19 +329,10 @@ end
 		_target = d
 		_set_draw_target(d)
 
-		-- map to 0x60000 automatically? nope -- user should decide to do this / wrap set_draw_target()
-		-- and in most cases, target is _disp and drawing straight to 0x10000 anyway.
-		-- let window manager handle frame holding
-
-		-- but.. want to poke(0x10000, 8) in terminal / when running on top of terminal.
-		-- maybe "draw_target" /is/ "display". np if wm is holding frames.
-		-- up to user to set_draw_target() before end of _draw()
-		-- (or happens automatically in mainloop)
-
-		if (d ~= nil) then
-			memmap(0x10000, d)
-		end
-
+		-- map to 0x10000 -- want to poke(0x10000) in terminal, or use specialised poke-based routines as usual
+		-- draw target (and display data source) is reset to display after each _draw() in foot
+		memmap(d, 0x10000)
+		
 		return ret
 
 	end
@@ -318,6 +379,14 @@ end
 			-- set the program this window was created with (for workspace matching)
 
 			attribs.prog = env().prog_name
+
+			-- special case: when corunning a program under terminal, program name is /ram/cart/main.lua
+			-- (search /ram/cart/main.lua in wrangle.lua -- works with workspace matching for tabs)
+
+			if (attribs.prog == "/system/apps/terminal.lua") then
+				attribs.prog = "/ram/cart/main.lua"
+			end
+
 			
 			-- first call: decide on an initial window size so that can immediately create display
 
@@ -390,8 +459,11 @@ end
 			if (w != new_display_w or h != new_display_h) then
 				-- this used to call set_display(); moved inline as it should only ever happen here
 
+				-- 0.1.0h: unmap existing display (garbage collcetion)
+				_unmap(_disp, 0x10000)
+
 				_disp = userdata("u8", new_display_w, new_display_h)
-				memmap(0x10000, _disp)
+				memmap(_disp, 0x10000)
 				set_draw_target() -- reset target to display
 
 				-- set display attributes in ram
@@ -595,6 +667,8 @@ end
 	-- fetch and store can be passed locations instead of filenames
 
 	function fetch(location, do_yield, ...)
+		if (type(location) != "string") return nil
+
 		local filename, hash_part = table.unpack(split(location, "#", false))
 
 		-- anywhen: used for testing rollback (please don't use this for anything important yet!)
@@ -709,17 +783,24 @@ end
 		local meta_str = generate_meta_str(meta)
 
 		-- /ram/system/settings.pod is special
+--[[
 		if (fullpath(filename) == "/ram/system/settings.pod") then
 			-- printh("setting fullscreen: "..tostr(obj.fullscreen))
 			_apply_system_settings(obj)
 		end
-
+]]
 		-- printh("storing meta_str: "..meta_str)
 
 		local result, err_str = _store_local(filename, obj, meta_str)
+
+		-- notify program manager (handles subscribers to file changes)
+		send_message(2, {
+			event = "_file_stored",
+			filename = fullpath(filename),
+			proc_id = pid()
+		})
 		
-		-- dev: assume no error for now! return stored metadata
-		-- return meta -- 0.1.0f: removed; was for debugging
+		-- no error
 		return nil
 
 	end
@@ -930,49 +1011,39 @@ end
 			func()
 		--cd(pwd0)
 
-		return true -- ok, no error including
+		return true -- ok, no error including   -- to do: shouldn't a successful include just return nil?
 	end
 	
-	-- only for holding reference
-	local userdata_ref = {}
-	local _current_map = nil
-
-	function memmap(addr, a, offset, len)
-
-		if (_map_ram(addr, a, offset, len)) then
-			if (a) then
-				userdata_ref[a] = a
-				if (addr == 0x100000) _current_map = a
-			end
-		end
-
-	end
-
-	-- unmap by array
-	-- removes all pages mapped to somewhere inside that array.
-	-- ** this is the only way to free mapped userdata, even if there are no remaining mapped pages **
-
-	function unmap(a)
-		if (type(a) == "userdata") then
-				-- remove c-side pointer references
-			if _unmap_ram(a) then
-				-- _unmap_ram refused to unmap because used in base ram
-				return
-			end
+	
+	function memmap(ud, addr, offset, len)
+		if (type(addr) == "userdata") addr,ud = ud,addr -- legacy >_<
+		if (_map_ram(ud, addr, offset, len)) then
 			
-			 -- can release reference and be garbage collected 	
-			userdata_ref[a] = nil              
-		end
+			if (addr == 0x100000) then
+				_unmap(_current_map, 0x100000) -- kick out old map
+				_current_map = ud
+			end
+			userdata_ref[ud] = ud -- need to include a as a value on rhs to keep it held
 
+			return ud -- 0.1.0h: allows things like pfxdat = fetch("tune.sfx"):memmap(0x30000)
+		end
 	end
 
+	-- unmap by userdata
+	-- ** this is the only way to release mapped userdata for collection **
+	-- ** e.g. memmapping a userdata over an old one is not sufficient to free it for collection **
+	function unmap(ud, addr, len)
+		if _unmap_ram(ud, addr, len) then
+			-- nothing left pointing into Lua object -> can release reference and be garbage collected 	
+			userdata_ref[ud] = nil
+		end
+	end
+	_unmap = unmap
 
 --------------------------------------------------------------------------------------------------------------------------------
 --    Sprite Registry
 --------------------------------------------------------------------------------------------------------------------------------
 
-	-- sprites are owned by head -- process can assume exists
-	local _spr = {} 
 
 	-- add or remove a sprite at index
 	-- flags stored at 0xc000 (16k)
@@ -1014,31 +1085,6 @@ function create_undo_stack(...)
 	return UNDO:new(...)
 end
 
---------------------------------------------------------------------------------------------------------------------------------
---    Theme
---------------------------------------------------------------------------------------------------------------------------------
-
-local theme_dat = nil
-local theme_t   = -1
-function theme(which)
-
-	-- reload up to 5 times a second 
-	-- is a tiny file and in ram, so not worth introducing a push scheme. just poll
-	-- to do: checking metadata / attributes to see if it has changed? not worth it ~ just reload!
-	if (not theme_dat or time() > theme_t + 0.2) then
-		theme_t = time()
-		theme_dat = fetch"/ram/shared/theme.pod"
-		if (not theme_dat) then
-			local sdat = fetch"/appdata/system/settings.pod"
-			if (not sdat) sdat = fetch"/system/misc/default_settings.pod"
-			if (sdat and sdat.theme) theme_dat = fetch(sdat.theme) -- if there is a theme file set in settings, use that
-			if (not theme_dat) theme_dat = fetch"/appdata/system/theme.pod" or fetch"/system/themes/classic.theme"
-			store("/ram/shared/theme.pod", theme_dat)
-		end
-	end
-
-	return theme_dat[which]
-end
 
 
 --------------------------------------------------------------------------------------------------------------------------------

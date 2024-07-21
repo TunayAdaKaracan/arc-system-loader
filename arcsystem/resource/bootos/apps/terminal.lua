@@ -1,4 +1,4 @@
---[[pod_format="raw",author="zep",created="2023-10-07 14:33:59",icon=userdata("u8",16,16,"00000001010101010101010101000000000001070707070707070707070100000001070d0d0d0d0d0d0d0d0d0d07010001070d0d0d0d0d0d0d0d0d0d0d0d070101070d0d0d0d07070d0d0d0d0d0d070101070d0d0d0d0d07070d0d0d0d0d070101070d0d0d0d0d0d07070d0d0d0d070101070d0d0d0d0d0d07070d0d0d0d070101070d0d0d0d0d07070d0d0d0d0d070101070d0d0d0d07070d0d0d0d0d0d070101070d0d0d0d0d0d0d0d0d0d0d0d07010106070d0d0d0d0d0d0d0d0d0d07060101060607070707070707070707060601000106060606060606060606060601000000010606060606060606060601000000000001010101010101010101000000"),modified="2024-04-23 11:46:40",notes="",revision=145,stored="2024-03-09 10:31:21",title="Terminal",version=""]]
+--[[pod_format="raw",author="zep",created="2023-10-07 14:33:59",icon=userdata("u8",16,16,"00000001010101010101010101000000000001070707070707070707070100000001070d0d0d0d0d0d0d0d0d0d07010001070d0d0d0d0d0d0d0d0d0d0d0d070101070d0d0d0d07070d0d0d0d0d0d070101070d0d0d0d0d07070d0d0d0d0d070101070d0d0d0d0d0d07070d0d0d0d070101070d0d0d0d0d0d07070d0d0d0d070101070d0d0d0d0d07070d0d0d0d0d070101070d0d0d0d07070d0d0d0d0d0d070101070d0d0d0d0d0d0d0d0d0d0d0d07010106070d0d0d0d0d0d0d0d0d0d07060101060607070707070707070707060601000106060606060606060606060601000000010606060606060606060601000000000001010101010101010101000000"),modified="2024-07-19 07:59:01",notes="",revision=152,stored="2024-03-09 10:31:21",title="Terminal",version=""]]
 --[[
 
 	terminal.lua
@@ -72,6 +72,14 @@ local coco = {}
 
 
 function _init()
+
+	-- don't pause fullscreen terminal when not corunning pwc
+	if (not env().corun_program) then
+		window{pauseable = false}
+	end
+
+	-- add_line("picotron terminal // "..flr(stat(0)).." bytes used")
+
 end
 
 -- to do: string format for custom prompts?
@@ -104,6 +112,7 @@ local function run_cproj_callback(func, label)
 		send_message(3, {event="report_error", content = debug.traceback()})
 
 		running_cproj = false
+		window{pauseable = false}
 
 		-- nothing haltable (esc should go straight back into code editor)
 		send_message(3, {event="set_haltable_proc_id", haltable_proc_id = nil})
@@ -139,6 +148,9 @@ local function suspend_cproj()
 	-- back to last directory that user chose
 	local pwd = fetch("/ram/system/pwd.pod")
 	if (pwd) then cd(pwd) end
+
+	-- terminal is not pauseable unless running something (to do: lose this state when resuming)
+	window{pauseable = false}
 
 	-- stop playing any sound  // to do: need to pause mixer so that it is resumable 
 	-- play_note(0,-1,0,0,0, 0)
@@ -181,6 +193,8 @@ end
 ]]
 local function resolve_program_path(prog_name)
 
+	if (not prog_name) return nil
+
 	local prog_name_0 = prog_name
 
 	-- /appdata/system/util/ can be used to extend built-in apps (same pattern as other collections)
@@ -197,6 +211,8 @@ end
 
 -- assume is cproj for now
 local function run_program_inside_terminal(prog_name)
+
+	if (not prog_name) return
 
 	local prog_str = fetch(prog_name)
 
@@ -533,7 +549,8 @@ local tv_frames =
 function _update()
 
 	-- app is pauseable when and only when running_cproj is true and fullscreen
-
+	-- deleteme -- wrong; want to be able to disable pausing from fullscreen app corunning in terminal
+--[[
 	if (get_display()) then
 		local w,h = get_display():attribs()
 		local pauseable1 = running_cproj and w == 480 and h == 270
@@ -542,7 +559,7 @@ function _update()
 			window{pauseable = last_pauseable}
 		end
 	end
-
+]]
 	if (running_cproj and not cproj_update and not cproj_draw) then
 		suspend_cproj()
 	end
@@ -784,9 +801,14 @@ end)
 
 scroll_y = 0
 
--- happens when open terminal with ctrl-r
+-- run e.g. pwc output
 if (env().corun_program) then
 	run_program_inside_terminal(env().corun_program)
+end
+
+-- happens when open terminal with ctrl-r
+-- or when terminal window is recreated (because died due to out of ram)
+if (env().reload_history) then
 
 	local history1 = fetch("/ram/system/history.pod")
 	if (type(history1) == "table") history = history1

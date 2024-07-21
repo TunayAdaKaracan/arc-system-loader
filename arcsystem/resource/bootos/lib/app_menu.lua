@@ -23,9 +23,17 @@ function menuitem(m, a, b)
 		}
 	end
 
-	_menu[m.id] = m
+	if (not _menu[m.id]) then
+		_menu[m.id] = m
+	else
+		-- update items
+		for k,v in pairs(m) do
+			_menu[m.id][k] = v
+		end
+	end
 
-	send_message(3, {event = "app_menu_item", attribs = m})
+	-- resend whole menu item state (wm doesn't need to handle partial changes)
+	send_message(3, {event = "app_menu_item", attribs = _menu[m.id]})
 
 end
 

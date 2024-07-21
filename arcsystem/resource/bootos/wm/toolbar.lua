@@ -64,7 +64,7 @@ function make_window_button(parent, label, x, y, width, height, win)
 
 	function b:tap(event)
 		-- if deskop, always applies to the filenav overlay
-		--toggle_app_menu(self.sx, self.sy + self.height, win)
+		toggle_app_menu(self.sx, self.sy + self.height, win)
 	end
 
 	return parent:attach(b)
@@ -74,7 +74,7 @@ end
 
 local function make_picotron_button(parent, label, x, y, width, height)
 	parent = parent or gui
-	local b = {label=label, x=x, y=y, width=width, height=height}
+	local b = {label=label, x=x, y=y, width=width, height=height, cursor = "pointer"}
 
 	b.col = 2
 
@@ -93,7 +93,7 @@ local function make_picotron_button(parent, label, x, y, width, height)
 	end
 
 	function b:tap(event)
-		--toggle_picotron_menu()
+		toggle_picotron_menu()
 	end
 
 	return parent:attach(b)
@@ -102,7 +102,7 @@ end
 
 local function make_new_tab_button(parent, label, x, y, w, h)
 
-	local tt = parent:attach{x=x, y=y, width=w, height=h, label=label}
+	local tt = parent:attach{x=x, y=y, width=w, height=h, label=label, cursor = "pointer"}
 
 	function tt:drag(event)
 		return true -- stop parent from being draggable
@@ -188,7 +188,7 @@ local function make_tab_button(parent, win, x, y, w, h)
 	w = text_w + 12
 ]]
 
-	local tt = parent:attach{win = win, x=x, y=y, width=w, height=h}
+	local tt = parent:attach{win = win, x=x, y=y, width=w, height=h, cursor = "pointer"}
 
 --	
 --[[
@@ -323,7 +323,7 @@ end
 local function make_dock_button(parent, x, y, width, height)
 
 	parent = parent or gui
-	local b = {index=index, label=label, x=x, y=y, width=width, height=height}
+	local b = {index=index, label=label, x=x, y=y, width=width, height=height, cursor = "pointer"}
 
 	b.icon0 = userdata"[gfx]08080000000000000000000700000077700007777700077777000000000000000000[/gfx]"
 	b.icon1 = userdata"[gfx]08080000000000000000000000000007700000077000000000000000000000000000[/gfx]"
@@ -349,7 +349,7 @@ end
 
 local function make_workspace_button(index, parent, label, x, y, width, height)
 	parent = parent or gui
-	local b = {index=index, label=label, x=x, y=y, width=width, height=height}
+	local b = {index=index, label=label, x=x, y=y, width=width, height=height, cursor = "pointer"}
 
 	b.icon = get_workspace_icon(index)
 
@@ -420,8 +420,6 @@ local function gui_update()
 
 end
 
-
-
 --[[
 to do: dynamic tab widths
 function update_tab_widths(awin)
@@ -445,6 +443,7 @@ function generate_toolbar_gui()
 --	printh("-- generating toolbar gui --")
 	gui = create_gui{
 		x=0,y=0,width=480,height=11,
+		cursor="grab",
 
 		draw = function(self)
 			rectfill(0, 0, self.width, self.height, theme"toolbar_back")
@@ -454,7 +453,7 @@ function generate_toolbar_gui()
 		drag = function(self,e)
 			-- to do: check if is active element; can remove all the children's dummy :drag() callbacks
 			-- is this the right pattern for toolbar style buttons that have a container that does something?
-			--send_message(3, {event="drag_toolbar", dy=e.dy})
+			send_message(3, {event="drag_toolbar", dy=e.dy})
 		end
 	}
 
@@ -482,7 +481,7 @@ function generate_toolbar_gui()
 		-- container
 
 		tabs_container = gui:attach{
-			x=tabs_container_x, y=0, width=320, height=gui.height,
+			x=tabs_container_x, y=0, width=320, height=gui.height,cursor="grab",
 
 			drag = function(self,msg)
 				--printh("drag container "..msg.dy)

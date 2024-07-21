@@ -36,7 +36,7 @@ do
 		setmetatable(el, self)
 		self.__index = self
 
-		el.id = next_id -- for debugging
+		-- el.debug_id = next_id -- for debugging
 		next_id = next_id + 1
 
 		-- time of creation
@@ -192,6 +192,11 @@ do
 				end
 			end
 			return true
+		end
+
+		-- don't propagate clicks -- will e.g. cause app menu modal to always be dismissed
+		item.click = function(self)
+			return true		
 		end
 
 		local item_h = self.item_h
@@ -582,7 +587,7 @@ do
 		local mx, my, mb, wheel_x, wheel_y = 0,0,0,0,0
 		local last_mx, last_my, last_mb = 0,0,0
 		local dx, dy = 0
-		local start_mx, start_my,start_el = 0,0
+		local start_mx, start_my,start_el,tap0_mx,tap0_my = 0,0,nil,0,0
 		local drag_t = 0
 		local dragging_el = nil
 
@@ -697,18 +702,21 @@ do
 
 			--printh("el_at_xy_recursive "..pod{tostr(el), {x, y}, {sx0, sy0, sx1, sy1}})
 
-			if (x >= sx0 and x < sx1 and y >= sy0 and y < sy1) then
-				-- last element in tree (so prefers leaf nodes). matches visual order
+			local is_inside = (x >= sx0 and x < sx1 and y >= sy0 and y < sy1)
+	
+			-- last element in tree (so prefers leaf nodes). matches visual order
 
-				if (not el.test_point or el:test_point(x - el.sx, y - el.sy)) then
-					best_el = el
-				end
-				
-				--printh("best_el: "..pod(tostr(el), {el.sx,el.sy,el.width,el.height}))
+			if (is_inside and (not el.test_point or el:test_point(x - el.sx, y - el.sy))) then
+				best_el = el
 			end
-
-			for i=1, #el.child do
-				best_el = el_at_xy_recursive(el.child[i], el.sx, el.sy, sx1, sy1, x, y, depth + 1) or best_el
+			
+			-- optimisation: only need to search children when inside
+			-- (unless clip_to_parent is false, in which case children could be anywhere)
+			if (true or is_inside or not el.clip_to_parent) 
+			then
+				for i=1, #el.child do
+					best_el = el_at_xy_recursive(el.child[i], el.sx, el.sy, sx1, sy1, x, y, depth + 1) or best_el
+				end
 			end
 
 			return best_el
@@ -844,17 +852,29 @@ do
 			
 			local do_double_click = false
 			local do_double_tap = false
-			-- mouse buttons needs to match: clicking left and then right quickly should not trigger double click/tap
-			if (el and last_mb == 0 and mb > 0 and (el.last_click_t and time() - el.last_click_t < 0.4) and mb == el.last_click_mb) then
-				do_double_click = true
-				-- (send message at end)
-			end
+
+			local dx = start_mx - mx
+			local dy = start_my - my
+
+			-- mouse down: could be click or click + double-click
+			if el and last_mb == 0 and mb > 0 then
 
 
-			-- click
-			-- two click messages for every double click -- because might only care about rapid clicks and not double clicks
-			if (el and last_mb == 0 and mb > 0) then
+				-- mouse buttons needs to match: clicking left and then right quickly should not trigger double click/tap
+				if ((el.last_click_t and time() - el.last_click_t < 0.4) and 
+					mb == el.last_click_mb and
+					dx*dx + dy*dy < 4*4
+				) then
+					do_double_click = true
+					-- (send message later -- would click message to be sent first)
+				end
+
+
+				-- click
+				-- two click messages for every double click -- because might only care about rapid clicks and not double clicks
+				
 				-- mousedown (and not second click in a double click): send click and start drag
+				
 				start_mx = mx
 				start_my = my
 				start_el = el -- to do: use this to discard some interactions that should start and end on the same element (no gui refresh midway)
@@ -866,15 +886,22 @@ do
 				el.last_click_t = time()
 				el.last_click_mb = mb
 
+				-- 0.1.0h clicking anywhere removes keyboard focus [but can be immediately regained by the element being clicked on]
+				-- this allows any textfield to be clicked outside of to remove focus. ref: renaming instrument / map layer
+				-- to do: is that behaviour ever unwanted? should be optional?
+				el.head.keyboard_focus_el = nil
+
 				msg.event="click" el:event(msg)
+				
+
 			end
 
 			-- mouseup: send release and possibly tap
 			if (el and last_mb > 0 and mb == 0) then
 
 				-- tap if mouse position hasn't moved more than 4 pixels
-				local dx = start_mx - mx
-				local dy = start_my - my
+				--local dx = start_mx - mx
+				--local dy = start_my - my
 
 				-- only tap when close to position-at-mousedown within one second, and element existed for 200ms or more
 				-- ref: filenav doubleclick to enter folder -> don't want tap on newly created interface
@@ -883,12 +910,17 @@ do
 					msg.event="tap" msg.last_mb = last_mb el:event(msg)
 
 					-- also send a doubletap if second tap (using same mouse button)
-					if (el.last_tap_t and time() - el.last_tap_t < 0.4 and last_mb == el.last_tap_mb) then
+					if (el.last_tap_t and time() - el.last_tap_t < 0.4 and last_mb == el.last_tap_mb and
+							(tap0_mx-mx)^2 + (tap0_my-my)^2 < 4*4 -- close to original tap position
+						) then
 						do_double_tap = true
 					else
 						el.last_tap_t = time()
 						el.last_tap_mb = last_mb
 					end
+
+					tap0_mx = mx
+					tap0_my = my
 
 				end
 

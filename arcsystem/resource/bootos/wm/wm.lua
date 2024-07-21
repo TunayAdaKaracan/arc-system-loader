@@ -33,7 +33,9 @@ local toolbar_y        = 0
 local toolbar_y_target = 0
 local infobar_y        = 270 --270-11
 local infobar_y_target = infobar_y
+local held_frames = 0
 
+local sdat = fetch"/appdata/system/settings.pod" or {}
 
 
 function show_reported_error() -- happens when error is reported
@@ -154,7 +156,9 @@ function generate_head_gui()
 
 
 		if (show_toolbar) then
-			toolbar_y_target = -toolbar_gui.height 
+			toolbar_y_target = max(toolbar_y_target, 0)
+			-- snap. assumption: never want to leave an 8px (or less) sliver visible at top
+			if (toolbar_y_target < 8 and mb == 0) toolbar_y_target = 0
 		else
 			-- hide [unless pulled out]
 			--if (toolbar_y < 40) 
@@ -217,6 +221,9 @@ function create_workspace_1(proc_id, win_attribs)
 
 	-- workspace inherits immportality
 	if (win_attribs.immortal) ws.immortal = true
+
+	-- workspace inherits pwc_output during recovery (out of memory crash requires recreating terminal)
+	if (win_attribs.pwc_output) ws.pwc_output = true  ws.recovering = false
 
 	-- default desktop workspace icon
 	if not ws.icon then
@@ -310,10 +317,9 @@ function visit_workspace(ws)
 
 	if (ws.style == "fullscreen") last_fullscreen_workspace = ws
 	if (ws.style ~= "fullscreen") last_non_fullscreen_workspace = ws
-	if (ws.style == "desktop") then
-		last_desktop_workspace = ws
-	end
-
+	if (ws.style == "desktop") last_desktop_workspace = ws
+	if (ws.style ~= "desktop") last_non_desktop_workspace = ws
+	
 end
 
 
@@ -526,20 +532,18 @@ function _init()
 	)
 
 
-	on_event("reload_settings",
+	on_event("modified:/appdata/system/settings.pod",
 		function (msg)
 			sdat = fetch"/appdata/system/settings.pod"
 		end
 	)
-
-	sdat = fetch"/appdata/system/settings.pod"
 	
 	toolbar_gui = toolbar_init()
 	infobar_gui = infobar_init()
 
 	generate_head_gui()
 
-	--_signal(36) -- finished loading core processes
+	--_signal(36) -- finished loading core processes  (deleteme -- shouldn't need)
 	--flip()
 end
 
@@ -679,6 +683,7 @@ function update_window_paused_menu(win)
 		if (win.pmenu) then
 
 			if ((buttons & 0x73) > 0) then
+				-- printh("selected pause menu item "..win.pmenu.ii)
 				local item = win.pmenu[win.pmenu.ii]
 				if (type(item.action) == "function") item.action(buttons)
 			end
@@ -736,10 +741,12 @@ function generate_paused_menu(win)
 
 --	add(win.pmenu, {label = "Favourite"}) -- later; need to decide what this means!
 	add(win.pmenu, {label = "Reset Cartridge", action = function() 
+
 		if (haltable_proc_id == win.proc_id) then
 			-- pwc: same as hitting ctrl-r (dupe)
 			haltable_proc_id = create_process("/system/apps/terminal.lua",{
 				corun_program = "/ram/cart/main.lua",       -- program to run // terminal.lua observes this and is also used to set pwd
+				reload_history = true,                      -- observed by terminal.lua
 				window_attribs = {
 					pwc_output = true,                      -- replace existing pwc_output process			
 					show_in_workspace = true,               -- immediately show running process
@@ -748,7 +755,7 @@ function generate_paused_menu(win)
 		else
 			send_message(2, {event="restart_process", proc_id = win.proc_id})
 			win.paused = false
-			
+			win.resetting = true -- don't kill process in win:update() while resetting
 		end
 
 	end})
@@ -786,8 +793,7 @@ end
 -- update: seems almost always want to kill at the same time; added as a parameter
 function close_window(win, do_kill)
 
-	if (win.immortal) return
-
+	if (win.immortal and not do_kill) return -- terminal needs to be able to die when broked from out of memory
 	
 	_kill_process(do_kill and win and win.proc_id)
 
@@ -1030,12 +1036,13 @@ function create_window(target_ws, attribs)
 
 		win.is_active = self == get_active_window()
 
-		-- no process --> close
-		if (win.width == 0 or win.height == 0) then
+		-- no process --> close 
+		-- except when in the middle of resetting cartridge: there might be a few frames where process has no display
+		if (win.width == 0 or win.height == 0) and not win.resetting then
 			close_window(win)
 			return
 		end
-
+		
 
 		-- autoclose a non-tabbed window that is covered by a tabbed window
 		-- otherwise: need some way to access that window. don't want to tab it! sheesh
@@ -1405,11 +1412,17 @@ function _draw()
 		if (ws_gui.height < 240) printh("*** ws_gui.height: "..ws_gui.height)
 	end
 
-	-- wm should never hold frames (or need to)
-	-- if becomes relevant, then is a bug and is extremely hard to see what's going on with wm holding frames
-	-- e.g. if 30fps app is showing frames every second frame, the ones wm is holding --> appears frozen
-	-- better to just let the wm interface start flickering
-	poke(0x547f, peek(0x547f) & ~0x2)
+	--[[
+		wm should never hold frames (or need to)
+		if becomes relevant, then is a bug and is extremely hard to see what's going on with wm holding frames
+		e.g. if 30fps app is showing frames every second frame, the ones wm is holding --> appears frozen
+		better to just let the wm interface start flickering
+		0.1.0h: commented. too many moments that genuinely need to be hidden for a frame! 
+		e.g. click between channels in pattern editor -> causes cpu debt that wm can't easily avoid being starved from 	
+		--> uncomment while debugging wm refresh issues
+	]]
+	-- poke(0x547f, peek(0x547f) & ~0x2) -- unset hold_frame bit
+
 	
 	-- workspace doesn't have a fullscreen window covering it
 	-- e.g. launch filenav when there is no desktop workspace, or running web cart player
@@ -1501,6 +1514,7 @@ function _draw()
 		if (gfx == "crosshair") gfx = 2
 		if (gfx == "grab") gfx = mb == 0 and 3 or 4
 		if (gfx == "pointer") gfx = mb == 0 and 5 or 6
+		if (gfx == "dial") gfx = mb == 0 and 7 or 0
 
 
 		if (type(gfx) == "number") gfx = cursor_gfx[flr(gfx)].bmp
@@ -1658,8 +1672,7 @@ function _draw()
 		poke4(0x5508, masks); -- restore
 	end
 
---	print(stat(1),30,260,8)
-
+--	print("cpu: "..(stat(1)\.01).." mem:"..(stat(0)\1024).."k",30,260,8)
 
 	-- don't open on a tabbed tool (wait for desktop or terminal to be ready before displaying)
 	if (ws_gui.style != "tabbed") then 
@@ -1697,6 +1710,42 @@ function sync_working_cartridge_files()
 
 end
 
+function run_pwc(argv, do_inject, path)
+
+	sync_working_cartridge_files()
+
+	clear_infobar()
+	hide_infobar()
+
+	if (do_inject and haltable_proc_id) then
+		-- inject 
+		send_message(haltable_proc_id,{event="reload_src", location = get_active_window().location})
+	else
+		-- launch terminal and request it to corun cproj
+		-- terminal will skip creating a window and allow guest program to create it
+		-- when haltable_proc_id is set, ESC means halt for that process
+
+		-- create new one; because pwc_output is true, will clobber old one (if there is one)
+		haltable_proc_id = create_process("/system/apps/terminal.lua",{
+			corun_program = "/ram/cart/main.lua",       -- program to run // terminal.lua observes this and is also used to set pwd
+			reload_history = true,
+			argv = argv,
+			path = path,
+			window_attribs = {				
+				pwc_output = true,                      -- replace existing pwc_output process			
+				show_in_workspace = true,               -- immediately show running process
+			}
+		})
+
+	end
+end
+
+on_event("run_pwc", function(msg)
+	-- printh("@@ event run_pwc: "..pod(msg))
+	run_pwc(msg.argv, false, msg.path)
+end)
+
+
 function _update()
 
 	-- happens while loading
@@ -1708,6 +1757,34 @@ function _update()
 	-- temporary hack: start on desktop
 	if (time() == 1.5) set_workspace(5)
 
+	-- make sure fullscreen terminal process exists
+	if (time() > 5) then -- temporary hack: finished with booting
+		for i=1,#workspace do
+			if (workspace[i].style == "fullscreen" and workspace[i].pwc_output and #workspace[i].child == 0 and not workspace[i].recovering) then
+				create_process("/system/apps/terminal.lua",
+				{
+					window_attribs = {
+						fullscreen = true,
+						pwc_output = true,        -- run present working cartridge in this window
+						immortal   = true,        -- no close pulldown
+						workspace = workspace[i].index
+					},
+					immortal   = true, -- exit() is a NOP
+					reload_history = true,
+				})
+
+				workspace[i].recovering = true -- avoid restarting terminal more than once
+			end 
+		end
+	end
+
+
+--[[
+	if (#ws_gui.child == 0) then
+		close_workspace(workspace_index)
+		if (not ws_gui) return
+	end
+]]
 	if (screensaver_proc_id) then
 
 		-- allow test to run for at least half a second before observing new input activity
@@ -1726,8 +1803,6 @@ function _update()
 		-- 3 minutes; to do: store in settings.pod
 		if ((time() > last_input_activity_t + 180 or test_screensaver_t0) and not screensaver_proc_id) 
 		then
-			
-			local sdat = fetch"/appdata/system/settings.pod"
 			-- printh(pod(sdat))
 			if (sdat and sdat.screensaver) then
 				-- note: program doesn't need to know it is a screensaver; just kill process on activity event
@@ -1820,7 +1895,6 @@ function _update()
 
 	-- ctrl-q to fastquit // dangerous so needs to be turned on
 	if (key("ctrl") and keyp("q")) then
-		local sdat = fetch("/appdata/system/settings.pod") or {}
 		if (sdat.fastquit) _signal(33)
 	end
 
@@ -1836,38 +1910,7 @@ function _update()
 	-- can save their files to /ram/cart before the running program picks them up
 	if (key("ctrl") and keyp("r")) then
 
-		sync_working_cartridge_files()
-
-		clear_infobar()
-		hide_infobar()
-
-		if (key("lshift") and haltable_proc_id) then
-			-- inject 
-			send_message(haltable_proc_id,{event="reload_src", location = get_active_window().location})
-		else
-			-- launch terminal and request it to corun cproj
-			-- terminal will skip creating a window and allow guest program to create it
-			-- when haltable_proc_id is set, ESC means halt for that process
-
-			-- kill previous one
-			--[[
-				-- deleteme -- is more correctly handled by clearing out existing pwc_output windows
-				-- the first time a cart is run, there is an existing pwc_output window that is not assigned to haltable_proc_id
-				
-				-- printh("killing previous: "..tostring(haltable_proc_id))
-				-- send_message(2, {event="kill_process", proc_id = haltable_proc_id})
-			]]
-
-			-- create new one
-			haltable_proc_id = create_process("/system/apps/terminal.lua",{
-				corun_program = "/ram/cart/main.lua",       -- program to run // terminal.lua observes this and is also used to set pwd
-				window_attribs = {
-					pwc_output = true,                      -- replace existing pwc_output process			
-					show_in_workspace = true,               -- immediately show running process
-				}
-			})
-
-		end
+		run_pwc("", key("lshift"))
 
 	end
 
@@ -2092,6 +2135,9 @@ function _update()
 			-- toggle between output / last workspace
 			if (ws_gui.style == "fullscreen") then
 				set_workspace(last_non_fullscreen_workspace or last_desktop_workspace)
+			elseif (awin and awin.pwc_output) then
+				-- back to editor
+				set_workspace(last_non_desktop_workspace or last_fullscreen_workspace)
 			else
 				set_workspace(last_fullscreen_workspace)
 			end
@@ -2109,10 +2155,8 @@ function _update()
 	-- toggle fullscreen
 
 	if (key("alt") and key("enter") and not last_enter_key_state) then		
-		local sdat = fetch("/appdata/system/settings.pod") or {}
 		sdat.fullscreen = not sdat.fullscreen
 		store("/appdata/system/settings.pod", sdat)
-		store("/ram/system/settings.pod", sdat) -- special file; causes settings to be applied
 		-- clear key buffer (avoid "enter" being sent to text editor)
 		readtext(true)
 	end
@@ -2295,7 +2339,6 @@ on_event("close_window",
 
 		-- finally, kill the process
 		_kill_process(msg.proc_id)
-
 	end
 )
 
@@ -2350,7 +2393,9 @@ on_event("app_menu_item", function(msg)
 	for i=1,#menu do
 		if (menu[i].id == msg.attribs.id) pos = i
 	end
+	
 	menu[pos] = msg.attribs
+	update_app_menu_item(menu[pos])
 end)
 
 
@@ -2541,6 +2586,8 @@ on_event("set_window", function(msg)
 
 	end
 
+	-- sign of life from process -- proof that finished resetting
+	win.resetting = nil
 	
 	-- not here -- messes up dragging
 	--generate_head_gui()
@@ -2726,17 +2773,17 @@ function create_modal_gui()
 
 	modal_gui = head_gui:attach{
 		x = 0, y = 0, width = 480, height = 270,
-		--tap = dismiss_modal,
-		click = dismiss_modal -- immediately interact  // to do: why isn't this working?
+		--draw = function() rectfill(0,0,480,270,8) end, -- debug
+		click = dismiss_modal
 	}
 
 	return modal_gui
 end
 
-function close_workspace(ws_index)
+function close_workspace(ws_index, force)
 	local ws = get_workspace(ws_index)
 
-	if (ws.immortal) return
+--	if (ws.immortal and not force) return
 
 	if (ws) then
 		for i=1,#ws.child do
@@ -2777,6 +2824,16 @@ function toggle_workspace_menu(x, y, ws_index)
 end
 
 
+-- update the single label of an appmenu item rather than regenerating the interface on change
+function update_app_menu_item(ii)
+	if (not app_menu_pulldown) return
+	for i=1,#app_menu_pulldown.child do
+		if (app_menu_pulldown.child[i].id == ii.id) then
+			app_menu_pulldown.child[i].label = ii.label
+		end
+	end
+end
+
 function toggle_app_menu(x, y, win)
 
 	local win = win or get_active_window()
@@ -2807,6 +2864,8 @@ function toggle_app_menu(x, y, win)
 		onclose = dismiss_modal
 	}
 
+	app_menu_pulldown = pulldown
+
 	-- add about item // to do: get icon & title from .p64 when create window (can be default title too)
 
 	-- to do: generate icon from win.icon
@@ -2827,7 +2886,8 @@ function toggle_app_menu(x, y, win)
 			if (menu[i].label) then
 				local item = menu[i]
 				local pulldown_item = unpod(pod(item)) -- copy all attributes
-				
+
+				--printh("pulldown item "..pod(item))
 				pulldown_item.action = function(b)
 					send_message(win.proc_id, {event="menu_action", id=menu[i].id, b=b})
 				end

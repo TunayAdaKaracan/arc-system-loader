@@ -24,9 +24,10 @@ function foreach(c,_f)
 end
 
 
-function sub(str, ...)
+function sub(str, p0, p1)
 	if (type(str) ~= "string") then return end -- pico-8 behaviour
-	return string.sub(str, ...)
+	if (p1 ~= nil and type(p1) != "number") p1 = p0 -- pico-8 behaviour; get character at pos
+	return string.sub(str, p0, p1)
 end
 
 
@@ -98,6 +99,8 @@ _rm = function(f0, flags, depth)
 
 	local attribs, size, origin = fstat(f0)
 
+	-- printh("_rm "..f0.." origin: "..tostring(origin))
+
 	if (not attribs) then
 		-- does not exist
 		return
@@ -106,14 +109,16 @@ _rm = function(f0, flags, depth)
 	if (attribs == "folder") then
 
 		-- folder: first delete each entry using this function
-		if (not origin) then -- dont recurse into origin!
+		-- dont recurse into origin! (0.1.0h: unless it is cartridge contents)
+		-- e.g. rm /desktop/host will just unmount that host folder, not delete its contents
+		if (not origin or (origin:sub(1,11) == "/ram/mount/")) then 
 			local l = ls(f0)
 			for k,fn in pairs(l) do
 				_rm(f0.."/"..fn, flags, depth+1)
 			end
 		end
 		-- remove metadata (not listed)
-		_rm(f0.."/.info.pod", flags, depth)
+		_rm(f0.."/.info.pod", flags, depth+1)
 
 		-- flag 0x1: remove everything except the folder itself (used by cp when copying folder -> folder)
 		-- for two reasons:
@@ -127,6 +132,8 @@ _rm = function(f0, flags, depth)
 
 
 	-- delete single file / now-empty folder
+	
+	-- printh("_fdelete: "..f0)
 	return _fdelete(f0)
 end
 
@@ -142,8 +149,9 @@ end
 	if dest exists, is deleted!  (cp util / filenav copy operations can do safety)
 
 ]]
-function _cp(f0, f1, moving)
+function _cp(f0, f1, moving, depth)
 
+	depth = depth or 0
 	f0 = fullpath(f0)
 	f1 = fullpath(f1)
 
@@ -163,7 +171,7 @@ function _cp(f0, f1, moving)
 	-- to do: should be an internal detail of delete_path()?
 	-- 0.1.0e: 0x1 to keep dest as a folder when copying a folder over a folder
 	-- (e.g. dest.p64/ is a folder on host; preferable to keep it that way for some workflows)
-	if (f1_type) _rm(f1, f0_type == "folder" and 0x1 or 0x0) 
+	if (f1_type == "folder" and depth == 0) _rm(f1, f0_type == "folder" and 0x1 or 0x0) 
 
 	-- folder: recurse
 	if (f0_type == "folder") then
@@ -182,7 +190,7 @@ function _cp(f0, f1, moving)
 
 		local l = ls(f0)
 		for k,fn in pairs(l) do
-			local res = _cp(f0.."/"..fn, f1.."/"..fn, moving)
+			local res = _cp(f0.."/"..fn, f1.."/"..fn, moving, depth+1)
 			if (res) return res
 		end
 
@@ -224,7 +232,7 @@ function mv(src, dest)
 end
 
 function cp(src, dest)
-	_cp(src, dest) -- don't expose the moving parameter; is an internal detail
+	_cp(src, dest) -- don't expose the moving or depth parameters; they are internal details
 end
 
 

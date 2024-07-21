@@ -1,4 +1,3 @@
---[[pod_format="raw",created="2024-07-14 21:42:22",modified="2024-07-14 21:43:06",revision=1]]
 --[[
 	Picotron Kernel
 	Handle process creation and slice allocation
@@ -9,6 +8,8 @@
 -- need to fetch early to determine fullscreen or windowed
 local sdat = fetch"/appdata/system/settings.pod" or  {}
 _apply_system_settings(sdat)
+
+
 
 -- allowed to assume / and /ram is mounted before boot.lua is run
 -- and that there is already /system
@@ -51,15 +52,19 @@ else
 	end
 end
 
-
+local last_processes_list_publish = 0
 
 function run_userland_processes(allotment)
 
 	local pl = _get_process_list()
 	local wm_proc_id = 3
 
-	-- publish!
-	store("/ram/system/processes.pod", pl)
+	-- publish! 4 times a second so can at least some spikes show up
+	if (time() > last_processes_list_publish + 0.25) then
+		store("/ram/system/processes.pod", pl)
+		last_processes_list_publish = time()
+	end
+
 
 	while(pl[1] and pl[1].id <= wm_proc_id) do
 		deli(pl, 1)
@@ -78,11 +83,14 @@ function run_userland_processes(allotment)
 	-- that rounds down to 0 cycles; or for some other anamolous reason a process keeps returning
 	-- 0 cpu spent, but also never reaches end of frame. 
 
-	while (keep_going and remaining > 0 and safety < 256) do
+	while (keep_going and remaining > 0 and safety < 4096) do
 		keep_going = false
 		local cpu = remaining / num
-		--cpu = 0.0001 -- microslices for debugging. slow (0.0001 == only ~30 insts/ slice) but should still work!
 		
+		-- tiny slices for debugging -- find issues caused due to process switching
+		-- 0.0001 is only ~30/slices (and very slow because of switching overhead) but should still work (need 
+		-- cpu = 0.0001 -- 30 insts/slice. need high safety value (4096) to prevent flickering on desktop
+
 		for i = 1, max do
 			local p = pl[i]
 			if (p) then
@@ -112,7 +120,7 @@ function run_userland_processes(allotment)
 
 	end
 
-	--printh("slices: "..slices)
+--	printh("slices: "..slices)
 
 end
 
@@ -139,6 +147,7 @@ local played_boot_sound = false
 
 while (true) do -- \m/
 
+	
 --	printh("------------ mainloop "..total_frames.." ----------------")
 	total_frames += 1
 

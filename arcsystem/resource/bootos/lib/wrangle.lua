@@ -71,7 +71,18 @@ local function update_menu_items()
 			local segs = split(current_filename,"/",false)
 			local path = string.sub(current_filename, 1, -#segs[#segs] - 2) -- same folder as current file
 			--create_process("/system/apps/filenav.p64", {path = path, window_attribs= {workspace = "current", autoclose=true}})
-			create_process("/system/apps/filenav.p64", {path = path, open_with = env().prog_name, window_attribs= {workspace = "current", autoclose=true}})
+
+			printh("Open File // env().prog_name: "..env().prog_name)
+			-- can assume when program is terminal, co-running /ram/cart and should use that to open the file (useful for developing tools that use file wrangler)
+			local open_with = env().prog_name
+
+			-- when opening with terminal, can assume co-running ram/cart
+			--> use /ram/cart to run it.   //  allows wrangling files from load'ed cartridge; useful for tool dev
+			if (open_with == "/system/apps/terminal.lua") then
+				open_with = "/ram/cart/main.lua"
+			end
+
+			create_process("/system/apps/filenav.p64", {path = path, open_with = open_with, window_attribs= {workspace = "current", autoclose=true}})
 		end
 	}
 

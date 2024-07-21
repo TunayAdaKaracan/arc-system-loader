@@ -67,12 +67,12 @@ local function _autoload_resources()
 
 	-- dev legacy
 	if (mm and mm.layer) then
-		if (mm.layer[0] and mm.layer[0].bmp) memmap(0x100000, mm.layer[0].bmp)
+		if (mm.layer[0] and mm.layer[0].bmp) memmap(mm.layer[0].bmp, 0x100000)
 	end
 
 	-- 0.1 version: layers are in file root
 	if (mm) then
-		if (mm[1] and mm[1].bmp) memmap(0x100000, mm[1].bmp)
+		if (mm[1] and mm[1].bmp) memmap(mm[1].bmp, 0x100000)
 	end
 
 	-- set starting tile size to size of sprite 0 (has authority; observed by map editor too)
