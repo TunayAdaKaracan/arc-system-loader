@@ -1,12 +1,6 @@
 picotron cartridge // www.picotron.net
 version 2
 
-:: .info.pod
-b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTA3LTEyIDE5OjMwOjU1Iixtb2RpZmllZD0iMjAyNC0w
-Ny0yMSAwODo0MjowNyIscnVudGltZT04LHdvcmtzcGFjZXM9e3tsb2NhdGlvbj0iZ2Z4LzAuZ2Z4
-Iix3b3Jrc3BhY2VfaW5kZXg9Mn0se2xvY2F0aW9uPSJtYXAvMC5tYXAiLHdvcmtzcGFjZV9pbmRl
-eD0zfSx7bG9jYXRpb249InNmeC8wLnNmeCIsd29ya3NwYWNlX2luZGV4PTR9fV1dbHo0AAQAAAAD
-AAAAMG5pbA==
 :: gui.lua
 --[[pod_format="raw",created="2024-07-14 21:01:47",modified="2024-07-15 13:14:44",revision=29]]
 --gui.lua by 369px
@@ -90,4 +84,9 @@ function _update()
 		send_message(2, {event="reboot"})
 	end
 end
+:: .info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTA3LTEyIDE5OjMwOjU1Iixtb2RpZmllZD0iMjAyNC0w
+OS0xMCAxMDowODo0NCIscnVudGltZT0xMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249ImdmeC8wLmdm
+eCIsd29ya3NwYWNlX2luZGV4PTJ9LHtsb2NhdGlvbj0ibWFwLzAubWFwIix3b3Jrc3BhY2VfaW5k
+ZXg9M30se2xvY2F0aW9uPSJzZngvMC5zZngiLHdvcmtzcGFjZV9pbmRleD00fX1dXQ==
 :: [eoc]

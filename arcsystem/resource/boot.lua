@@ -1,4 +1,3 @@
---[[pod_format="raw",created="2024-07-12 20:06:39",modified="2024-07-15 15:08:08",revision=25]]
 --[[
 	Arc Loader by Kutup Tilkisi & 369px
 ]] 
@@ -24,11 +23,6 @@ function pod(obj, flags, meta)
 	end
 
 	return _pod(obj, flags)
-end
-
-function fetch_metadata(filename)
-	local result = _fetch_metadata(fstat(filename) == "folder" and filename.."/.info.pod" or filename)
-	return result
 end
 
 local function generate_meta_str(meta_p)
@@ -58,37 +52,38 @@ local function generate_meta_str(meta_p)
 
 end
 
-
+function fetch_metadata(filename)
+	local result = _fetch_metadata_from_file(_fstat(filename) == "folder" and filename.."/.info.pod" or filename)
+	return result
+end
 function store_metadata(filename, meta)
 	local old_meta = fetch_metadata(filename)
 		
 	if (type(old_meta) == "table") then
 		if (type(meta) == "table") then			
+			-- merge with existing metadata.   // to do: how to remove an item? maybe can't! just recreate from scratch if really needed.
 			for k,v in pairs(meta) do
 				old_meta[k] = v
 			end
 		end
 		meta = old_meta
 	end
-	if (type(meta) != "table") meta = {}
-	meta.modified = date() 
-	local meta_str = generate_meta_str(meta)
 
-	if (fstat(filename) == "folder") then
-		local info_filename = filename.."/.info.pod" 
-		if false then
-			_store_metadata(info_filename, meta_str)
-				
-		else
-			_store_local(info_filename, nil, meta_str) 
-		end
+	if (type(meta) != "table") meta = {}
+
+	local meta_str = _generate_meta_str(meta)
+
+	if (_fstat(filename) == "folder") then
+			-- directory: write the .info.pod
+		_store_metadata_str_to_file(filename.."/.info.pod", meta_str)
 	else
-		_store_metadata(filename, meta_str)
+			-- file: modify the metadata fork
+		_store_metadata_str_to_file(filename, meta_str)
 	end
 end
 
 -- Actual boot.lua
-local systems_metadata = fetch_metadata("/systems")
+local systems_metadata = fetch_metadata("/system")
 local selected_os = systems_metadata.os or systems_metadata.system or "picotron"
 local type = systems_metadata.type or 3
 
