@@ -54,9 +54,9 @@ local function generate_meta_str(meta_p)
 end
 
 function fetch_metadata(filename)
-	local result = _fetch_metadata_from_file(_fstat(filename) == "folder" and filename.."/.info.pod" or filename)
-	return result
+	return _fetch_metadata_from_file(_fstat(filename) == "folder" and filename.."/.info.pod" or filename)
 end
+
 function store_metadata(filename, meta)
 	local old_meta = fetch_metadata(filename)
 		
@@ -100,9 +100,10 @@ function logcrit(text)
 end
 
 -- Actual boot.lua
-local systems_metadata = fetch_metadata("/systems")
-if(system_metadata.os == nil and system_metadata.system == nil) then
-	logwarn("No metadata found... Defaulting to picotron...")
+_printh("BOOT")
+local systems_metadata = fetch_metadata("/systems") or {}
+if (not systems_metadata.os and not systems_metadata.system) then
+	loginfo("No os metadata found. Defaulting to picotron")
 end
 local selected_os = systems_metadata.os or systems_metadata.system or "picotron"
 local type = systems_metadata.type or 3
