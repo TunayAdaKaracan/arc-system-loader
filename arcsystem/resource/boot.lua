@@ -2,6 +2,7 @@
 	Arc Loader by Kutup Tilkisi & 369px
 ]] 
 
+-- Internal Stuff For Metadata
 function pod(obj, flags, meta)
 	local encountered = {}
 	local function check(n)
@@ -82,8 +83,27 @@ function store_metadata(filename, meta)
 	end
 end
 
+function _log(prefix, text)
+	_printh(prefix.." "..text)
+end
+
+function loginfo(text)
+	_log("[ARC-INFO]", text)
+end
+
+function logwarn(text)
+	_log("[ARC-WARN]", text)
+end
+
+function logcrit(text)
+	_log("[ARC-CRIT]", text)
+end
+
 -- Actual boot.lua
-local systems_metadata = fetch_metadata("/system")
+local systems_metadata = fetch_metadata("/systems")
+if(system_metadata.os == nil and system_metadata.system == nil) then
+	logwarn("No metadata found... Defaulting to picotron...")
+end
 local selected_os = systems_metadata.os or systems_metadata.system or "picotron"
 local type = systems_metadata.type or 3
 
@@ -131,6 +151,7 @@ end
 
 local function prepare_system()
 	-- Create a temporary folder to store our bootloader
+	loginfo("Preparing "..selected_os)
 	mkdir("/arcloadertemp")
 	cp("/system/boot.lua", "/arcloadertemp/boot.lua")
 
@@ -146,15 +167,18 @@ local function prepare_system()
 
 	-- Delete our temporary folder.
 	delete("/arcloadertemp")
+	loginfo("Prepared "..selected_os)
 end
 
 -- If current system is not picotron returns true
 function run_default_os()
 	-- Can't do anything if default one is broke. We remove systems folder
 	if selected_os ~= "picotron" then
+		logwarn(selected_os.." either crashed or could not find/load sysboot.lua! Defaulting to picotron")
 		selected_os = "picotron"
 		run_system()
 	else
+		logcrit("Default picotron os is faulty... Self destructing... Please report this to developer.")
 		-- Default OS is faulty. Remove /system folder and arc. User must create a backup
 		delete("/system")
 		_signal(34)
@@ -166,16 +190,19 @@ function run_system()
 	prepare_system()
 
 	local sysboot_src = fetch("/system/sysboot.lua")
+	loginfo("Fetching sysboot.lua...")
 	if not sysboot_src then
 		return run_default_os()
 	end	
 
 	local booter, err = load(sysboot_src)
+	loginfo("Loading sysboot.lua...")
 	if not booter or err  then
 		return run_default_os()
 	end
 
 	-- Will never return. No problem
+	loginfo("Starting os...")
 	if not pcall(booter) then
 		-- A crash!
 		-- We should return to picotron default OS.
@@ -185,14 +212,17 @@ end
 
 if type == 1 then
 	if not systems_metadata.bypass then
+		loginfo("Booting bootos")
 		selected_os = ".bootos"
 	else
+		loginfo("Booting "..selected_os)
 		store_metadata("/systems", {bypass=false})
 	end
 elseif type == 2 then
 	for i=1,20 do
 		flip()
 		if (stat(988) > 0) then
+			loginfo("Press dedected... Booting bootos")
 			selected_os = ".bootos"
 			break
 		end
