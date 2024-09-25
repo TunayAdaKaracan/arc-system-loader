@@ -54,8 +54,7 @@ local function generate_meta_str(meta_p)
 end
 
 function fetch_metadata(filename)
-	local result = _fetch_metadata_from_file(_fstat(filename) == "folder" and filename.."/.info.pod" or filename)
-	return result
+	return _fetch_metadata_from_file(_fstat(filename) == "folder" and filename.."/.info.pod" or filename)
 end
 function store_metadata(filename, meta)
 	local old_meta = fetch_metadata(filename)
