@@ -72,7 +72,7 @@ function store_metadata(filename, meta)
 
 	if (type(meta) != "table") meta = {}
 
-	local meta_str = _generate_meta_str(meta)
+	local meta_str = generate_meta_str(meta)
 
 	if (_fstat(filename) == "folder") then
 			-- directory: write the .info.pod

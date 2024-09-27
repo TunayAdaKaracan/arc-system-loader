@@ -1,4 +1,4 @@
---[[pod_format="raw",created="2024-07-13 20:17:57",modified="2024-07-14 21:12:32",revision=29]]
+--[[pod_format="raw",created="2024-07-13 20:17:57",modified="2024-09-27 21:23:27",revision=33]]
 -- Compiles all arcsystem and makes them ready to publish.
 
 -- IMPORTANT !!!!!!
@@ -41,21 +41,16 @@ rm("/system/boot.lua")
 cp(PATH.."/boot.lua", PATH.."/arcsystem/resource/boot.lua")
 cp(PATH.."/boot.lua", "/system/boot.lua")
 
--- bootscreen compilation
-print("Bundling bootscreen")
-cp(PATH.."/bootscreen", "/ram/cart")
-save(PATH.."/bundled/arcselector.p64")
-wait(20)
-
--- copy bootscreen to /arcsystem/resource/bootos/apps/arcselector.p64
-print("Bundling bootscreen to bootos")
-save(PATH.."/arcsystem/resource/bootos/apps/arcselector.p64")
+-- Bootos to arcsystem
+print("Copying bootos to arcsystem resources")
+rm(PATH.."/arcsystem/resource/bootos")
+cp(PATH.."/bootos", PATH.."/arcsystem/resource/bootos")
 wait(20)
 
 -- move /arcsystem/bootos to /systems/.bootos
-print("Copying /arcsystem/resource/bootos to /systems/.bootos")
+print("Copying /bootos to /systems/.bootos")
 rm("/systems/.bootos")
-cp(PATH.."/arcsystem/resource/bootos", "/systems/.bootos")
+cp(PATH.."/bootos", "/systems/.bootos")
 
 wait(20)
 empty_ram_cart()
@@ -65,7 +60,6 @@ print("Bundling arcsystem")
 cp(PATH.."/arcsystem", "/ram/cart")
 save(PATH.."/bundled/arcsystem.p64.png")
 store_metadata(PATH.."/bundled/arcsystem.p64.png", fetch_metadata(PATH.."/arcsystem"))
-
 wait(20)
 
 -- Restore ram cart
