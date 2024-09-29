@@ -1,3 +1,4 @@
+--[[pod_format="raw",author="",created="2024-09-28 21:27:50",modified="2024-09-29 20:57:00",notes="",revision=1,title="orul",version=""]]
 do
     keys = {
         UP = 82,
@@ -12,7 +13,6 @@ do
 
         repeat
             local msg = _read_message()
-
             if not msg then return end
 
             if msg.event == "keydown" then
